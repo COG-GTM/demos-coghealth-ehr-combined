@@ -1,0 +1,71 @@
+spring:
+  application:
+    name: medchart-ehr-api
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/medchart_ehr}
+    username: ${DB_USERNAME:medchart}
+    password: ${DB_PASSWORD:medchart_dev}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  redis:
+    host: localhost
+    port: 6379
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when_authorized
+
+logging:
+  level:
+    com.medchart: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: DEBUG
+
+medchart:
+  security:
+    jwt:
+      secret: ${JWT_SECRET:dev-secret-key-change-in-production}
+      expiration: 86400000
+  audit:
+    enabled: true
+    async: true
+  integration:
+    insurance:
+      base-url: ${INSURANCE_API_URL:http://localhost:8081}
+      timeout: 5000
+    pharmacy:
+      base-url: ${PHARMACY_API_URL:http://localhost:8082}
+      timeout: 10000
+    lab:
+      hl7-port: 2575

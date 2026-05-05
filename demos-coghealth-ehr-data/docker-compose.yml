@@ -1,0 +1,165 @@
+# CogHealth EHR Infrastructure
+
+services:
+  # =============================================================================
+  # PRIMARY DATABASE - PostgreSQL
+  # =============================================================================
+  postgres:
+    image: postgres:14-alpine
+    container_name: coghealth-postgres
+    environment:
+      POSTGRES_DB: coghealth
+      POSTGRES_USER: coghealth
+      POSTGRES_PASSWORD: coghealth_dev_2024
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init-db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U coghealth -d coghealth"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - coghealth-network
+
+  # =============================================================================
+  # CACHE & SESSION STORE - Redis
+  # =============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: coghealth-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - coghealth-network
+
+  # =============================================================================
+  # IDENTITY PROVIDER - Keycloak (SSO, RBAC, MFA)
+  # =============================================================================
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    container_name: coghealth-keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/coghealth
+      KC_DB_USERNAME: coghealth
+      KC_DB_PASSWORD: coghealth_dev_2024
+      KC_HOSTNAME: localhost
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_STRICT: "false"
+    ports:
+      - "8180:8080"
+    command: start-dev --import-realm
+    volumes:
+      - ./docker/keycloak:/opt/keycloak/data/import
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - coghealth-network
+
+  # =============================================================================
+  # MESSAGE QUEUE - RabbitMQ (HL7, async notifications)
+  # =============================================================================
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: coghealth-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: coghealth
+      RABBITMQ_DEFAULT_PASS: coghealth_dev_2024
+    ports:
+      - "5672:5672"   # AMQP
+      - "15672:15672" # Management UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_running"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - coghealth-network
+
+  # =============================================================================
+  # FHIR SERVER - HAPI FHIR R4 (Interoperability)
+  # NOTE: Commented out - requires Docker Hub authentication
+  # =============================================================================
+  # hapi-fhir:
+  #   image: hapiproject/hapi:latest
+  #   container_name: coghealth-fhir
+  #   environment:
+  #     spring.datasource.url: jdbc:postgresql://postgres:5432/coghealth
+  #     spring.datasource.username: coghealth
+  #     spring.datasource.password: coghealth_dev_2024
+  #     spring.datasource.driverClassName: org.postgresql.Driver
+  #     spring.jpa.properties.hibernate.dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgresDialect
+  #     hapi.fhir.fhir_version: R4
+  #     hapi.fhir.allow_external_references: "true"
+  #     hapi.fhir.allow_multiple_delete: "true"
+  #   ports:
+  #     - "8090:8080"
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   networks:
+  #     - coghealth-network
+
+  # =============================================================================
+  # AUDIT LOG STORAGE - Elasticsearch (immutable audit trail)
+  # =============================================================================
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: coghealth-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -q 'status.*green\\|yellow'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - coghealth-network
+
+  # =============================================================================
+  # AUDIT LOG UI - Kibana (for viewing audit logs)
+  # =============================================================================
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: coghealth-kibana
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - coghealth-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  rabbitmq_data:
+  elasticsearch_data:
+
+networks:
+  coghealth-network:
+    driver: bridge

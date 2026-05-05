@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: 'maven'
+        env:
+          NEON_DB_URL: ${{ secrets.NEON_DB_URL }}
+          NEON_DB_USERNAME: ${{ secrets.NEON_DB_USERNAME }}
+          NEON_DB_PASSWORD: ${{ secrets.NEON_DB_PASSWORD }}
+
+      - name: Compile
+        run: mvn compile -B
+
+      - name: Test
+        run: mvn test -B
+
+      - name: Verify
+        run: mvn verify -B -DskipTests

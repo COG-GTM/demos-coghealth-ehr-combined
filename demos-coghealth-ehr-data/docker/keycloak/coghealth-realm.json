@@ -1,0 +1,238 @@
+{
+  "realm": "coghealth",
+  "enabled": true,
+  "displayName": "CogHealth EHR",
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "permanentLockout": false,
+  "maxFailureWaitSeconds": 900,
+  "minimumQuickLoginWaitSeconds": 60,
+  "waitIncrementSeconds": 60,
+  "quickLoginCheckMilliSeconds": 1000,
+  "maxDeltaTimeSeconds": 43200,
+  "failureFactor": 5,
+  "roles": {
+    "realm": [
+      {
+        "name": "physician",
+        "description": "Licensed physician - full clinical access"
+      },
+      {
+        "name": "nurse",
+        "description": "Registered nurse - clinical access, limited prescribing"
+      },
+      {
+        "name": "medical_assistant",
+        "description": "Medical assistant - vitals, scheduling, limited chart access"
+      },
+      {
+        "name": "front_desk",
+        "description": "Front desk staff - scheduling, demographics only"
+      },
+      {
+        "name": "billing",
+        "description": "Billing staff - claims, payments, limited PHI"
+      },
+      {
+        "name": "admin",
+        "description": "System administrator - full access"
+      },
+      {
+        "name": "compliance_officer",
+        "description": "Compliance - audit logs, reports, no clinical modification"
+      }
+    ]
+  },
+  "users": [
+    {
+      "username": "dr.anderson",
+      "enabled": true,
+      "email": "sarah.anderson@coghealth.com",
+      "firstName": "Sarah",
+      "lastName": "Anderson",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["physician"],
+      "attributes": {
+        "npi": ["1234567890"],
+        "specialty": ["Internal Medicine"],
+        "dea": ["FA1234567"]
+      }
+    },
+    {
+      "username": "nurse.johnson",
+      "enabled": true,
+      "email": "mike.johnson@coghealth.com",
+      "firstName": "Mike",
+      "lastName": "Johnson",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["nurse"],
+      "attributes": {
+        "license": ["RN-12345"],
+        "department": ["Primary Care"]
+      }
+    },
+    {
+      "username": "ma.smith",
+      "enabled": true,
+      "email": "jane.smith@coghealth.com",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["medical_assistant"],
+      "attributes": {
+        "department": ["Primary Care"]
+      }
+    },
+    {
+      "username": "frontdesk.wilson",
+      "enabled": true,
+      "email": "tom.wilson@coghealth.com",
+      "firstName": "Tom",
+      "lastName": "Wilson",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["front_desk"]
+    },
+    {
+      "username": "billing.garcia",
+      "enabled": true,
+      "email": "maria.garcia@coghealth.com",
+      "firstName": "Maria",
+      "lastName": "Garcia",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["billing"]
+    },
+    {
+      "username": "admin",
+      "enabled": true,
+      "email": "admin@coghealth.com",
+      "firstName": "System",
+      "lastName": "Administrator",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["admin"]
+    },
+    {
+      "username": "compliance.lee",
+      "enabled": true,
+      "email": "jennifer.lee@coghealth.com",
+      "firstName": "Jennifer",
+      "lastName": "Lee",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["compliance_officer"]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "coghealth-api",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "coghealth-api-secret-2024",
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "redirectUris": ["http://localhost:8080/*"],
+      "webOrigins": ["http://localhost:8080"]
+    },
+    {
+      "clientId": "coghealth-web",
+      "enabled": true,
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": [
+        "http://localhost:5173/*",
+        "http://localhost:3000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:5173",
+        "http://localhost:3000"
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "profile",
+        "roles",
+        "email"
+      ]
+    }
+  ],
+  "clientScopes": [
+    {
+      "name": "coghealth-scope",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true"
+      },
+      "protocolMappers": [
+        {
+          "name": "realm-roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "config": {
+            "claim.name": "roles",
+            "jsonType.label": "String",
+            "multivalued": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        },
+        {
+          "name": "npi",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "claim.name": "npi",
+            "user.attribute": "npi",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ]
+}
