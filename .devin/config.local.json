@@ -2,7 +2,16 @@
   "permissions": {
     "allow": [
       "Exec(ls)",
-      "Exec(sed)"
+      "Exec(sed)",
+      "Exec(grep)",
+      "Exec(/usr/bin/grep)",
+      "Exec(git)"
     ]
+  },
+  "mcpServers": {
+    "atlassian": {
+      "url": "https://mcp.atlassian.com/v1/mcp",
+      "transport": "http"
+    }
   }
 }
