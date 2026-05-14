@@ -169,8 +169,8 @@ export default function VitalsPage() {
           <table className="w-full text-[11px]">
             <thead className="sticky top-0">
               <tr className="bg-gradient-to-b from-[#f0f0f0] to-[#e0e0e0]">
-                <th className="text-left px-2 py-1 border border-gray-400 bg-gradient-to-b from-[#f8f8f8] to-[#e8e8e8] sticky left-0 z-10 min-w-[100px]">Vital Sign</th>
-                <th className="text-center px-2 py-1 border border-gray-400 bg-gradient-to-b from-[#f8f8f8] to-[#e8e8e8] min-w-[50px]">Trend</th>
+                <th className="text-left px-2 py-1 border border-gray-400 bg-gradient-to-b from-[#f8f8f8] to-[#e8e8e8] dark:from-[#2f3742] dark:to-[#232932] sticky left-0 z-10 min-w-[100px]">Vital Sign</th>
+                <th className="text-center px-2 py-1 border border-gray-400 bg-gradient-to-b from-[#f8f8f8] to-[#e8e8e8] dark:from-[#2f3742] dark:to-[#232932] min-w-[50px]">Trend</th>
                 {vitals.map((reading) => (
                   <th key={reading.id} className="text-center px-2 py-1 border border-gray-400 min-w-[80px]">
                     <div className="text-[10px] font-normal text-gray-600">{reading.timestamp.split(' ')[0]}</div>

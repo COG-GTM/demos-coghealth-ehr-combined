@@ -14,6 +14,7 @@ import {
   Check
 } from 'lucide-react';
 import { AlertDialog } from '../components/ui/Modal';
+import { useTheme, type ThemePreference } from '../hooks/useTheme';
 
 type SettingsTab = 'profile' | 'notifications' | 'security' | 'appearance' | 'practice';
 
@@ -55,6 +56,7 @@ const defaultAppearance = {
 };
 
 export default function SettingsPage() {
+  const { preference: themePreference, setPreference: setThemePreference } = useTheme();
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
   const [saved, setSaved] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['channels', 'alerts', 'security', 'hours']));
@@ -105,7 +107,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col ehr-desktop-bg">
       {/* Header */}
       <div className="ehr-header flex items-center justify-between">
         <span>System Settings</span>
@@ -121,7 +123,7 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Navigation */}
-        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: '#ece9d8' }}>
+        <div className="w-48 overflow-auto p-2 space-y-1 ehr-sidebar-bg">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -385,21 +387,28 @@ export default function SettingsPage() {
               <fieldset className="ehr-fieldset">
                 <legend>Theme</legend>
                 <div className="grid grid-cols-3 gap-2">
-                  {['light', 'dark', 'system'].map((theme) => (
-                    <button
-                      key={theme}
-                      onClick={() => setAppearance({ ...appearance, theme })}
-                      className={`p-2 border text-center text-[11px] ${
-                        appearance.theme === theme
-                          ? 'border-gray-600 bg-white'
-                          : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
-                      }`}
-                    >
-                      <Monitor className="w-4 h-4 mx-auto mb-1 text-gray-600" />
-                      <span className="capitalize">{theme}</span>
-                    </button>
-                  ))}
+                  {(['light', 'dark', 'system'] as ThemePreference[]).map((theme) => {
+                    const selected = themePreference === theme;
+                    return (
+                      <button
+                        key={theme}
+                        onClick={() => {
+                          setAppearance({ ...appearance, theme });
+                          setThemePreference(theme);
+                        }}
+                        className={`p-2 border-2 text-center text-[11px] ${
+                          selected
+                            ? 'ehr-button-primary'
+                            : 'ehr-button'
+                        }`}
+                      >
+                        <Monitor className={`w-4 h-4 mx-auto mb-1 ${selected ? 'text-white' : 'text-gray-600'}`} />
+                        <span className="capitalize">{theme}</span>
+                      </button>
+                    );
+                  })}
                 </div>
+                <p className="mt-2 text-[10px] text-gray-500">Applied immediately. Persists across sessions.</p>
               </fieldset>
 
               <fieldset className="ehr-fieldset">
