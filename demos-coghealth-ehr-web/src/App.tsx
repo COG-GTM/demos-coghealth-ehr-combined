@@ -17,6 +17,7 @@ import {
   Activity
 } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
+import ThemeToggle from './components/ui/ThemeToggle';
 import PatientSearchPage from './pages/PatientSearchPage';
 import PatientChartPage from './pages/PatientChartPage';
 import DashboardPage from './pages/DashboardPage';
@@ -151,12 +152,12 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
               />
             </div>
             {showSearchDropdown && searchResults.length > 0 && (
-              <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-400 shadow-lg z-50">
+              <div className="absolute top-full left-0 mt-1 w-64 bg-white dark:bg-[#2a2a3a] border border-gray-400 dark:border-gray-600 shadow-lg z-50">
                 {searchResults.map((patient) => (
                   <div
                     key={patient.id}
                     onClick={() => selectPatient(patient.id)}
-                    className="px-2 py-1.5 hover:bg-blue-100 cursor-pointer text-[11px] text-gray-800 border-b border-gray-200"
+                    className="px-2 py-1.5 hover:bg-blue-100 dark:hover:bg-[#3a3a5a] cursor-pointer text-[11px] text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-600"
                   >
                     <div className="font-semibold">{patient.name}</div>
                     <div className="text-gray-500 text-[10px]">{patient.mrn} • DOB: {patient.dob}</div>
@@ -165,7 +166,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
               </div>
             )}
             {showSearchDropdown && searchResults.length === 0 && globalSearch.length >= 2 && (
-              <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-400 shadow-lg z-50 p-2 text-[11px] text-gray-500">
+              <div className="absolute top-full left-0 mt-1 w-64 bg-white dark:bg-[#2a2a3a] border border-gray-400 dark:border-gray-600 shadow-lg z-50 p-2 text-[11px] text-gray-500 dark:text-gray-400">
                 No patients found
               </div>
             )}
@@ -185,6 +186,8 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
             <User className="w-3 h-3" />
             <span>Dr. Sarah Anderson</span>
           </div>
+          <ThemeToggle />
+          <span className="text-blue-300">|</span>
           <button onClick={onLogout} className="flex items-center space-x-1 hover:text-white text-blue-200">
             <LogOut className="w-3 h-3" />
             <span>Logout</span>
@@ -228,7 +231,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-300 bg-white">
+        <div className="md:hidden border-t border-gray-300 dark:border-gray-600 bg-white dark:bg-[#2a2a3a]">
           <div className="px-2 py-1 space-y-0.5">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -280,7 +283,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="h-screen flex flex-col" style={{ background: '#d4d0c8', fontFamily: 'Tahoma, sans-serif' }}>
+      <div className="h-screen flex flex-col bg-[#d4d0c8] dark:bg-[#1e1e2e]" style={{ fontFamily: 'Tahoma, sans-serif' }}>
         <Navigation 
           onSessionWarning={handleSessionWarning}
           onSessionExpired={handleSessionExpired}
@@ -301,7 +304,7 @@ function App() {
         </main>
 
         {/* Status Bar - Windows XP style */}
-        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
+        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] dark:from-[#2a2a3a] dark:to-[#1e1e2e] border-t border-gray-400 dark:border-gray-600 flex items-center justify-between px-2 text-[10px] text-gray-600 dark:text-gray-400">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
               <Shield className="w-3 h-3 text-green-600" />
