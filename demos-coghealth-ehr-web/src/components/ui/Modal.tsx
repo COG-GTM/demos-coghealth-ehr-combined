@@ -1,5 +1,6 @@
 import { type ReactNode, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { useThemeStore } from '../../stores/themeStore';
 
 interface ModalProps {
   isOpen: boolean;
@@ -139,7 +140,7 @@ export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: 
     warning: '#3a3010',
     error: '#4a1c1c',
   };
-  const isDark = document.documentElement.classList.contains('dark');
+  const isDark = useThemeStore(s => s.resolvedTheme === 'dark');
   const bgColors = isDark ? darkBg : lightBg;
   
   return (
