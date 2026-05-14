@@ -274,7 +274,7 @@ export default function SchedulePage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col ehr-page-bg">
       {/* Toolbar */}
       <div className="ehr-toolbar flex items-center justify-between">
         <div className="flex items-center space-x-1">
@@ -335,7 +335,7 @@ export default function SchedulePage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Appointment List */}
-        <div className="flex-1 overflow-auto bg-white border-r border-gray-500">
+        <div className="flex-1 overflow-auto ehr-content-bg border-r border-[var(--ehr-border)]">
           <table className="w-full text-[11px]">
             <thead className="sticky top-0">
               <tr>
@@ -444,7 +444,7 @@ export default function SchedulePage() {
         </div>
 
         {/* Detail Panel */}
-        <div className="w-80 flex flex-col overflow-hidden" style={{ background: '#ece9d8' }}>
+        <div className="w-80 flex flex-col overflow-hidden ehr-sidebar-bg">
           {selectedAppointment ? (
             <>
               {/* Patient Header */}
@@ -543,7 +543,7 @@ export default function SchedulePage() {
                       </div>
                     </div>
                     {expandedPanels.vitals && (
-                      <div className="bg-white p-2">
+                      <div className="ehr-content-bg p-2">
                         <div className="grid grid-cols-5 gap-1 text-center text-[10px]">
                           <div className="p-1 bg-gray-100 border border-gray-300">
                             <div className="text-gray-500">BP</div>
@@ -588,7 +588,7 @@ export default function SchedulePage() {
                       </div>
                     </div>
                     {expandedPanels.prep && (
-                      <div className="bg-white p-2 text-[10px]">
+                      <div className="ehr-content-bg p-2 text-[10px]">
                         {selectedAppointment.prepNotes.map((note, i) => (
                           <div key={i} className="flex items-start mb-1">
                             <span className="mr-1.5">•</span>

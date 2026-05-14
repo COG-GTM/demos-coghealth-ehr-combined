@@ -118,7 +118,7 @@ export default function PatientChartPage() {
   ];
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col ehr-page-bg">
       <PatientBanner patient={patient} allergies={allergies} />
       
       {/* Toolbar */}
@@ -187,7 +187,7 @@ export default function PatientChartPage() {
                   {expandedPanels.problems ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
                 </div>
                 {expandedPanels.problems && (
-                  <div className="bg-white">
+                  <div className="ehr-content-bg">
                     <table className="w-full text-[11px]">
                       <thead>
                         <tr>
@@ -232,7 +232,7 @@ export default function PatientChartPage() {
                   {expandedPanels.meds ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
                 </div>
                 {expandedPanels.meds && (
-                  <div className="bg-white">
+                  <div className="ehr-content-bg">
                     <table className="w-full text-[11px]">
                       <thead>
                         <tr>
@@ -268,7 +268,7 @@ export default function PatientChartPage() {
                   {expandedPanels.encounters ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
                 </div>
                 {expandedPanels.encounters && (
-                  <div className="bg-white">
+                  <div className="ehr-content-bg">
                     <table className="w-full text-[11px]">
                       <thead>
                         <tr>
@@ -339,7 +339,7 @@ export default function PatientChartPage() {
                   {expandedPanels.vitals ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
                 </div>
                 {expandedPanels.vitals && (
-                  <div className="bg-white p-2">
+                  <div className="ehr-content-bg p-2">
                     <div className="grid grid-cols-3 gap-1 text-center text-[10px]">
                       <div className="p-1.5 bg-gray-100 border border-gray-300">
                         <div className="text-gray-500">BP</div>
@@ -383,7 +383,7 @@ export default function PatientChartPage() {
                   {expandedPanels.labs ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
                 </div>
                 {expandedPanels.labs && (
-                  <div className="bg-white">
+                  <div className="ehr-content-bg">
                     {labs.map((lab, idx) => (
                       <div key={lab.id} className={`flex items-center justify-between px-2 py-1 text-[10px] ${idx % 2 === 1 ? 'bg-gray-50' : ''}`}>
                         <span>{lab.name}</span>
@@ -424,7 +424,7 @@ export default function PatientChartPage() {
         )}
 
         {activeTab !== 'summary' && (
-          <div className="bg-white border border-gray-400 p-4 text-center text-gray-500">
+          <div className="ehr-content-bg border border-[var(--ehr-border)] p-4 text-center text-[var(--ehr-text-secondary)]">
             <p className="text-[11px]">{tabs.find(t => t.id === activeTab)?.label} view - Coming soon</p>
           </div>
         )}

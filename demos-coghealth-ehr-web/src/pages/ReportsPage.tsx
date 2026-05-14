@@ -87,7 +87,7 @@ export default function ReportsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col ehr-page-bg">
       {/* Toolbar */}
       <div className="ehr-toolbar flex items-center justify-between">
         <div className="flex items-center space-x-1">
@@ -121,7 +121,7 @@ export default function ReportsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Panel - Report Summary */}
-        <div className="w-56 overflow-auto p-2 space-y-2" style={{ background: '#ece9d8' }}>
+        <div className="w-56 overflow-auto p-2 space-y-2 ehr-sidebar-bg">
           <fieldset className="ehr-fieldset">
             <legend>Today's Summary</legend>
             <table className="w-full text-[10px]">
@@ -192,7 +192,7 @@ export default function ReportsPage() {
         </div>
 
         {/* Right Panel - Reports */}
-        <div className="flex-1 overflow-auto bg-white border-l border-gray-500">
+        <div className="flex-1 overflow-auto ehr-content-bg border-l border-[var(--ehr-border)]">
           {Object.entries(reportsByCategory).map(([category, reports]) => {
             const config = categoryConfig[category as keyof typeof categoryConfig];
             return (

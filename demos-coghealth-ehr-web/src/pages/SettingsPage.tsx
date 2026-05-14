@@ -14,6 +14,7 @@ import {
   Check
 } from 'lucide-react';
 import { AlertDialog } from '../components/ui/Modal';
+import { useThemeStore } from '../stores/themeStore';
 
 type SettingsTab = 'profile' | 'notifications' | 'security' | 'appearance' | 'practice';
 
@@ -73,6 +74,7 @@ export default function SettingsPage() {
   const [profile, setProfile] = useState<UserProfile>(defaultProfile);
   const [notifications, setNotifications] = useState(defaultNotifications);
   const [appearance, setAppearance] = useState(defaultAppearance);
+  const { theme: currentTheme, setTheme } = useThemeStore();
 
   const [initialized, setInitialized] = useState(false);
   if (!initialized) {
@@ -87,6 +89,7 @@ export default function SettingsPage() {
         console.error('Failed to load settings:', e);
       }
     }
+    appearance.theme = currentTheme;
     setInitialized(true);
   }
 
@@ -105,7 +108,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col ehr-page-bg">
       {/* Header */}
       <div className="ehr-header flex items-center justify-between">
         <span>System Settings</span>
@@ -121,7 +124,7 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Navigation */}
-        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: '#ece9d8' }}>
+        <div className="w-48 overflow-auto p-2 space-y-1 ehr-sidebar-bg">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -130,8 +133,8 @@ export default function SettingsPage() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`w-full flex items-center px-2 py-1.5 text-[11px] ${
                   activeTab === tab.id
-                    ? 'bg-white border border-gray-400 font-semibold'
-                    : 'hover:bg-white/50'
+                    ? 'ehr-content-bg border border-[var(--ehr-border)] font-semibold'
+                    : 'hover:bg-[var(--ehr-content-bg)]/50'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5 mr-2" />
@@ -142,7 +145,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Right Content */}
-        <div className="flex-1 overflow-auto bg-white border-l border-gray-500 p-3">
+        <div className="flex-1 overflow-auto ehr-content-bg border-l border-[var(--ehr-border)] p-3">
           {activeTab === 'profile' && (
             <div className="space-y-3">
               <fieldset className="ehr-fieldset">
@@ -235,7 +238,7 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 {expandedSections.has('channels') && (
-                  <div className="bg-white p-2 space-y-2">
+                  <div className="ehr-content-bg p-2 space-y-2">
                     <label className="flex items-center justify-between p-2 bg-gray-50 border border-gray-300 cursor-pointer hover:bg-gray-100">
                       <div className="flex items-center">
                         <Mail className="w-4 h-4 text-gray-500 mr-2" />
@@ -324,7 +327,7 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 {expandedSections.has('security') && (
-                  <div className="bg-white p-2 space-y-2">
+                  <div className="ehr-content-bg p-2 space-y-2">
                     <div className="flex items-center justify-between p-2 bg-gray-50 border border-gray-300">
                       <div className="flex items-center">
                         <Key className="w-4 h-4 text-gray-500 mr-2" />
@@ -388,14 +391,17 @@ export default function SettingsPage() {
                   {['light', 'dark', 'system'].map((theme) => (
                     <button
                       key={theme}
-                      onClick={() => setAppearance({ ...appearance, theme })}
+                      onClick={() => {
+                        setAppearance({ ...appearance, theme });
+                        setTheme(theme as 'light' | 'dark' | 'system');
+                      }}
                       className={`p-2 border text-center text-[11px] ${
                         appearance.theme === theme
-                          ? 'border-gray-600 bg-white'
-                          : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
+                          ? 'border-[var(--ehr-border)] ehr-content-bg font-semibold'
+                          : 'border-[var(--ehr-border-light)] bg-[var(--ehr-surface)] hover:bg-[var(--ehr-surface-alt)]'
                       }`}
                     >
-                      <Monitor className="w-4 h-4 mx-auto mb-1 text-gray-600" />
+                      <Monitor className="w-4 h-4 mx-auto mb-1" />
                       <span className="capitalize">{theme}</span>
                     </button>
                   ))}
@@ -479,7 +485,7 @@ export default function SettingsPage() {
                   </div>
                 </div>
                 {expandedSections.has('hours') && (
-                  <div className="bg-white p-2 space-y-1.5">
+                  <div className="ehr-content-bg p-2 space-y-1.5">
                     {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map((day) => (
                       <div key={day} className="flex items-center space-x-2 text-[11px]">
                         <span className="w-20 text-gray-600">{day}</span>

@@ -165,7 +165,7 @@ export default function VitalsPage() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-auto bg-white border border-gray-400">
+        <div className="flex-1 overflow-auto ehr-content-bg border border-[var(--ehr-border)]">
           <table className="w-full text-[11px]">
             <thead className="sticky top-0">
               <tr className="bg-gradient-to-b from-[#f0f0f0] to-[#e0e0e0]">

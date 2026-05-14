@@ -315,7 +315,7 @@ export default function MedicationsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col ehr-page-bg">
       {/* Toolbar */}
       <div className="ehr-toolbar flex items-center justify-between">
         <div className="flex items-center space-x-1">
@@ -389,7 +389,7 @@ export default function MedicationsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Medication List */}
-        <div className="flex-1 overflow-auto bg-white border-r border-gray-500">
+        <div className="flex-1 overflow-auto ehr-content-bg border-r border-[var(--ehr-border)]">
           {viewMode === 'by-patient' ? (
             <div>
               {Object.entries(ordersByPatient).map(([mrn, { patient, orders }]) => (
@@ -523,7 +523,7 @@ export default function MedicationsPage() {
         </div>
 
         {/* Detail Panel */}
-        <div className="w-80 flex flex-col overflow-hidden" style={{ background: '#ece9d8' }}>
+        <div className="w-80 flex flex-col overflow-hidden ehr-sidebar-bg">
           {selectedOrder ? (
             <>
               {/* Medication Header */}
@@ -585,7 +585,7 @@ export default function MedicationsPage() {
                     </div>
                   </div>
                   {expandedPanels.details && (
-                    <div className="bg-white p-2">
+                    <div className="ehr-content-bg p-2">
                       <div className="p-1.5 bg-gray-100 border border-gray-300 mb-2">
                         <div className="text-[9px] text-gray-500 uppercase">Sig</div>
                         <div className="text-[11px]">{selectedOrder.sig}</div>
@@ -625,7 +625,7 @@ export default function MedicationsPage() {
                     </div>
                   </div>
                   {expandedPanels.pharmacy && (
-                    <div className="bg-white p-2 text-[10px]">
+                    <div className="ehr-content-bg p-2 text-[10px]">
                       <div className="font-semibold">{selectedOrder.pharmacy}</div>
                       <div className="flex items-center text-gray-600"><Phone className="w-3 h-3 mr-1" /> {selectedOrder.pharmacyPhone}</div>
                       <div className="text-gray-400">NPI: {selectedOrder.pharmacyNpi}</div>

@@ -222,7 +222,7 @@ export default function LabResultsPage() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-auto bg-white border border-gray-400">
+        <div className="flex-1 overflow-auto ehr-content-bg border border-[var(--ehr-border)]">
           {filteredPanels.length === 0 ? (
             <div className="p-4 text-center text-gray-500 text-[11px]">
               No lab results match the selected filters

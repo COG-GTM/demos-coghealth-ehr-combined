@@ -267,7 +267,7 @@ export default function PatientSearchPage() {
     (filters.hasBalance !== null ? 1 : 0) + (filters.hasOpenEncounters !== null ? 1 : 0) + (filters.hasAlerts !== null ? 1 : 0);
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col ehr-page-bg">
       {/* Toolbar */}
       <div className="ehr-toolbar flex items-center justify-between">
         <div className="flex items-center space-x-1">
@@ -304,7 +304,7 @@ export default function PatientSearchPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Filter Panel */}
-        <div className="w-52 flex flex-col border-r border-gray-500" style={{ background: '#ece9d8' }}>
+        <div className="w-52 flex flex-col border-r border-[var(--ehr-border)] ehr-sidebar-bg">
           <div className="ehr-header text-xs flex items-center justify-between">
             <span>Filter Patients</span>
             {activeFilterCount > 0 && (
@@ -526,7 +526,7 @@ export default function PatientSearchPage() {
             <span>Patient List - {searchResults.length} record(s) found</span>
             <span className="text-gray-500">Double-click to open chart</span>
           </div>
-          <div className="flex-1 overflow-auto bg-white relative">
+          <div className="flex-1 overflow-auto ehr-content-bg relative">
             <LoadingOverlay isLoading={loading} text="Loading patients..." />
             <table className="w-full text-[11px]">
               <thead className="sticky top-0">
@@ -632,7 +632,7 @@ export default function PatientSearchPage() {
 
         {/* Patient Detail Panel */}
         {selectedPatient && (
-          <div className="w-72 flex flex-col border-l border-gray-500" style={{ background: '#f5f5f5' }}>
+          <div className="w-72 flex flex-col border-l border-[var(--ehr-border)]" style={{ background: 'var(--ehr-surface)' }}>
             <div className="ehr-header text-xs flex items-center justify-between">
               <span>Patient Details</span>
               <button onClick={() => setSelectedPatient(null)} className="text-white/80 hover:text-white">
@@ -641,7 +641,7 @@ export default function PatientSearchPage() {
             </div>
             <div className="flex-1 overflow-auto">
               {/* Patient Header */}
-              <div className="p-2 border-b border-gray-400" style={{ background: '#e8e8e8' }}>
+              <div className="p-2 border-b border-[var(--ehr-border)]" style={{ background: 'var(--ehr-subheader-from)' }}>
                 <div className="flex items-center space-x-2">
                   <div className="w-10 h-10 flex items-center justify-center border border-gray-500" style={{ background: '#6699cc' }}>
                     <User className="w-5 h-5 text-white" />
