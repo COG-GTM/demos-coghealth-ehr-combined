@@ -36,14 +36,14 @@ export function Modal({ isOpen, onClose, title, children, width = 'md', footer }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div className="absolute inset-0" style={{ background: 'var(--ehr-overlay-bg)' }} onClick={onClose} />
       <div className={`relative ${widthClasses[width]} max-h-[90vh] flex flex-col`} style={{ fontFamily: 'Tahoma, sans-serif' }}>
         {/* Window frame */}
-        <div className="bg-white border-2 border-gray-400 shadow-lg flex flex-col" style={{ boxShadow: '2px 2px 8px rgba(0,0,0,0.3)' }}>
+        <div className="border-2 shadow-lg flex flex-col" style={{ background: 'var(--ehr-surface-white)', borderColor: 'var(--ehr-border)', boxShadow: '2px 2px 8px rgba(0,0,0,0.3)' }}>
           {/* Title bar */}
           <div 
             className="flex items-center justify-between px-2 py-1"
-            style={{ background: 'linear-gradient(to bottom, #6699cc 0%, #336699 100%)' }}
+            style={{ background: `linear-gradient(to bottom, var(--ehr-header-from) 0%, var(--ehr-header-to) 100%)` }}
           >
             <span className="text-white font-semibold text-[11px]">{title}</span>
             <button 
@@ -55,13 +55,13 @@ export function Modal({ isOpen, onClose, title, children, width = 'md', footer }
           </div>
           
           {/* Content */}
-          <div className="flex-1 overflow-auto p-3 bg-[#ece9d8]">
+          <div className="flex-1 overflow-auto p-3" style={{ background: 'var(--ehr-modal-bg)' }}>
             {children}
           </div>
           
           {/* Footer */}
           {footer && (
-            <div className="px-3 py-2 bg-[#ece9d8] border-t border-gray-400 flex justify-end space-x-2">
+            <div className="px-3 py-2 border-t flex justify-end space-x-2" style={{ background: 'var(--ehr-modal-bg)', borderColor: 'var(--ehr-border)' }}>
               {footer}
             </div>
           )}

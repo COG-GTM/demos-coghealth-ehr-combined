@@ -17,6 +17,7 @@ import {
   Activity
 } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
+import { useThemeStore, resolveTheme } from './stores/themeStore';
 import PatientSearchPage from './pages/PatientSearchPage';
 import PatientChartPage from './pages/PatientChartPage';
 import DashboardPage from './pages/DashboardPage';
@@ -260,6 +261,20 @@ function App() {
   const [showSessionWarning, setShowSessionWarning] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [showSessionExpired, setShowSessionExpired] = useState(false);
+  const theme = useThemeStore((s) => s.theme);
+
+  useEffect(() => {
+    const apply = () => {
+      const resolved = resolveTheme(theme);
+      document.documentElement.classList.toggle('dark', resolved === 'dark');
+    };
+    apply();
+    if (theme === 'system') {
+      const mq = window.matchMedia('(prefers-color-scheme: dark)');
+      mq.addEventListener('change', apply);
+      return () => mq.removeEventListener('change', apply);
+    }
+  }, [theme]);
 
   const handleSessionWarning = useCallback(() => {
     setShowSessionWarning(true);
@@ -280,7 +295,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="h-screen flex flex-col" style={{ background: '#d4d0c8', fontFamily: 'Tahoma, sans-serif' }}>
+      <div className="h-screen flex flex-col" style={{ background: 'var(--ehr-body-bg)', fontFamily: 'Tahoma, sans-serif' }}>
         <Navigation 
           onSessionWarning={handleSessionWarning}
           onSessionExpired={handleSessionExpired}
@@ -301,7 +316,7 @@ function App() {
         </main>
 
         {/* Status Bar - Windows XP style */}
-        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
+        <div className="ehr-status-bar flex items-center justify-between px-2 text-[10px]">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
               <Shield className="w-3 h-3 text-green-600" />

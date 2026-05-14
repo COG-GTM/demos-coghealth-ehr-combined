@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useThemeStore } from '../stores/themeStore';
 import { 
   User, 
   Bell, 
@@ -73,6 +74,8 @@ export default function SettingsPage() {
   const [profile, setProfile] = useState<UserProfile>(defaultProfile);
   const [notifications, setNotifications] = useState(defaultNotifications);
   const [appearance, setAppearance] = useState(defaultAppearance);
+  const globalTheme = useThemeStore((s) => s.theme);
+  const setGlobalTheme = useThemeStore((s) => s.setTheme);
 
   const [initialized, setInitialized] = useState(false);
   if (!initialized) {
@@ -105,7 +108,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col" style={{ background: 'var(--ehr-body-bg)' }}>
       {/* Header */}
       <div className="ehr-header flex items-center justify-between">
         <span>System Settings</span>
@@ -121,7 +124,7 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Navigation */}
-        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: '#ece9d8' }}>
+        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: 'var(--ehr-surface-sidebar)' }}>
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -385,12 +388,15 @@ export default function SettingsPage() {
               <fieldset className="ehr-fieldset">
                 <legend>Theme</legend>
                 <div className="grid grid-cols-3 gap-2">
-                  {['light', 'dark', 'system'].map((theme) => (
+                  {(['light', 'dark', 'system'] as const).map((theme) => (
                     <button
                       key={theme}
-                      onClick={() => setAppearance({ ...appearance, theme })}
+                      onClick={() => {
+                        setAppearance({ ...appearance, theme });
+                        setGlobalTheme(theme);
+                      }}
                       className={`p-2 border text-center text-[11px] ${
-                        appearance.theme === theme
+                        globalTheme === theme
                           ? 'border-gray-600 bg-white'
                           : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
                       }`}
