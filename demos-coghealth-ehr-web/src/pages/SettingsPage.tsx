@@ -14,6 +14,7 @@ import {
   Check
 } from 'lucide-react';
 import { AlertDialog } from '../components/ui/Modal';
+import { useThemeStore } from '../stores/themeStore';
 
 type SettingsTab = 'profile' | 'notifications' | 'security' | 'appearance' | 'practice';
 
@@ -70,9 +71,10 @@ export default function SettingsPage() {
     setExpandedSections(newExpanded);
   };
 
+  const themeStore = useThemeStore();
   const [profile, setProfile] = useState<UserProfile>(defaultProfile);
   const [notifications, setNotifications] = useState(defaultNotifications);
-  const [appearance, setAppearance] = useState(defaultAppearance);
+  const [appearance, setAppearance] = useState({ ...defaultAppearance, theme: themeStore.theme });
 
   const [initialized, setInitialized] = useState(false);
   if (!initialized) {
@@ -105,7 +107,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col bg-[#d4d0c8] dark:bg-[#1a1a2e]">
       {/* Header */}
       <div className="ehr-header flex items-center justify-between">
         <span>System Settings</span>
@@ -121,7 +123,7 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Navigation */}
-        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: '#ece9d8' }}>
+        <div className="w-48 overflow-auto p-2 space-y-1 bg-[#ece9d8] dark:bg-[#1e1e32]">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -142,7 +144,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Right Content */}
-        <div className="flex-1 overflow-auto bg-white border-l border-gray-500 p-3">
+        <div className="flex-1 overflow-auto bg-white dark:bg-[#12121f] border-l border-gray-500 dark:border-[#3a3a5c] p-3 dark:text-[#e0e0e0]">
           {activeTab === 'profile' && (
             <div className="space-y-3">
               <fieldset className="ehr-fieldset">
@@ -388,14 +390,18 @@ export default function SettingsPage() {
                   {['light', 'dark', 'system'].map((theme) => (
                     <button
                       key={theme}
-                      onClick={() => setAppearance({ ...appearance, theme })}
+                      onClick={() => {
+                        const t = theme as 'light' | 'dark' | 'system';
+                        setAppearance({ ...appearance, theme: t });
+                        themeStore.setTheme(t);
+                      }}
                       className={`p-2 border text-center text-[11px] ${
                         appearance.theme === theme
-                          ? 'border-gray-600 bg-white'
-                          : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
+                          ? 'border-gray-600 bg-white dark:border-gray-300 dark:bg-gray-700'
+                          : 'border-gray-400 bg-gray-100 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:hover:bg-gray-700'
                       }`}
                     >
-                      <Monitor className="w-4 h-4 mx-auto mb-1 text-gray-600" />
+                      <Monitor className="w-4 h-4 mx-auto mb-1 text-gray-600 dark:text-gray-300" />
                       <span className="capitalize">{theme}</span>
                     </button>
                   ))}

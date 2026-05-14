@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Tahoma&display=swap');
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary-50: #e8f4fc;
   --color-primary-100: #d1e9f9;
@@ -235,4 +237,184 @@ td {
 
 .ehr-splitter:hover {
   background: #b0b0b0;
+}
+
+/* ===== Dark Mode ===== */
+
+.dark body,
+html.dark body {
+  background-color: #1a1a2e;
+  color: #e0e0e0;
+}
+
+.dark .ehr-panel {
+  background: #1e1e32;
+  border-color: #3a3a5c;
+  box-shadow: inset 1px 1px 0 #2a2a44, 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.dark .ehr-button {
+  background: linear-gradient(to bottom, #2a2a44 0%, #1e1e32 100%);
+  border-color: #4a4a6a;
+  color: #e0e0e0;
+  box-shadow: 1px 1px 0 #3a3a5c inset, -1px -1px 0 #111 inset;
+}
+
+.dark .ehr-button:hover {
+  background: linear-gradient(to bottom, #3a3a5c 0%, #2a2a44 100%);
+}
+
+.dark .ehr-button:active {
+  background: linear-gradient(to bottom, #1a1a2e 0%, #2a2a44 100%);
+}
+
+.dark .ehr-button-primary {
+  background: linear-gradient(to bottom, #2a6ab5 0%, #1a4a8a 100%);
+  border-color: #0f3060;
+  color: white;
+}
+
+.dark .ehr-button-primary:hover {
+  background: linear-gradient(to bottom, #3a7ac5 0%, #2a5a9a 100%);
+}
+
+.dark .ehr-input {
+  border-color: #4a4a6a;
+  background: #12121f;
+  color: #e0e0e0;
+}
+
+.dark .ehr-input:focus {
+  border-color: #5a9ad5;
+  box-shadow: 0 0 2px rgba(90, 154, 213, 0.5);
+}
+
+.dark .ehr-fieldset {
+  border-color: #3a3a5c;
+  background: #1a1a2e;
+}
+
+.dark .ehr-fieldset legend {
+  color: #c0c0d0;
+}
+
+.dark .ehr-header {
+  background: linear-gradient(to bottom, #2a4a6e 0%, #1a3050 100%);
+  color: #e0e8f0;
+  border-bottom-color: #0f2040;
+}
+
+.dark .ehr-subheader {
+  background: linear-gradient(to bottom, #2a2a44 0%, #1e1e32 100%);
+  color: #c0c0d0;
+  border-bottom-color: #3a3a5c;
+}
+
+.dark .ehr-tree-item:hover {
+  background: #2a3a50;
+}
+
+.dark .ehr-tree-item.selected {
+  background: #2a5a9a;
+  color: white;
+}
+
+.dark .ehr-status-bar {
+  background: #1e1e32;
+  border-top-color: #3a3a5c;
+  color: #a0a0b0;
+}
+
+.dark .ehr-tab {
+  background: linear-gradient(to bottom, #2a2a44 0%, #1e1e32 100%);
+  border-color: #4a4a6a;
+  color: #c0c0d0;
+}
+
+.dark .ehr-tab.active {
+  background: #1a1a2e;
+  border-bottom-color: #1a1a2e;
+}
+
+.dark .ehr-tab-content {
+  border-color: #4a4a6a;
+  background: #1a1a2e;
+}
+
+.dark .ehr-grid-row:nth-child(even) {
+  background: #1e1e32;
+}
+
+.dark .ehr-grid-row:hover {
+  background: #2a3a50;
+}
+
+.dark .ehr-grid-row.selected {
+  background: #2a5a9a;
+  color: white;
+}
+
+.dark .ehr-alert-critical {
+  background: #3a1a1a;
+  border-color: #cc3333;
+  color: #ff9999;
+}
+
+.dark .ehr-alert-warning {
+  background: #3a3010;
+  border-color: #cc9933;
+  color: #ffd966;
+}
+
+.dark .ehr-alert-info {
+  background: #1a2a3a;
+  border-color: #3399cc;
+  color: #99ccff;
+}
+
+.dark .ehr-toolbar {
+  background: linear-gradient(to bottom, #22223a 0%, #1a1a2e 100%);
+  border-bottom-color: #3a3a5c;
+}
+
+.dark .ehr-toolbar-button {
+  color: #c0c0d0;
+}
+
+.dark .ehr-toolbar-button:hover {
+  background: #2a3a50;
+  border-color: #4a4a6a;
+}
+
+.dark .ehr-toolbar-button-active {
+  background: linear-gradient(to bottom, #2a2a44 0%, #1e1e32 100%);
+  border-color: #4a4a6a;
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.dark .ehr-splitter {
+  background: #2a2a44;
+}
+
+.dark .ehr-splitter:hover {
+  background: #4a4a6a;
+}
+
+.dark .ehr-label {
+  color: #c0c0d0;
+}
+
+.dark th {
+  background: linear-gradient(to bottom, #2a2a44 0%, #1e1e32 100%);
+  border-color: #4a4a6a;
+  color: #c0c0d0;
+}
+
+.dark td {
+  border-color: #3a3a5c;
+  color: #e0e0e0;
+}
+
+.dark table {
+  color: #e0e0e0;
 }

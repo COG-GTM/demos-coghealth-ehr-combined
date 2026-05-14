@@ -17,6 +17,7 @@ import {
   Activity
 } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
+import { useThemeStore, applyThemeToDOM } from './stores/themeStore';
 import PatientSearchPage from './pages/PatientSearchPage';
 import PatientChartPage from './pages/PatientChartPage';
 import DashboardPage from './pages/DashboardPage';
@@ -151,21 +152,21 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
               />
             </div>
             {showSearchDropdown && searchResults.length > 0 && (
-              <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-400 shadow-lg z-50">
+              <div className="absolute top-full left-0 mt-1 w-64 bg-white dark:bg-[#1e1e32] border border-gray-400 dark:border-[#4a4a6a] shadow-lg z-50">
                 {searchResults.map((patient) => (
                   <div
                     key={patient.id}
                     onClick={() => selectPatient(patient.id)}
-                    className="px-2 py-1.5 hover:bg-blue-100 cursor-pointer text-[11px] text-gray-800 border-b border-gray-200"
+                    className="px-2 py-1.5 hover:bg-blue-100 dark:hover:bg-[#2a3a50] cursor-pointer text-[11px] text-gray-800 dark:text-[#e0e0e0] border-b border-gray-200 dark:border-[#3a3a5c]"
                   >
                     <div className="font-semibold">{patient.name}</div>
-                    <div className="text-gray-500 text-[10px]">{patient.mrn} • DOB: {patient.dob}</div>
+                    <div className="text-gray-500 dark:text-[#a0a0b0] text-[10px]">{patient.mrn} • DOB: {patient.dob}</div>
                   </div>
                 ))}
               </div>
             )}
             {showSearchDropdown && searchResults.length === 0 && globalSearch.length >= 2 && (
-              <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-400 shadow-lg z-50 p-2 text-[11px] text-gray-500">
+              <div className="absolute top-full left-0 mt-1 w-64 bg-white dark:bg-[#1e1e32] border border-gray-400 dark:border-[#4a4a6a] shadow-lg z-50 p-2 text-[11px] text-gray-500 dark:text-[#a0a0b0]">
                 No patients found
               </div>
             )}
@@ -228,7 +229,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-300 bg-white">
+        <div className="md:hidden border-t border-gray-300 dark:border-[#3a3a5c] bg-white dark:bg-[#1a1a2e]">
           <div className="px-2 py-1 space-y-0.5">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -257,9 +258,18 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
 }
 
 function App() {
+  const theme = useThemeStore((s) => s.theme);
   const [showSessionWarning, setShowSessionWarning] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [showSessionExpired, setShowSessionExpired] = useState(false);
+
+  useEffect(() => {
+    applyThemeToDOM(theme);
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = () => { if (theme === 'system') applyThemeToDOM(theme); };
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, [theme]);
 
   const handleSessionWarning = useCallback(() => {
     setShowSessionWarning(true);
@@ -280,7 +290,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="h-screen flex flex-col" style={{ background: '#d4d0c8', fontFamily: 'Tahoma, sans-serif' }}>
+      <div className="h-screen flex flex-col bg-[#d4d0c8] dark:bg-[#1a1a2e] dark:text-[#e0e0e0]" style={{ fontFamily: 'Tahoma, sans-serif' }}>
         <Navigation 
           onSessionWarning={handleSessionWarning}
           onSessionExpired={handleSessionExpired}
@@ -301,7 +311,7 @@ function App() {
         </main>
 
         {/* Status Bar - Windows XP style */}
-        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
+        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] dark:from-[#1e1e32] dark:to-[#1a1a2e] border-t border-gray-400 dark:border-[#3a3a5c] flex items-center justify-between px-2 text-[10px] text-gray-600 dark:text-[#a0a0b0]">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
               <Shield className="w-3 h-3 text-green-600" />
