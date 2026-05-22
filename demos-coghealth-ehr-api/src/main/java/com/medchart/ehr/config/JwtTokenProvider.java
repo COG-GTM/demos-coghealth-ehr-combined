@@ -8,10 +8,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenProvider {
@@ -23,14 +28,22 @@ public class JwtTokenProvider {
     private int jwtExpirationInMs;
 
     private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        try {
+            byte[] key = MessageDigest.getInstance("SHA-512").digest(jwtSecret.getBytes(StandardCharsets.UTF_8));
+            return Keys.hmacShaKeyFor(key);
+        } catch (NoSuchAlgorithmException ex) {
+            throw new IllegalStateException("SHA-512 algorithm is not available", ex);
+        }
     }
 
     public String generateToken(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
         
         Map<String, Object> claims = new HashMap<>();
-        claims.put("roles", userPrincipal.getAuthorities());
+        List<String> roles = userPrincipal.getAuthorities().stream()
+                .map(authority -> authority.getAuthority())
+                .collect(Collectors.toList());
+        claims.put("roles", roles);
         
         return createToken(claims, userPrincipal.getUsername());
     }
@@ -38,6 +51,10 @@ public class JwtTokenProvider {
     public String generateTokenFromUsername(String username) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, username);
+    }
+
+    public long getJwtExpirationInMs() {
+        return jwtExpirationInMs;
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
