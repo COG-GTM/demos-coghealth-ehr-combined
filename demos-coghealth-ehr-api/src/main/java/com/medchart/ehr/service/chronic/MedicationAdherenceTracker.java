@@ -88,6 +88,8 @@ public class MedicationAdherenceTracker {
     /**
      * Process a medication fill submitted via REST (from MedicationFillRequest).
      */
+    @AuditAccess(action = AuditAction.CREATE, resourceType = "MedicationAdherence",
+                 description = "Process medication fill")
     public void processMedicationFill(Long patientId, Long medicationOrderId,
                                       LocalDate fillDate, Integer daysSupply,
                                       String ndc, String pharmacyNpi,
