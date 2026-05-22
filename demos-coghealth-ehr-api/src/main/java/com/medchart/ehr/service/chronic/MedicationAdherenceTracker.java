@@ -86,6 +86,26 @@ public class MedicationAdherenceTracker {
     }
 
     /**
+     * Process a medication fill submitted via REST (from MedicationFillRequest).
+     */
+    public void processMedicationFill(Long patientId, Long medicationOrderId,
+                                      LocalDate fillDate, Integer daysSupply,
+                                      String ndc, String pharmacyNpi,
+                                      String pharmacyName, String rxNumber,
+                                      String fillSource) {
+        log.info("Processing medication fill for patient {} medication {} on {}",
+                patientId, medicationOrderId, fillDate);
+
+        // TODO: Implement fill processing
+        // 1. Record fill in MedicationFill repository
+        // 2. Update adherence tracking
+        // 3. Recalculate PDC
+        // 4. Check if alert needed
+
+        throw new UnsupportedOperationException("Not yet implemented - Devin task");
+    }
+
+    /**
      * Process pharmacy fill notification (from NCPDP integration).
      */
     public void processPharmacyFill(String patientMrn, String ndc, LocalDate fillDate,
