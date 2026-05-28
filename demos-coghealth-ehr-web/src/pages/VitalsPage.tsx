@@ -200,7 +200,7 @@ export default function VitalsPage() {
                     return (
                       <td
                         key={reading.id}
-                        className="px-2 py-1 border border-gray-300 text-center cursor-pointer"
+                        className={`px-2 py-1 border border-gray-300 text-center cursor-pointer ${!getStatusStyle(status).background ? 'hover:bg-gray-100' : ''}`}
                         style={getStatusStyle(status).background
                           ? getStatusStyle(status)
                           : undefined
