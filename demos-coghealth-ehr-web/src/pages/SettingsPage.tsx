@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useThemeStore } from '../stores/themeStore';
 import { 
   User, 
   Bell, 
@@ -55,6 +56,7 @@ const defaultAppearance = {
 };
 
 export default function SettingsPage() {
+  const themeStore = useThemeStore();
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
   const [saved, setSaved] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['channels', 'alerts', 'security', 'hours']));
@@ -105,7 +107,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col ehr-page-bg">
       {/* Header */}
       <div className="ehr-header flex items-center justify-between">
         <span>System Settings</span>
@@ -121,7 +123,7 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Navigation */}
-        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: '#ece9d8' }}>
+        <div className="w-48 overflow-auto p-2 space-y-1 ehr-sidebar-bg">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -142,7 +144,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Right Content */}
-        <div className="flex-1 overflow-auto bg-white border-l border-gray-500 p-3">
+        <div className="flex-1 overflow-auto border-l p-3 ehr-content-bg" style={{ borderColor: 'var(--ehr-border)' }}>
           {activeTab === 'profile' && (
             <div className="space-y-3">
               <fieldset className="ehr-fieldset">
@@ -385,17 +387,24 @@ export default function SettingsPage() {
               <fieldset className="ehr-fieldset">
                 <legend>Theme</legend>
                 <div className="grid grid-cols-3 gap-2">
-                  {['light', 'dark', 'system'].map((theme) => (
+                  {(['light', 'dark', 'system'] as const).map((theme) => (
                     <button
                       key={theme}
-                      onClick={() => setAppearance({ ...appearance, theme })}
+                      onClick={() => {
+                        setAppearance({ ...appearance, theme });
+                        themeStore.setMode(theme);
+                      }}
                       className={`p-2 border text-center text-[11px] ${
-                        appearance.theme === theme
-                          ? 'border-gray-600 bg-white'
-                          : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
+                        themeStore.mode === theme
+                          ? 'border-2'
+                          : ''
                       }`}
+                      style={{
+                        borderColor: themeStore.mode === theme ? 'var(--ehr-border-focus)' : 'var(--ehr-border)',
+                        background: themeStore.mode === theme ? 'var(--ehr-bg-content)' : 'var(--ehr-bg-fieldset)',
+                      }}
                     >
-                      <Monitor className="w-4 h-4 mx-auto mb-1 text-gray-600" />
+                      <Monitor className="w-4 h-4 mx-auto mb-1" style={{ color: 'var(--ehr-text-muted)' }} />
                       <span className="capitalize">{theme}</span>
                     </button>
                   ))}
