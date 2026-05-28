@@ -85,6 +85,7 @@ class JwtAuthenticationFilterTest {
     @Test
     void doFilterInternal_continuesFilterChainEvenOnException() throws Exception {
         request.addHeader("Authorization", "Bearer bad-token");
+        when(tokenProvider.getUsernameFromToken("bad-token")).thenReturn("some-user");
         when(userDetailsService.loadUserByUsername(anyString()))
                 .thenThrow(new RuntimeException("parse error"));
 
