@@ -47,8 +47,8 @@ export default function VitalsPage() {
 
   const getStatusStyle = (status: string) => {
     switch (status) {
-      case 'critical': return { background: '#ffcccc', color: '#990000', fontWeight: 'bold' };
-      case 'abnormal': return { background: '#fff3cd', color: '#664d00' };
+      case 'critical': return { background: 'var(--ehr-alert-critical-bg)', color: 'var(--ehr-alert-critical-text)', fontWeight: 'bold' };
+      case 'abnormal': return { background: 'var(--ehr-alert-warning-bg)', color: 'var(--ehr-alert-warning-text)' };
       default: return {};
     }
   };
@@ -181,7 +181,7 @@ export default function VitalsPage() {
             </thead>
             <tbody>
               {vitalSigns.map((vital, vitalIdx) => (
-                <tr key={vital.key} className={vitalIdx % 2 === 0 ? 'bg-white' : 'bg-[#f8f8f8]'}>
+                <tr key={vital.key} className={vitalIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                   <td className="px-2 py-1 border border-gray-300 font-semibold sticky left-0 bg-inherit z-10">
                     <div>{vital.name}</div>
                     <div className="text-[9px] text-gray-500 font-normal">{vital.unit} ({vital.normalRange.min}-{vital.normalRange.max})</div>
@@ -200,7 +200,7 @@ export default function VitalsPage() {
                     return (
                       <td
                         key={reading.id}
-                        className="px-2 py-1 border border-gray-300 text-center cursor-pointer hover:bg-[#e0e8f0]"
+                        className="px-2 py-1 border border-gray-300 text-center cursor-pointer hover:bg-gray-100"
                         style={getStatusStyle(status)}
                         onClick={() => setSelectedReading(reading)}
                       >

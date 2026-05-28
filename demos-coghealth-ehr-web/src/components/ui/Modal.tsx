@@ -36,14 +36,14 @@ export function Modal({ isOpen, onClose, title, children, width = 'md', footer }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <div className="absolute inset-0" style={{ background: 'var(--ehr-overlay-bg)' }} onClick={onClose} />
       <div className={`relative ${widthClasses[width]} max-h-[90vh] flex flex-col`} style={{ fontFamily: 'Tahoma, sans-serif' }}>
         {/* Window frame */}
-        <div className="bg-white border-2 border-gray-400 shadow-lg flex flex-col" style={{ boxShadow: '2px 2px 8px rgba(0,0,0,0.3)' }}>
+        <div className="shadow-lg flex flex-col" style={{ background: 'var(--ehr-surface-white)', border: '2px solid var(--ehr-border)', boxShadow: '2px 2px 8px rgba(0,0,0,0.3)' }}>
           {/* Title bar */}
           <div 
             className="flex items-center justify-between px-2 py-1"
-            style={{ background: 'linear-gradient(to bottom, #6699cc 0%, #336699 100%)' }}
+            style={{ background: 'linear-gradient(to bottom, var(--ehr-header-from), var(--ehr-header-to))' }}
           >
             <span className="text-white font-semibold text-[11px]">{title}</span>
             <button 
@@ -55,13 +55,13 @@ export function Modal({ isOpen, onClose, title, children, width = 'md', footer }
           </div>
           
           {/* Content */}
-          <div className="flex-1 overflow-auto p-3 bg-[#ece9d8]">
+          <div className="flex-1 overflow-auto p-3" style={{ background: 'var(--ehr-surface-raised)' }}>
             {children}
           </div>
           
           {/* Footer */}
           {footer && (
-            <div className="px-3 py-2 bg-[#ece9d8] border-t border-gray-400 flex justify-end space-x-2">
+            <div className="px-3 py-2 flex justify-end space-x-2" style={{ background: 'var(--ehr-surface-raised)', borderTop: '1px solid var(--ehr-border)' }}>
               {footer}
             </div>
           )}
@@ -113,7 +113,7 @@ export function ConfirmDialog({
         </>
       }
     >
-      <p className="text-[11px] text-gray-700">{message}</p>
+      <p className="text-[11px]" style={{ color: 'var(--ehr-text)' }}>{message}</p>
     </Modal>
   );
 }
@@ -127,11 +127,11 @@ interface AlertDialogProps {
 }
 
 export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: AlertDialogProps) {
-  const bgColors = {
-    info: '#cce5ff',
-    success: '#d4edda',
-    warning: '#fff3cd',
-    error: '#f8d7da',
+  const alertClass = {
+    info: 'ehr-alert-info',
+    success: '',
+    warning: 'ehr-alert-warning',
+    error: 'ehr-alert-critical',
   };
   
   return (
@@ -146,7 +146,7 @@ export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: 
         </button>
       }
     >
-      <div className="p-2 border border-gray-400" style={{ background: bgColors[type] }}>
+      <div className={`p-2 ${alertClass[type]}`} style={type === 'success' ? { background: '#d4edda', border: '1px solid #28a745', color: '#155724' } : { border: '1px solid var(--ehr-border)' }}>
         <p className="text-[11px]">{message}</p>
       </div>
     </Modal>

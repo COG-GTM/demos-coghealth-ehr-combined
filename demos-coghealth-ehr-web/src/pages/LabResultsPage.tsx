@@ -115,9 +115,9 @@ export default function LabResultsPage() {
   const getStatusStyle = (status: LabResult['status']) => {
     switch (status) {
       case 'critical':
-        return { background: '#ffcccc', color: '#990000', fontWeight: 'bold' };
+        return { background: 'var(--ehr-alert-critical-bg)', color: 'var(--ehr-alert-critical-text)', fontWeight: 'bold' };
       case 'abnormal':
-        return { background: '#fff3cd', color: '#664d00' };
+        return { background: 'var(--ehr-alert-warning-bg)', color: 'var(--ehr-alert-warning-text)' };
       default:
         return {};
     }
@@ -276,7 +276,7 @@ export default function LabResultsPage() {
                       {panel.results.map((result, idx) => (
                         <tr
                           key={result.id}
-                          className={`cursor-pointer hover:bg-[#e0e8f0] ${idx % 2 === 0 ? 'bg-white' : 'bg-[#f8f8f8]'}`}
+                          className={`cursor-pointer hover:bg-gray-100 ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
                           style={getStatusStyle(result.status)}
                           onClick={() => setSelectedResult(result)}
                         >
