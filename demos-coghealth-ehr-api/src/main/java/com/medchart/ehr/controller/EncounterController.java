@@ -7,13 +7,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/encounters")
+@Validated
 public class EncounterController {
 
     private final EncounterService encounterService;
@@ -30,7 +35,8 @@ public class EncounterController {
     }
 
     @GetMapping("/number/{encounterNumber}")
-    public ResponseEntity<Encounter> getByNumber(@PathVariable String encounterNumber) {
+    public ResponseEntity<Encounter> getByNumber(
+            @PathVariable @NotBlank @Size(max = 30) String encounterNumber) {
         return encounterService.findByEncounterNumber(encounterNumber)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -59,10 +65,13 @@ public class EncounterController {
     }
 
     @GetMapping("/date-range")
-    public List<Encounter> getByDateRange(
+    public ResponseEntity<?> getByDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return encounterService.findByDateRange(startDate, endDate);
+        if (endDate.isBefore(startDate)) {
+            return ResponseEntity.badRequest().body("endDate must not be before startDate");
+        }
+        return ResponseEntity.ok(encounterService.findByDateRange(startDate, endDate));
     }
 
     @GetMapping("/status/{status}")
@@ -71,12 +80,12 @@ public class EncounterController {
     }
 
     @PostMapping
-    public Encounter create(@RequestBody Encounter encounter) {
+    public Encounter create(@Valid @RequestBody Encounter encounter) {
         return encounterService.create(encounter);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Encounter> update(@PathVariable Long id, @RequestBody Encounter encounter) {
+    public ResponseEntity<Encounter> update(@PathVariable Long id, @Valid @RequestBody Encounter encounter) {
         return encounterService.findById(id)
                 .map(existing -> {
                     encounter.setId(id);
@@ -98,7 +107,9 @@ public class EncounterController {
     }
 
     @PostMapping("/{id}/complete")
-    public ResponseEntity<Void> complete(@PathVariable Long id, @RequestBody(required = false) String notes) {
+    public ResponseEntity<Void> complete(
+            @PathVariable Long id,
+            @RequestBody(required = false) @Size(max = 1000) String notes) {
         encounterService.completeEncounter(id, notes);
         return ResponseEntity.ok().build();
     }

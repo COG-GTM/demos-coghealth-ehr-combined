@@ -21,9 +21,12 @@ public class LegacyExportController {
     private final ReportGenerator reportGenerator;
 
     @GetMapping("/encounters")
-    public ResponseEntity<byte[]> exportEncounters(
+    public ResponseEntity<?> exportEncounters(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        if (endDate.isBefore(startDate)) {
+            return ResponseEntity.badRequest().body("endDate must not be before startDate");
+        }
         
         byte[] data = encounterExportService.exportEncountersForDateRange(startDate, endDate);
         
@@ -53,6 +56,9 @@ public class LegacyExportController {
     public ResponseEntity<String> generateEncounterSummary(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+        if (endDate.isBefore(startDate)) {
+            return ResponseEntity.badRequest().body("endDate must not be before startDate");
+        }
         
         String filePath = reportGenerator.generateEncounterSummary(startDate, endDate);
         return ResponseEntity.ok("Report generated at: " + filePath);
