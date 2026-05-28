@@ -5,6 +5,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -26,15 +30,22 @@ public class Provider {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "NPI is required")
+    @Pattern(regexp = "\\d{10}", message = "NPI must be exactly 10 digits")
     @Column(unique = true, nullable = false, length = 10)
     private String npi;
 
+    @NotBlank(message = "First name is required")
+    @Size(max = 100, message = "First name must not exceed 100 characters")
     @Column(nullable = false, length = 100)
     private String firstName;
 
+    @Size(max = 100, message = "Middle name must not exceed 100 characters")
     @Column(length = 100)
     private String middleName;
 
+    @NotBlank(message = "Last name is required")
+    @Size(max = 100, message = "Last name must not exceed 100 characters")
     @Column(nullable = false, length = 100)
     private String lastName;
 
@@ -44,6 +55,7 @@ public class Provider {
     @Column(length = 50)
     private String credentials;
 
+    @NotNull(message = "Provider type is required")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private ProviderType providerType;

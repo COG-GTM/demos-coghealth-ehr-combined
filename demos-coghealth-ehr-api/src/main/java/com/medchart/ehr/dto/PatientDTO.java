@@ -4,8 +4,11 @@ import com.medchart.ehr.domain.patient.Gender;
 import com.medchart.ehr.domain.patient.MaritalStatus;
 import lombok.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,13 +23,17 @@ public class PatientDTO {
     private String mrn;
 
     @NotBlank(message = "First name is required")
+    @Size(max = 100, message = "First name must not exceed 100 characters")
     private String firstName;
 
+    @Size(max = 100, message = "Middle name must not exceed 100 characters")
     private String middleName;
 
     @NotBlank(message = "Last name is required")
+    @Size(max = 100, message = "Last name must not exceed 100 characters")
     private String lastName;
 
+    @NotNull(message = "Date of birth is required")
     @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
 
@@ -38,7 +45,9 @@ public class PatientDTO {
     private String phoneMobile;
     private String phoneWork;
 
+    @Valid
     private AddressDTO address;
+    @Valid
     private AddressDTO mailingAddress;
 
     private String preferredLanguage;
@@ -46,8 +55,8 @@ public class PatientDTO {
     private String race;
     private String religion;
 
-    private List<PatientIdentifierDTO> identifiers;
-    private List<EmergencyContactDTO> emergencyContacts;
+    private List<@Valid PatientIdentifierDTO> identifiers;
+    private List<@Valid EmergencyContactDTO> emergencyContacts;
 
     private Boolean active;
     private Boolean deceased;

@@ -14,6 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -82,7 +85,10 @@ public class AuthController {
     }
 
     public static class LoginRequest {
+        @NotBlank(message = "Username is required")
         private String username;
+
+        @NotBlank(message = "Password is required")
         private String password;
 
         // Getters and setters
@@ -93,10 +99,24 @@ public class AuthController {
     }
 
     public static class SignUpRequest {
+        @NotBlank(message = "Username is required")
+        @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
         private String username;
+
+        @NotBlank(message = "Email is required")
+        @Email(message = "Email must be valid")
         private String email;
+
+        @NotBlank(message = "Password is required")
+        @Size(min = 8, max = 100, message = "Password must be between 8 and 100 characters")
         private String password;
+
+        @NotBlank(message = "First name is required")
+        @Size(max = 100, message = "First name must not exceed 100 characters")
         private String firstName;
+
+        @NotBlank(message = "Last name is required")
+        @Size(max = 100, message = "Last name must not exceed 100 characters")
         private String lastName;
 
         // Getters and setters

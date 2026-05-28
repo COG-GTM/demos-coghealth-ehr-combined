@@ -9,13 +9,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @RestController
 @RequestMapping("/v1/patients")
 @RequiredArgsConstructor
+@Validated
 @Tag(name = "Patient", description = "Patient management endpoints")
 public class PatientController {
 
@@ -36,7 +40,7 @@ public class PatientController {
     @GetMapping("/search")
     @Operation(summary = "Search patients")
     public ResponseEntity<Page<PatientDTO>> searchPatients(
-            @RequestParam String q,
+            @RequestParam @NotBlank(message = "Search query is required") @Size(min = 2, max = 100, message = "Search query must be between 2 and 100 characters") String q,
             Pageable pageable) {
         return ResponseEntity.ok(patientService.searchPatients(q, pageable));
     }

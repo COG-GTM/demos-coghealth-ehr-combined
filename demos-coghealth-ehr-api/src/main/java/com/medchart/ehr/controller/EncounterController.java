@@ -7,13 +7,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/encounters")
+@Validated
 public class EncounterController {
 
     private final EncounterService encounterService;
@@ -30,7 +37,7 @@ public class EncounterController {
     }
 
     @GetMapping("/number/{encounterNumber}")
-    public ResponseEntity<Encounter> getByNumber(@PathVariable String encounterNumber) {
+    public ResponseEntity<Encounter> getByNumber(@PathVariable @NotBlank String encounterNumber) {
         return encounterService.findByEncounterNumber(encounterNumber)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -62,6 +69,9 @@ public class EncounterController {
     public List<Encounter> getByDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        if (endDate.isBefore(startDate)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "endDate must not be before startDate");
+        }
         return encounterService.findByDateRange(startDate, endDate);
     }
 
@@ -71,12 +81,12 @@ public class EncounterController {
     }
 
     @PostMapping
-    public Encounter create(@RequestBody Encounter encounter) {
+    public Encounter create(@Valid @RequestBody Encounter encounter) {
         return encounterService.create(encounter);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Encounter> update(@PathVariable Long id, @RequestBody Encounter encounter) {
+    public ResponseEntity<Encounter> update(@PathVariable Long id, @Valid @RequestBody Encounter encounter) {
         return encounterService.findById(id)
                 .map(existing -> {
                     encounter.setId(id);
@@ -98,7 +108,7 @@ public class EncounterController {
     }
 
     @PostMapping("/{id}/complete")
-    public ResponseEntity<Void> complete(@PathVariable Long id, @RequestBody(required = false) String notes) {
+    public ResponseEntity<Void> complete(@PathVariable Long id, @RequestBody(required = false) @Size(max = 1000, message = "Notes must not exceed 1000 characters") String notes) {
         encounterService.completeEncounter(id, notes);
         return ResponseEntity.ok().build();
     }

@@ -7,6 +7,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,7 @@ public class Encounter {
     @JoinColumn(name = "attending_provider_id")
     private Provider attendingProvider;
 
+    @NotNull(message = "Encounter type is required")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private EncounterType encounterType;
@@ -48,6 +51,7 @@ public class Encounter {
     @Column(nullable = false, length = 30)
     private EncounterStatus status;
 
+    @NotNull(message = "Encounter date/time is required")
     @Column(nullable = false)
     private LocalDateTime encounterDateTime;
 
@@ -64,6 +68,7 @@ public class Encounter {
     @Column(length = 20)
     private String bed;
 
+    @Size(max = 500, message = "Chief complaint must not exceed 500 characters")
     @Column(length = 500)
     private String chiefComplaint;
 
@@ -78,6 +83,7 @@ public class Encounter {
     @Builder.Default
     private List<EncounterDiagnosis> diagnoses = new ArrayList<>();
 
+    @Size(max = 1000, message = "Notes must not exceed 1000 characters")
     @Column(length = 1000)
     private String notes;
 

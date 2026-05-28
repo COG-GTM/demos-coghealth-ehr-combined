@@ -3,12 +3,16 @@ package com.medchart.ehr.controller;
 import com.medchart.ehr.domain.provider.Provider;
 import com.medchart.ehr.service.ProviderService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RestController
 @RequestMapping("/v1/providers")
+@Validated
 public class ProviderController {
 
     private final ProviderService providerService;
@@ -60,17 +64,17 @@ public class ProviderController {
     }
 
     @GetMapping("/search")
-    public List<Provider> search(@RequestParam String lastName) {
+    public List<Provider> search(@RequestParam @NotBlank(message = "lastName is required") String lastName) {
         return providerService.search(lastName);
     }
 
     @PostMapping
-    public Provider create(@RequestBody Provider provider) {
+    public Provider create(@Valid @RequestBody Provider provider) {
         return providerService.save(provider);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Provider> update(@PathVariable Long id, @RequestBody Provider provider) {
+    public ResponseEntity<Provider> update(@PathVariable Long id, @Valid @RequestBody Provider provider) {
         return providerService.findById(id)
                 .map(existing -> {
                     provider.setId(id);
