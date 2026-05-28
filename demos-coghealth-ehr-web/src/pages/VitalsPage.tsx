@@ -200,8 +200,11 @@ export default function VitalsPage() {
                     return (
                       <td
                         key={reading.id}
-                        className="px-2 py-1 border border-gray-300 text-center cursor-pointer hover:bg-gray-100"
-                        style={getStatusStyle(status)}
+                        className="px-2 py-1 border border-gray-300 text-center cursor-pointer"
+                        style={getStatusStyle(status).background
+                          ? getStatusStyle(status)
+                          : undefined
+                        }
                         onClick={() => setSelectedReading(reading)}
                       >
                         {value !== undefined ? (

@@ -134,7 +134,7 @@ export default function SettingsPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className="w-full flex items-center px-2 py-1.5 text-[11px]"
+                className={`w-full flex items-center px-2 py-1.5 text-[11px] ${activeTab !== tab.id ? 'hover:bg-gray-100' : ''}`}
                 style={
                   activeTab === tab.id
                     ? { background: 'var(--ehr-surface-white)', border: '1px solid var(--ehr-border)', fontWeight: 600 }

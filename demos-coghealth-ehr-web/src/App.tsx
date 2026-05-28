@@ -241,7 +241,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
                   key={item.path}
                   to={item.path}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center px-2 py-1.5 text-[11px]`}
+                  className={`flex items-center px-2 py-1.5 text-[11px] ${!isActive ? 'hover:bg-gray-100' : ''}`}
                   style={isActive ? { background: 'var(--ehr-grid-hover)', border: '1px solid var(--ehr-border)' } : undefined}
                 >
                   <Icon className="w-4 h-4 mr-2" />
