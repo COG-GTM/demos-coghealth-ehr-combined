@@ -129,13 +129,13 @@ interface AlertDialogProps {
 export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: AlertDialogProps) {
   const bgVars: Record<string, string> = {
     info: 'var(--ehr-alert-info-bg)',
-    success: '#d4edda',
+    success: 'var(--ehr-alert-success-bg)',
     warning: 'var(--ehr-alert-warning-bg)',
     error: 'var(--ehr-alert-critical-bg)',
   };
   const textVars: Record<string, string> = {
     info: 'var(--ehr-alert-info-text)',
-    success: '#155724',
+    success: 'var(--ehr-alert-success-text)',
     warning: 'var(--ehr-alert-warning-text)',
     error: 'var(--ehr-alert-critical-text)',
   };

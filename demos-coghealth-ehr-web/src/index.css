@@ -90,6 +90,10 @@
   --ehr-alert-info-border: #0066cc;
   --ehr-alert-info-text: #004085;
 
+  --ehr-alert-success-bg: #d4edda;
+  --ehr-alert-success-border: #28a745;
+  --ehr-alert-success-text: #155724;
+
   --ehr-sidebar-bg: #ece9d8;
   --ehr-detail-bg: #f5f5f5;
   --ehr-detail-header-bg: #e8e8e8;
@@ -173,6 +177,10 @@
   --ehr-alert-info-bg: #1a2a3e;
   --ehr-alert-info-border: #2266aa;
   --ehr-alert-info-text: #80b8f0;
+
+  --ehr-alert-success-bg: #1a3e22;
+  --ehr-alert-success-border: #228844;
+  --ehr-alert-success-text: #80f0a0;
 
   --ehr-sidebar-bg: #24242c;
   --ehr-detail-bg: #282830;
