@@ -129,7 +129,7 @@ interface AlertDialogProps {
 export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: AlertDialogProps) {
   const alertClass = {
     info: 'ehr-alert-info',
-    success: '',
+    success: 'ehr-alert-success',
     warning: 'ehr-alert-warning',
     error: 'ehr-alert-critical',
   };
@@ -146,7 +146,7 @@ export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: 
         </button>
       }
     >
-      <div className={`p-2 ${alertClass[type]}`} style={type === 'success' ? { background: '#d4edda', border: '1px solid #28a745', color: '#155724' } : { border: '1px solid var(--ehr-border)' }}>
+      <div className={`p-2 ${alertClass[type]}`}>
         <p className="text-[11px]">{message}</p>
       </div>
     </Modal>

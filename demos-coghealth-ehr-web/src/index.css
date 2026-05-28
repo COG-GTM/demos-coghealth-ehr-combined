@@ -75,6 +75,9 @@
   --ehr-alert-info-bg: #cce5ff;
   --ehr-alert-info-border: #0066cc;
   --ehr-alert-info-text: #004085;
+  --ehr-alert-success-bg: #d4edda;
+  --ehr-alert-success-border: #28a745;
+  --ehr-alert-success-text: #155724;
   --ehr-overlay-bg: rgba(128, 128, 128, 0.5);
   --ehr-loading-bg: #ece9d8;
 }
@@ -135,6 +138,9 @@
   --ehr-alert-info-bg: #0c2340;
   --ehr-alert-info-border: #2563eb;
   --ehr-alert-info-text: #93c5fd;
+  --ehr-alert-success-bg: #0d2818;
+  --ehr-alert-success-border: #22863a;
+  --ehr-alert-success-text: #85e89d;
   --ehr-overlay-bg: rgba(0, 0, 0, 0.65);
   --ehr-loading-bg: #23272e;
 }
@@ -330,6 +336,12 @@ td {
   background: var(--ehr-alert-info-bg);
   border: 1px solid var(--ehr-alert-info-border);
   color: var(--ehr-alert-info-text);
+}
+
+.ehr-alert-success {
+  background: var(--ehr-alert-success-bg);
+  border: 1px solid var(--ehr-alert-success-border);
+  color: var(--ehr-alert-success-text);
 }
 
 .ehr-toolbar {
