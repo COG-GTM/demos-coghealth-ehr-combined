@@ -11,9 +11,13 @@ import {
   Smartphone,
   Globe,
   Save,
-  Check
+  Check,
+  Sun,
+  Moon,
+  Laptop
 } from 'lucide-react';
 import { AlertDialog } from '../components/ui/Modal';
+import { useThemeStore } from '../stores/themeStore';
 
 type SettingsTab = 'profile' | 'notifications' | 'security' | 'appearance' | 'practice';
 
@@ -73,6 +77,7 @@ export default function SettingsPage() {
   const [profile, setProfile] = useState<UserProfile>(defaultProfile);
   const [notifications, setNotifications] = useState(defaultNotifications);
   const [appearance, setAppearance] = useState(defaultAppearance);
+  const { mode: themeMode, setMode: setThemeMode } = useThemeStore();
 
   const [initialized, setInitialized] = useState(false);
   if (!initialized) {
@@ -105,7 +110,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col ehr-page-bg">
       {/* Header */}
       <div className="ehr-header flex items-center justify-between">
         <span>System Settings</span>
@@ -121,7 +126,7 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Navigation */}
-        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: '#ece9d8' }}>
+        <div className="w-48 overflow-auto p-2 space-y-1 ehr-surface-bg">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -142,7 +147,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Right Content */}
-        <div className="flex-1 overflow-auto bg-white border-l border-gray-500 p-3">
+        <div className="flex-1 overflow-auto bg-white border-l p-3" style={{ borderColor: 'var(--ehr-border)' }}>
           {activeTab === 'profile' && (
             <div className="space-y-3">
               <fieldset className="ehr-fieldset">
@@ -385,18 +390,19 @@ export default function SettingsPage() {
               <fieldset className="ehr-fieldset">
                 <legend>Theme</legend>
                 <div className="grid grid-cols-3 gap-2">
-                  {['light', 'dark', 'system'].map((theme) => (
+                  {([{ key: 'light', icon: Sun, label: 'Light' }, { key: 'dark', icon: Moon, label: 'Dark' }, { key: 'system', icon: Laptop, label: 'System' }] as const).map(({ key, icon: Icon, label }) => (
                     <button
-                      key={theme}
-                      onClick={() => setAppearance({ ...appearance, theme })}
-                      className={`p-2 border text-center text-[11px] ${
-                        appearance.theme === theme
-                          ? 'border-gray-600 bg-white'
-                          : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
-                      }`}
+                      key={key}
+                      onClick={() => { setThemeMode(key); setAppearance({ ...appearance, theme: key }); }}
+                      className={`p-2 border text-center text-[11px]`}
+                      style={{
+                        borderColor: themeMode === key ? 'var(--ehr-btn-primary-from)' : 'var(--ehr-border)',
+                        background: themeMode === key ? 'var(--ehr-bg-content)' : 'var(--ehr-bg-panel)',
+                        color: 'var(--ehr-text)',
+                      }}
                     >
-                      <Monitor className="w-4 h-4 mx-auto mb-1 text-gray-600" />
-                      <span className="capitalize">{theme}</span>
+                      <Icon className="w-4 h-4 mx-auto mb-1" style={{ color: 'var(--ehr-text-secondary)' }} />
+                      <span>{label}</span>
                     </button>
                   ))}
                 </div>

@@ -14,8 +14,11 @@ import {
   Lock,
   Shield,
   FlaskConical,
-  Activity
+  Activity,
+  Moon,
+  Sun
 } from 'lucide-react';
+import { useThemeStore } from './stores/themeStore';
 import { useState, useEffect, useCallback } from 'react';
 import PatientSearchPage from './pages/PatientSearchPage';
 import PatientChartPage from './pages/PatientChartPage';
@@ -55,6 +58,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
   const [searchResults, setSearchResults] = useState<typeof defaultPatientSearch>([]);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [sessionTime, setSessionTime] = useState(SESSION_TIMEOUT_MS);
+  const { mode: themeMode, setMode: setThemeMode } = useThemeStore();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -151,21 +155,23 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
               />
             </div>
             {showSearchDropdown && searchResults.length > 0 && (
-              <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-400 shadow-lg z-50">
+              <div className="absolute top-full left-0 mt-1 w-64 shadow-lg z-50" style={{ background: 'var(--ehr-bg-content)', border: '1px solid var(--ehr-border)' }}>
                 {searchResults.map((patient) => (
                   <div
                     key={patient.id}
                     onClick={() => selectPatient(patient.id)}
-                    className="px-2 py-1.5 hover:bg-blue-100 cursor-pointer text-[11px] text-gray-800 border-b border-gray-200"
+                    className="px-2 py-1.5 cursor-pointer text-[11px]" style={{ color: 'var(--ehr-text)', borderBottom: '1px solid var(--ehr-border-light)' }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'var(--ehr-row-hover)'}
+                    onMouseLeave={e => e.currentTarget.style.background = ''}
                   >
                     <div className="font-semibold">{patient.name}</div>
-                    <div className="text-gray-500 text-[10px]">{patient.mrn} • DOB: {patient.dob}</div>
+                    <div className="text-[10px]" style={{ color: 'var(--ehr-text-secondary)' }}>{patient.mrn} • DOB: {patient.dob}</div>
                   </div>
                 ))}
               </div>
             )}
             {showSearchDropdown && searchResults.length === 0 && globalSearch.length >= 2 && (
-              <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-400 shadow-lg z-50 p-2 text-[11px] text-gray-500">
+              <div className="absolute top-full left-0 mt-1 w-64 shadow-lg z-50 p-2 text-[11px]" style={{ background: 'var(--ehr-bg-content)', border: '1px solid var(--ehr-border)', color: 'var(--ehr-text-secondary)' }}>
                 No patients found
               </div>
             )}
@@ -185,6 +191,13 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
             <User className="w-3 h-3" />
             <span>Dr. Sarah Anderson</span>
           </div>
+          <button
+            onClick={() => setThemeMode(themeMode === 'dark' ? 'light' : 'dark')}
+            className="flex items-center space-x-1 hover:text-white text-blue-200"
+            title={themeMode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {themeMode === 'dark' ? <Sun className="w-3 h-3" /> : <Moon className="w-3 h-3" />}
+          </button>
           <button onClick={onLogout} className="flex items-center space-x-1 hover:text-white text-blue-200">
             <LogOut className="w-3 h-3" />
             <span>Logout</span>
@@ -212,9 +225,9 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
           })}
         </div>
 
-        <div className="flex items-center space-x-2 text-[10px] text-gray-600">
+        <div className="flex items-center space-x-2 text-[10px]" style={{ color: 'var(--ehr-text-secondary)' }}>
           <span>{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
-          <span className="text-gray-400">|</span>
+          <span style={{ color: 'var(--ehr-text-muted)' }}>|</span>
           <span>{new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</span>
         </div>
 
@@ -228,7 +241,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-300 bg-white">
+        <div className="md:hidden border-t ehr-content-bg" style={{ borderColor: 'var(--ehr-border-light)' }}>
           <div className="px-2 py-1 space-y-0.5">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -280,7 +293,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="h-screen flex flex-col" style={{ background: '#d4d0c8', fontFamily: 'Tahoma, sans-serif' }}>
+      <div className="h-screen flex flex-col ehr-page-bg" style={{ fontFamily: 'Tahoma, sans-serif' }}>
         <Navigation 
           onSessionWarning={handleSessionWarning}
           onSessionExpired={handleSessionExpired}
@@ -301,23 +314,23 @@ function App() {
         </main>
 
         {/* Status Bar - Windows XP style */}
-        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
+        <div className="ehr-status-bar h-5 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
               <Shield className="w-3 h-3 text-green-600" />
               <span>HIPAA Compliant</span>
             </div>
-            <span className="text-gray-400">|</span>
+            <span style={{ color: 'var(--ehr-text-muted)' }}>|</span>
             <span>Encrypted Connection (TLS 1.3)</span>
-            <span className="text-gray-400">|</span>
+            <span style={{ color: 'var(--ehr-text-muted)' }}>|</span>
             <span>Audit Logging: Active</span>
           </div>
           <div className="flex items-center space-x-4">
             <span>Database: Connected</span>
-            <span className="text-gray-400">|</span>
+            <span style={{ color: 'var(--ehr-text-muted)' }}>|</span>
             <span>Last Sync: Just now</span>
-            <span className="text-gray-400">|</span>
-            <span className="text-gray-500">CogHealth EHR v4.2.1 - For Demo Use Only</span>
+            <span style={{ color: 'var(--ehr-text-muted)' }}>|</span>
+            <span style={{ color: 'var(--ehr-text-secondary)' }}>CogHealth EHR v4.2.1 - For Demo Use Only</span>
           </div>
         </div>
 
