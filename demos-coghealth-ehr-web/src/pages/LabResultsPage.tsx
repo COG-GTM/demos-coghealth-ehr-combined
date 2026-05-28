@@ -276,10 +276,10 @@ export default function LabResultsPage() {
                       {panel.results.map((result, idx) => (
                         <tr
                           key={result.id}
-                          className="cursor-pointer hover:bg-gray-100"
+                          className={`cursor-pointer ${getStatusStyle(result.status).background ? '' : `${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-gray-100`}`}
                           style={getStatusStyle(result.status).background
                             ? getStatusStyle(result.status)
-                            : { background: idx % 2 === 0 ? 'var(--ehr-surface-white)' : 'var(--ehr-surface-alt)' }
+                            : undefined
                           }
                           onClick={() => setSelectedResult(result)}
                         >
