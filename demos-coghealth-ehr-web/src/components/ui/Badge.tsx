@@ -13,7 +13,7 @@ export default function Badge({
   className = '' 
 }: BadgeProps) {
   const variants = {
-    default: { background: '#e8e8e8', border: '1px solid #999', color: '#333' },
+    default: { background: 'var(--ehr-elevated)', border: '1px solid var(--ehr-border-strong, #999)', color: 'var(--ehr-text, #333)' },
     success: { background: '#d4edda', border: '1px solid #28a745', color: '#155724' },
     warning: { background: '#fff3cd', border: '1px solid #cc9900', color: '#664d00' },
     danger: { background: '#ffcccc', border: '1px solid #cc0000', color: '#990000' },
