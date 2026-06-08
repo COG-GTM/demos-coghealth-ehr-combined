@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -24,6 +26,7 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
+    private final EmbeddingService embeddingService;
 
     @AuditAccess(action = AuditAction.READ, resourceType = "Patient", description = "View patient record")
     public PatientDTO getPatientById(Long id) {
@@ -45,6 +48,39 @@ public class PatientService {
                 .map(patientMapper::toDto);
     }
 
+    @AuditAccess(action = AuditAction.SEARCH, resourceType = "Patient", description = "Vector search patients")
+    public List<PatientDTO> vectorSearchPatients(String searchTerm, int limit) {
+        float[] embedding = embeddingService.getEmbedding(searchTerm);
+        String vectorString = embeddingService.toVectorString(embedding);
+        return patientRepository.vectorSearch(vectorString, limit)
+                .stream()
+                .map(patientMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updatePatientEmbedding(Long patientId) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new EntityNotFoundException("Patient not found: " + patientId));
+        String text = embeddingService.toSearchableText(patient);
+        float[] embedding = embeddingService.getEmbedding(text);
+        String vectorString = embeddingService.toVectorString(embedding);
+        patientRepository.updateEmbedding(patientId, vectorString);
+    }
+
+    @Transactional
+    public void backfillAllEmbeddings() {
+        List<Patient> allPatients = patientRepository.findAll();
+        for (Patient patient : allPatients) {
+            try {
+                updatePatientEmbedding(patient.getId());
+                log.info("Updated embedding for patient MRN: {}", patient.getMrn());
+            } catch (Exception e) {
+                log.warn("Failed to generate embedding for patient {}: {}", patient.getMrn(), e.getMessage());
+            }
+        }
+    }
+
     @Transactional
     @AuditAccess(action = AuditAction.CREATE, resourceType = "Patient", description = "Create patient record")
     public PatientDTO createPatient(PatientDTO patientDTO) {
@@ -62,6 +98,11 @@ public class PatientService {
 
         Patient saved = patientRepository.save(patient);
         log.info("Created patient with MRN: {}", saved.getMrn());
+        try {
+            updatePatientEmbedding(saved.getId());
+        } catch (Exception e) {
+            log.warn("Failed to generate embedding for patient {}: {}", saved.getMrn(), e.getMessage());
+        }
         return patientMapper.toDto(saved);
     }
 
@@ -74,6 +115,11 @@ public class PatientService {
         patientMapper.updateEntityFromDto(patientDTO, existing);
         Patient saved = patientRepository.save(existing);
         log.info("Updated patient with MRN: {}", saved.getMrn());
+        try {
+            updatePatientEmbedding(saved.getId());
+        } catch (Exception e) {
+            log.warn("Failed to update embedding for patient {}: {}", saved.getMrn(), e.getMessage());
+        }
         return patientMapper.toDto(saved);
     }
 

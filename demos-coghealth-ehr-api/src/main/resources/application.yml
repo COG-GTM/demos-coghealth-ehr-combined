@@ -53,6 +53,11 @@ logging:
     org.hibernate.SQL: DEBUG
 
 medchart:
+  embedding:
+    api-url: ${EMBEDDING_API_URL:https://api.openai.com/v1/embeddings}
+    api-key: ${EMBEDDING_API_KEY:}
+    model: ${EMBEDDING_MODEL:text-embedding-3-small}
+    dimensions: 1536
   security:
     jwt:
       secret: ${JWT_SECRET:dev-secret-key-change-in-production}
