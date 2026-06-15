@@ -248,6 +248,22 @@ td {
   background: #ece9d8;
 }
 
+.ehr-detail-bg {
+  background: #f5f5f5;
+}
+
+.ehr-detail-header-bg {
+  background: #e8e8e8;
+}
+
+.dark .ehr-detail-bg {
+  background: #1f1f23;
+}
+
+.dark .ehr-detail-header-bg {
+  background: #2a2a2e;
+}
+
 /* ============================================================
    Dark mode
    The app uses many hard-coded light utility/custom classes, so
