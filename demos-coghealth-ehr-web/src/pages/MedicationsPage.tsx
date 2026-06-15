@@ -446,7 +446,6 @@ export default function MedicationsPage() {
                         order.status === 'DISCONTINUED' || order.status === 'COMPLETED' ? 'opacity-50' : 
                         idx % 2 === 1 ? 'bg-gray-50' : ''
                       }`}
-                      style={isSelected ? { background: '#316ac5', color: 'white' } : undefined}
                     >
                       <td className="px-1 py-1">
                         <div className="flex items-center space-x-1">
@@ -815,9 +814,8 @@ function OrderRow({ order, selected, onSelect, idx }: { order: MedicationOrderEx
     <div
       onClick={onSelect}
       className={`px-3 py-1 cursor-pointer flex items-center justify-between text-[11px] ${
-        selected ? '' : idx % 2 === 1 ? 'bg-gray-50' : ''
+        selected ? 'ehr-row-selected' : idx % 2 === 1 ? 'bg-gray-50' : ''
       }`}
-      style={selected ? { background: '#316ac5', color: 'white' } : undefined}
     >
       <div className="flex items-center space-x-2">
         <div className="w-6">

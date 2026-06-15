@@ -552,15 +552,14 @@ export default function PatientSearchPage() {
                       No patients found
                     </td>
                   </tr>
-                ) : searchResults.map((patient, idx) => {
+                ) : searchResults.map((patient) => {
                   const isSelected = selectedPatient?.id === patient.id;
                   return (
                     <tr
                       key={patient.id}
                       onClick={() => handleSelectPatient(patient)}
                       onDoubleClick={() => handleOpenChart(patient.id)}
-                      className={`cursor-pointer ${isSelected ? 'ehr-grid-row selected' : `ehr-grid-row ${idx % 2 === 0 ? '' : ''}`}`}
-                      style={isSelected ? { background: '#316ac5', color: 'white' } : idx % 2 === 1 ? { background: '#f0f4f8' } : {}}
+                      className={`cursor-pointer ehr-grid-row ${isSelected ? 'selected' : ''}`}
                     >
                       <td className="px-1 py-0.5">
                         <div className="flex items-center space-x-0.5">

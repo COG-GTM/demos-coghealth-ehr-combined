@@ -365,7 +365,6 @@ export default function SchedulePage() {
                       apt.status === 'FINISHED' ? 'opacity-50' : 
                       idx % 2 === 1 ? 'bg-gray-50' : ''
                     }`}
-                    style={isSelected ? { background: '#316ac5', color: 'white' } : undefined}
                   >
                     <td className="px-1 py-1">
                       <div className="font-semibold">{formatTime(apt.appointmentTime)}</div>
