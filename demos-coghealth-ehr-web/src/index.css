@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Tahoma&display=swap');
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary-50: #e8f4fc;
   --color-primary-100: #d1e9f9;
@@ -236,3 +238,309 @@ td {
 .ehr-splitter:hover {
   background: #b0b0b0;
 }
+
+/* ============================================================
+   Themed surface helpers
+   These replace inline background colors so they can respond
+   to the active theme. Light values match the original look.
+   ============================================================ */
+.ehr-app-bg {
+  background: #d4d0c8;
+}
+
+.ehr-surface-alt {
+  background: #ece9d8;
+}
+
+.ehr-surface {
+  background: #f5f5f5;
+}
+
+.ehr-surface-strip {
+  background: #e8e8e8;
+}
+
+.ehr-surface-raised {
+  background: linear-gradient(to bottom, #f8f8f8 0%, #e0e0e0 100%);
+}
+
+.ehr-titlebar {
+  background: linear-gradient(to bottom, #6699cc 0%, #336699 100%);
+}
+
+.ehr-dialog-body {
+  background: #ece9d8;
+}
+
+.ehr-statusbar {
+  background: linear-gradient(to bottom, #ece9d8 0%, #d4d0c8 100%);
+}
+
+/* ============================================================
+   Dark mode
+   Activated by the `.dark` class on <html> (see src/lib/theme.tsx).
+   Rules are intentionally unlayered so they take precedence over
+   Tailwind's layered color utilities.
+   ============================================================ */
+.dark body {
+  background-color: #161619;
+  color: #d4d4d8;
+}
+
+.dark th {
+  background: linear-gradient(to bottom, #2f2f37 0%, #26262b 100%);
+  border: 1px solid #45454f;
+  color: #d4d4d8;
+}
+
+.dark td {
+  border: 1px solid #33333b;
+}
+
+/* EHR chrome */
+.dark .ehr-panel {
+  background: #26262b;
+  border: 1px solid #3a3a42;
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.04), 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.dark .ehr-button {
+  background: linear-gradient(to bottom, #3a3a42 0%, #2b2b31 100%);
+  border: 1px solid #52525b;
+  color: #d4d4d8;
+  box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.05) inset, -1px -1px 0 rgba(0, 0, 0, 0.4) inset;
+}
+
+.dark .ehr-button:hover {
+  background: linear-gradient(to bottom, #45454f 0%, #33333b 100%);
+}
+
+.dark .ehr-button:active {
+  background: linear-gradient(to bottom, #26262b 0%, #2b2b31 100%);
+  box-shadow: -1px -1px 0 rgba(255, 255, 255, 0.05) inset, 1px 1px 0 rgba(0, 0, 0, 0.4) inset;
+}
+
+.dark .ehr-button-primary {
+  background: linear-gradient(to bottom, #2f6db5 0%, #1d4e8c 100%);
+  border: 1px solid #14365f;
+  color: #ffffff;
+}
+
+.dark .ehr-button-primary:hover {
+  background: linear-gradient(to bottom, #3a7ec5 0%, #275ea0 100%);
+}
+
+.dark .ehr-input {
+  border: 1px solid #4a4a55;
+  background: #1f1f24;
+  color: #e4e4e7;
+}
+
+.dark .ehr-input:focus {
+  border-color: #4a90d9;
+  box-shadow: 0 0 2px rgba(74, 144, 217, 0.6);
+}
+
+.dark .ehr-fieldset {
+  border: 1px solid #3a3a42;
+  background: #1f1f24;
+}
+
+.dark .ehr-fieldset legend {
+  color: #c8c8ce;
+}
+
+.dark .ehr-label {
+  color: #c8c8ce;
+}
+
+.dark .ehr-header {
+  background: linear-gradient(to bottom, #2a4a73 0%, #1c3354 100%);
+  color: #ffffff;
+  border-bottom: 1px solid #14365f;
+}
+
+.dark .ehr-subheader {
+  background: linear-gradient(to bottom, #33333b 0%, #2b2b31 100%);
+  color: #d4d4d8;
+  border-bottom: 1px solid #45454f;
+}
+
+.dark .ehr-tree-item:hover {
+  background: #2c3a4d;
+}
+
+.dark .ehr-tree-item.selected {
+  background: #2f6db5;
+  color: #ffffff;
+}
+
+.dark .ehr-status-bar {
+  background: #1f1f24;
+  border-top: 1px solid #3a3a42;
+  color: #b4b4bb;
+}
+
+.dark .ehr-tab {
+  background: linear-gradient(to bottom, #33333b 0%, #2b2b31 100%);
+  border: 1px solid #52525b;
+  border-bottom: none;
+  color: #d4d4d8;
+}
+
+.dark .ehr-tab.active {
+  background: #26262b;
+  border-bottom: 1px solid #26262b;
+}
+
+.dark .ehr-tab-content {
+  border: 1px solid #52525b;
+  background: #26262b;
+}
+
+.dark .ehr-grid-row:nth-child(even) {
+  background: #232328;
+}
+
+.dark .ehr-grid-row:hover {
+  background: #2c3a4d;
+}
+
+.dark .ehr-grid-row.selected {
+  background: #2f6db5;
+  color: #ffffff;
+}
+
+.dark .ehr-alert-critical {
+  background: #3a1f1f;
+  border: 1px solid #cc4444;
+  color: #ff9e9e;
+}
+
+.dark .ehr-alert-warning {
+  background: #3a341c;
+  border: 1px solid #cca300;
+  color: #f5d77a;
+}
+
+.dark .ehr-alert-info {
+  background: #1c2a3a;
+  border: 1px solid #3a7ec5;
+  color: #9ec8f5;
+}
+
+.dark .ehr-toolbar {
+  background: linear-gradient(to bottom, #26262b 0%, #1f1f24 100%);
+  border-bottom: 1px solid #3a3a42;
+}
+
+.dark .ehr-toolbar-button {
+  color: #d4d4d8;
+}
+
+.dark .ehr-toolbar-button:hover {
+  background: #2c3a4d;
+  border: 1px solid #45454f;
+}
+
+.dark .ehr-toolbar-button-active {
+  background: linear-gradient(to bottom, #33333b 0%, #2b2b31 100%);
+  border: 1px solid #52525b;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.dark .ehr-splitter {
+  background: #161619;
+}
+
+.dark .ehr-splitter:hover {
+  background: #3a3a42;
+}
+
+/* Themed surface helpers (dark) */
+.dark .ehr-app-bg {
+  background: #161619;
+}
+
+.dark .ehr-surface-alt {
+  background: #1f1f24;
+}
+
+.dark .ehr-surface {
+  background: #26262b;
+}
+
+.dark .ehr-surface-strip {
+  background: #2b2b31;
+}
+
+.dark .ehr-surface-raised {
+  background: linear-gradient(to bottom, #2f2f37 0%, #26262b 100%);
+}
+
+.dark .ehr-titlebar {
+  background: linear-gradient(to bottom, #2a4a73 0%, #1c3354 100%);
+}
+
+.dark .ehr-dialog-body {
+  background: #1f1f24;
+}
+
+.dark .ehr-statusbar {
+  background: linear-gradient(to bottom, #202024 0%, #161619 100%);
+}
+
+/* ------------------------------------------------------------
+   Tailwind color-utility overrides for dark mode.
+   Background surfaces
+   ------------------------------------------------------------ */
+.dark .bg-white { background-color: #26262b; }
+.dark .bg-gray-50 { background-color: #232328; }
+.dark .bg-gray-100 { background-color: #2b2b31; }
+.dark .bg-gray-200 { background-color: #33333b; }
+.dark .bg-gray-300 { background-color: #3c3c45; }
+.dark .bg-gray-400 { background-color: #45454f; }
+.dark .bg-gray-500 { background-color: #52525b; }
+.dark .bg-gray-600 { background-color: #5a5a64; }
+.dark .bg-blue-50 { background-color: #1c2a3a; }
+.dark .bg-blue-100 { background-color: #243449; }
+.dark .bg-red-50 { background-color: #3a2020; }
+.dark .bg-red-100 { background-color: #45262a; }
+.dark .bg-yellow-100 { background-color: #3a341c; }
+.dark .bg-green-100 { background-color: #1f3a2a; }
+
+.dark .bg-\[\#ece9d8\] { background-color: #1f1f24; }
+.dark .bg-\[\#e0e8f0\] { background-color: #2c3a4d; }
+.dark .bg-\[\#f8f8f8\] { background-color: #2b2b31; }
+
+/* Hover background variants */
+.dark .hover\:bg-gray-50:hover { background-color: #2b2b31; }
+.dark .hover\:bg-gray-100:hover { background-color: #313139; }
+.dark .hover\:bg-gray-200:hover { background-color: #3a3a44; }
+.dark .hover\:bg-blue-50:hover { background-color: #243449; }
+.dark .hover\:bg-blue-100:hover { background-color: #2c3f57; }
+
+/* Text colors (only darken the variants meant for light backgrounds;
+   gray-100/200/300 stay light because they sit on dark/colored chrome) */
+.dark .text-gray-500 { color: #a1a1aa; }
+.dark .text-gray-600 { color: #b4b4bb; }
+.dark .text-gray-700 { color: #c8c8ce; }
+.dark .text-gray-800 { color: #dcdce0; }
+.dark .text-gray-900 { color: #ededf0; }
+
+/* Semantic text: lighten the darkest variants so they stay legible */
+.dark .text-red-700, .dark .text-red-800, .dark .text-red-900 { color: #f87171; }
+.dark .text-green-700, .dark .text-green-800 { color: #4ade80; }
+.dark .text-yellow-700, .dark .text-yellow-800 { color: #fbbf24; }
+.dark .text-amber-600, .dark .text-amber-700 { color: #fbbf24; }
+.dark .text-purple-600, .dark .text-purple-800 { color: #c084fc; }
+.dark .text-orange-600, .dark .text-orange-800 { color: #fb923c; }
+.dark .text-blue-600, .dark .text-blue-800 { color: #60a5fa; }
+
+/* Borders */
+.dark .border-gray-200 { border-color: #2f2f37; }
+.dark .border-gray-300 { border-color: #36363e; }
+.dark .border-gray-400 { border-color: #45454f; }
+.dark .border-gray-500 { border-color: #52525b; }
+.dark .border-gray-600 { border-color: #5a5a64; }
+.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) { border-color: #2f2f37; }
