@@ -11,16 +11,23 @@ import type { Theme } from './theme';
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => readStoredTheme());
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>(() =>
+    resolveTheme(theme),
+  );
 
   useEffect(() => {
     applyTheme(theme);
     persistTheme(theme);
+    setResolvedTheme(resolveTheme(theme));
   }, [theme]);
 
   useEffect(() => {
     if (theme !== 'system') return;
     const media = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = () => applyTheme('system');
+    const handler = () => {
+      applyTheme('system');
+      setResolvedTheme(resolveTheme('system'));
+    };
     media.addEventListener('change', handler);
     return () => media.removeEventListener('change', handler);
   }, [theme]);
@@ -33,7 +40,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   return (
     <ThemeContext.Provider
-      value={{ theme, resolvedTheme: resolveTheme(theme), setTheme, toggleTheme }}
+      value={{ theme, resolvedTheme, setTheme, toggleTheme }}
     >
       {children}
     </ThemeContext.Provider>
