@@ -48,8 +48,9 @@ public class SecurityConfig {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
             .and()
             .authorizeRequests()
-                .antMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                .antMatchers("/api/auth/login").permitAll()
                 .antMatchers("/actuator/health", "/actuator/info").permitAll()
+                .antMatchers("/api/auth/register").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
