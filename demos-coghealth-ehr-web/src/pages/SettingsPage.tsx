@@ -14,6 +14,8 @@ import {
   Check
 } from 'lucide-react';
 import { AlertDialog } from '../components/ui/Modal';
+import { useTheme } from '../theme';
+import type { Theme } from '../theme';
 
 type SettingsTab = 'profile' | 'notifications' | 'security' | 'appearance' | 'practice';
 
@@ -55,6 +57,7 @@ const defaultAppearance = {
 };
 
 export default function SettingsPage() {
+  const { theme: currentTheme, setTheme } = useTheme();
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
   const [saved, setSaved] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['channels', 'alerts', 'security', 'hours']));
@@ -99,13 +102,13 @@ export default function SettingsPage() {
   ];
 
   const handleSave = () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ profile, notifications, appearance }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ profile, notifications, appearance: { ...appearance, theme: currentTheme } }));
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="ehr-app-bg h-full flex flex-col">
       {/* Header */}
       <div className="ehr-header flex items-center justify-between">
         <span>System Settings</span>
@@ -121,7 +124,7 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Navigation */}
-        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: '#ece9d8' }}>
+        <div className="ehr-sidebar-bg w-48 overflow-auto p-2 space-y-1">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -385,12 +388,15 @@ export default function SettingsPage() {
               <fieldset className="ehr-fieldset">
                 <legend>Theme</legend>
                 <div className="grid grid-cols-3 gap-2">
-                  {['light', 'dark', 'system'].map((theme) => (
+                  {(['light', 'dark', 'system'] as Theme[]).map((theme) => (
                     <button
                       key={theme}
-                      onClick={() => setAppearance({ ...appearance, theme })}
+                      onClick={() => {
+                        setTheme(theme);
+                        setAppearance({ ...appearance, theme });
+                      }}
                       className={`p-2 border text-center text-[11px] ${
-                        appearance.theme === theme
+                        currentTheme === theme
                           ? 'border-gray-600 bg-white'
                           : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
                       }`}

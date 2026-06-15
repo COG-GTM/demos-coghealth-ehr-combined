@@ -55,13 +55,13 @@ export function Modal({ isOpen, onClose, title, children, width = 'md', footer }
           </div>
           
           {/* Content */}
-          <div className="flex-1 overflow-auto p-3 bg-[#ece9d8]">
+          <div className="flex-1 overflow-auto p-3 bg-[#ece9d8] dark:bg-[#232327]">
             {children}
           </div>
           
           {/* Footer */}
           {footer && (
-            <div className="px-3 py-2 bg-[#ece9d8] border-t border-gray-400 flex justify-end space-x-2">
+            <div className="px-3 py-2 bg-[#ece9d8] dark:bg-[#232327] border-t border-gray-400 flex justify-end space-x-2">
               {footer}
             </div>
           )}
@@ -113,7 +113,7 @@ export function ConfirmDialog({
         </>
       }
     >
-      <p className="text-[11px] text-gray-700">{message}</p>
+      <p className="text-[11px] text-gray-700 dark:text-gray-200">{message}</p>
     </Modal>
   );
 }
@@ -128,10 +128,10 @@ interface AlertDialogProps {
 
 export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: AlertDialogProps) {
   const bgColors = {
-    info: '#cce5ff',
-    success: '#d4edda',
-    warning: '#fff3cd',
-    error: '#f8d7da',
+    info: 'bg-[#cce5ff] dark:bg-[#1e2a3a]',
+    success: 'bg-[#d4edda] dark:bg-[#16321f]',
+    warning: 'bg-[#fff3cd] dark:bg-[#332b14]',
+    error: 'bg-[#f8d7da] dark:bg-[#3a1f22]',
   };
   
   return (
@@ -146,8 +146,8 @@ export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: 
         </button>
       }
     >
-      <div className="p-2 border border-gray-400" style={{ background: bgColors[type] }}>
-        <p className="text-[11px]">{message}</p>
+      <div className={`p-2 border border-gray-400 ${bgColors[type]}`}>
+        <p className="text-[11px] text-gray-800 dark:text-gray-100">{message}</p>
       </div>
     </Modal>
   );

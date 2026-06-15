@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Tahoma&display=swap');
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary-50: #e8f4fc;
   --color-primary-100: #d1e9f9;
@@ -235,4 +237,262 @@ td {
 
 .ehr-splitter:hover {
   background: #b0b0b0;
+}
+
+/* Themeable application surfaces (replace inline #d4d0c8 / #ece9d8 backgrounds) */
+.ehr-app-bg {
+  background: #d4d0c8;
+}
+
+.ehr-sidebar-bg {
+  background: #ece9d8;
+}
+
+/* ============================================================
+   Dark mode
+   The app uses many hard-coded light utility/custom classes, so
+   dark mode is implemented as a set of scoped overrides under
+   `.dark`. Unlayered CSS wins over Tailwind's layered utilities.
+   ============================================================ */
+.dark {
+  color-scheme: dark;
+}
+
+.dark body {
+  background-color: #1b1b1d;
+  color: #e4e4e7;
+}
+
+.dark .ehr-app-bg {
+  background: #1b1b1d;
+}
+
+.dark .ehr-sidebar-bg {
+  background: #232327;
+}
+
+/* Tables */
+.dark table {
+  color: #e4e4e7;
+}
+
+.dark th {
+  background: linear-gradient(to bottom, #2e2e33 0%, #26262a 100%);
+  border-color: #3a3a40;
+  color: #e4e4e7;
+}
+
+.dark td {
+  border-color: #3a3a40;
+}
+
+/* Panels / chrome */
+.dark .ehr-panel {
+  background: #26262a;
+  border-color: #3a3a40;
+  box-shadow: inset 1px 1px 0 #3a3a40, 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.dark .ehr-button {
+  background: linear-gradient(to bottom, #34343a 0%, #2a2a2e 100%);
+  border-color: #4a4a52;
+  color: #e4e4e7;
+  box-shadow: 1px 1px 0 #43434a inset, -1px -1px 0 #1c1c1f inset;
+}
+
+.dark .ehr-button:hover {
+  background: linear-gradient(to bottom, #3e3e45 0%, #303036 100%);
+}
+
+.dark .ehr-button:active {
+  background: linear-gradient(to bottom, #232327 0%, #2a2a2e 100%);
+  box-shadow: -1px -1px 0 #43434a inset, 1px 1px 0 #1c1c1f inset;
+}
+
+.dark .ehr-input {
+  background: #1f1f23;
+  border-color: #4a4a52;
+  color: #e4e4e7;
+}
+
+.dark .ehr-input::placeholder {
+  color: #8a8a92;
+}
+
+.dark .ehr-fieldset {
+  background: #232327;
+  border-color: #3a3a40;
+}
+
+.dark .ehr-fieldset legend,
+.dark .ehr-label {
+  color: #cfcfd4;
+}
+
+.dark .ehr-subheader {
+  background: linear-gradient(to bottom, #2e2e33 0%, #26262a 100%);
+  color: #cfcfd4;
+  border-color: #3a3a40;
+}
+
+.dark .ehr-tree-item:hover {
+  background: #2f3640;
+}
+
+.dark .ehr-status-bar {
+  background: #232327;
+  border-color: #3a3a40;
+  color: #b4b4ba;
+}
+
+.dark .ehr-tab {
+  background: linear-gradient(to bottom, #34343a 0%, #2a2a2e 100%);
+  border-color: #4a4a52;
+  color: #e4e4e7;
+}
+
+.dark .ehr-tab.active {
+  background: #1f1f23;
+  border-bottom-color: #1f1f23;
+}
+
+.dark .ehr-tab-content {
+  background: #1f1f23;
+  border-color: #4a4a52;
+}
+
+.dark .ehr-grid-row:nth-child(even) {
+  background: #232a31;
+}
+
+.dark .ehr-grid-row:hover {
+  background: #2f3a45;
+}
+
+.dark .ehr-toolbar {
+  background: linear-gradient(to bottom, #2a2a2e 0%, #232327 100%);
+  border-color: #3a3a40;
+}
+
+.dark .ehr-toolbar-button {
+  color: #d4d4d9;
+}
+
+.dark .ehr-toolbar-button:hover {
+  background: #2f3640;
+  border-color: #4a4a52;
+}
+
+.dark .ehr-toolbar-button-active {
+  background: linear-gradient(to bottom, #34343a 0%, #2a2a2e 100%);
+  border-color: #4a4a52;
+}
+
+.dark .ehr-splitter {
+  background: #1b1b1d;
+}
+
+.dark .ehr-splitter:hover {
+  background: #3a3a40;
+}
+
+/* ---- Common Tailwind utility overrides (scoped to dark) ---- */
+.dark .bg-white {
+  background-color: #1f1f23 !important;
+}
+
+.dark .bg-gray-50 {
+  background-color: #232327 !important;
+}
+
+.dark .bg-gray-100 {
+  background-color: #26262a !important;
+}
+
+.dark .bg-gray-200 {
+  background-color: #2c2c31 !important;
+}
+
+.dark .bg-gray-300 {
+  background-color: #34343a !important;
+}
+
+.dark .bg-gray-400,
+.dark .bg-gray-500,
+.dark .bg-gray-600 {
+  background-color: #43434a !important;
+}
+
+.dark .text-black,
+.dark .text-gray-900,
+.dark .text-gray-800 {
+  color: #e7e7ea !important;
+}
+
+.dark .text-gray-700,
+.dark .text-gray-600 {
+  color: #c2c2c8 !important;
+}
+
+.dark .text-gray-500,
+.dark .text-gray-400 {
+  color: #9a9aa2 !important;
+}
+
+.dark .text-gray-200 {
+  color: #6b6b73 !important;
+}
+
+.dark .border-gray-200 {
+  border-color: #2c2c31 !important;
+}
+
+.dark .border-gray-300 {
+  border-color: #34343a !important;
+}
+
+.dark .border-gray-400 {
+  border-color: #3f3f46 !important;
+}
+
+.dark .border-gray-500,
+.dark .border-gray-600,
+.dark .border-gray-700 {
+  border-color: #4a4a52 !important;
+}
+
+.dark .bg-blue-50,
+.dark .bg-blue-100 {
+  background-color: #1e2a3a !important;
+}
+
+.dark .bg-red-50,
+.dark .bg-red-100 {
+  background-color: #3a1f22 !important;
+}
+
+.dark .bg-green-100 {
+  background-color: #1d3324 !important;
+}
+
+/* Hover utility overrides */
+.dark .hover\:bg-gray-50:hover {
+  background-color: #2a2a2e !important;
+}
+
+.dark .hover\:bg-gray-100:hover {
+  background-color: #2c2c31 !important;
+}
+
+.dark .hover\:bg-gray-200:hover {
+  background-color: #34343a !important;
+}
+
+.dark .hover\:bg-white:hover {
+  background-color: #2a2a2e !important;
+}
+
+.dark .hover\:bg-blue-50:hover,
+.dark .hover\:bg-blue-100:hover {
+  background-color: #24344a !important;
 }
