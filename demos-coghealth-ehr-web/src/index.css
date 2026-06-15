@@ -276,6 +276,11 @@ td {
   background: linear-gradient(to bottom, #ece9d8 0%, #d4d0c8 100%);
 }
 
+.ehr-alertbox-info { background: #cce5ff; }
+.ehr-alertbox-success { background: #d4edda; }
+.ehr-alertbox-warning { background: #fff3cd; }
+.ehr-alertbox-error { background: #f8d7da; }
+
 /* ============================================================
    Dark mode
    Activated by the `.dark` class on <html> (see src/lib/theme.tsx).
@@ -489,6 +494,11 @@ td {
 .dark .ehr-statusbar {
   background: linear-gradient(to bottom, #202024 0%, #161619 100%);
 }
+
+.dark .ehr-alertbox-info { background: #1c2a3a; color: #9ec8f5; }
+.dark .ehr-alertbox-success { background: #1f3a2a; color: #7ee0a1; }
+.dark .ehr-alertbox-warning { background: #3a341c; color: #f5d77a; }
+.dark .ehr-alertbox-error { background: #3a2020; color: #ff9e9e; }
 
 /* ------------------------------------------------------------
    Tailwind color-utility overrides for dark mode.

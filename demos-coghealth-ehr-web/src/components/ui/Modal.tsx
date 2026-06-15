@@ -124,13 +124,13 @@ interface AlertDialogProps {
 }
 
 export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: AlertDialogProps) {
-  const bgColors = {
-    info: '#cce5ff',
-    success: '#d4edda',
-    warning: '#fff3cd',
-    error: '#f8d7da',
+  const typeClasses = {
+    info: 'ehr-alertbox-info',
+    success: 'ehr-alertbox-success',
+    warning: 'ehr-alertbox-warning',
+    error: 'ehr-alertbox-error',
   };
-  
+
   return (
     <Modal
       isOpen={isOpen}
@@ -143,7 +143,7 @@ export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: 
         </button>
       }
     >
-      <div className="p-2 border border-gray-400" style={{ background: bgColors[type] }}>
+      <div className={`p-2 border border-gray-400 ${typeClasses[type]}`}>
         <p className="text-[11px]">{message}</p>
       </div>
     </Modal>
