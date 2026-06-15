@@ -296,6 +296,16 @@ td {
   box-shadow: -1px -1px 0 #4a4a50 inset, 1px 1px 0 #1a1a1c inset;
 }
 
+.dark .ehr-button-primary {
+  background: linear-gradient(to bottom, #3a7bd5 0%, #2558a3 100%);
+  border-color: #1a4080;
+  color: white;
+}
+
+.dark .ehr-button-primary:hover {
+  background: linear-gradient(to bottom, #4a8be5 0%, #3568b3 100%);
+}
+
 .dark .ehr-input {
   background: #1d1d20;
   border-color: #55555c;
