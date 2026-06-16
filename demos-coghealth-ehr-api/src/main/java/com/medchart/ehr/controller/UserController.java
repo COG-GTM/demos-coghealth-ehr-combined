@@ -42,6 +42,9 @@ public class UserController {
     @PutMapping("/{id}/roles")
     public ResponseEntity<UserDTO> updateRoles(@PathVariable Long id,
                                                @RequestBody UpdateRolesRequest request) {
+        if (request.getRoles() == null || request.getRoles().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
         return userService.updateRoles(id, request.getRoles())
                 .map(UserDTO::fromEntity)
                 .map(ResponseEntity::ok)
