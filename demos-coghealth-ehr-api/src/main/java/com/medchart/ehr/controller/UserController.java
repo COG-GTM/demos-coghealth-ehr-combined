@@ -3,7 +3,9 @@ package com.medchart.ehr.controller;
 import com.medchart.ehr.domain.auth.User;
 import com.medchart.ehr.dto.UserDTO;
 import com.medchart.ehr.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,9 +43,13 @@ public class UserController {
 
     @PutMapping("/{id}/roles")
     public ResponseEntity<UserDTO> updateRoles(@PathVariable Long id,
-                                               @RequestBody UpdateRolesRequest request) {
+                                               @RequestBody UpdateRolesRequest request,
+                                               @AuthenticationPrincipal User currentUser) {
         if (request.getRoles() == null || request.getRoles().isEmpty()) {
             return ResponseEntity.badRequest().build();
+        }
+        if (isSelf(currentUser, id)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
         return userService.updateRoles(id, request.getRoles())
                 .map(UserDTO::fromEntity)
@@ -53,18 +59,34 @@ public class UserController {
 
     @PutMapping("/{id}/status")
     public ResponseEntity<UserDTO> updateStatus(@PathVariable Long id,
-                                                @RequestBody UpdateStatusRequest request) {
-        return userService.updateEnabled(id, request.isEnabled())
+                                                @RequestBody UpdateStatusRequest request,
+                                                @AuthenticationPrincipal User currentUser) {
+        if (request.getEnabled() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (isSelf(currentUser, id)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        return userService.updateEnabled(id, request.getEnabled())
                 .map(UserDTO::fromEntity)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id,
+                                       @AuthenticationPrincipal User currentUser) {
+        if (isSelf(currentUser, id)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
         return userService.delete(id)
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();
+    }
+
+    /** Guards against an admin modifying or removing their own account (which could lock everyone out). */
+    private boolean isSelf(User currentUser, Long targetId) {
+        return currentUser != null && targetId.equals(currentUser.getId());
     }
 
     public static class UpdateRolesRequest {
@@ -75,9 +97,9 @@ public class UserController {
     }
 
     public static class UpdateStatusRequest {
-        private boolean enabled;
+        private Boolean enabled;
 
-        public boolean isEnabled() { return enabled; }
-        public void setEnabled(boolean enabled) { this.enabled = enabled; }
+        public Boolean getEnabled() { return enabled; }
+        public void setEnabled(Boolean enabled) { this.enabled = enabled; }
     }
 }
