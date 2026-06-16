@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useSyncExternalStore } from 'react';
 
 export type Theme = 'light' | 'dark' | 'system';
 
@@ -22,31 +22,72 @@ export function resolveTheme(theme: Theme): 'light' | 'dark' {
 }
 
 export function applyTheme(theme: Theme) {
-  const root = document.documentElement;
-  root.classList.toggle('dark', resolveTheme(theme) === 'dark');
+  document.documentElement.classList.toggle('dark', resolveTheme(theme) === 'dark');
+}
+
+/**
+ * Shared external store so every `useTheme` consumer stays in sync and so OS
+ * color-scheme changes trigger a re-render. The snapshot encodes both the chosen
+ * theme and the resolved theme, so `system` -> OS flip changes the snapshot even
+ * though the chosen theme is unchanged.
+ */
+const listeners = new Set<() => void>();
+let snapshot = '';
+
+function computeSnapshot(): string {
+  const theme = getStoredTheme();
+  return `${theme}:${resolveTheme(theme)}`;
+}
+
+function emit() {
+  const theme = getStoredTheme();
+  applyTheme(theme);
+  const next = computeSnapshot();
+  if (next !== snapshot) {
+    snapshot = next;
+    listeners.forEach((listener) => listener());
+  }
+}
+
+if (typeof window !== 'undefined') {
+  snapshot = computeSnapshot();
+  window
+    .matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', emit);
+  window.addEventListener('storage', (e) => {
+    if (e.key === STORAGE_KEY) emit();
+  });
+}
+
+function subscribe(callback: () => void): () => void {
+  listeners.add(callback);
+  return () => listeners.delete(callback);
+}
+
+function getSnapshot(): string {
+  return snapshot;
+}
+
+function getServerSnapshot(): string {
+  return 'system:light';
+}
+
+export function setTheme(next: Theme) {
+  localStorage.setItem(STORAGE_KEY, next);
+  emit();
+}
+
+export function toggleTheme() {
+  setTheme(resolveTheme(getStoredTheme()) === 'dark' ? 'light' : 'dark');
 }
 
 export function useTheme() {
-  const [theme, setThemeState] = useState<Theme>(getStoredTheme);
-
-  const setTheme = useCallback((next: Theme) => {
-    localStorage.setItem(STORAGE_KEY, next);
-    setThemeState(next);
-    applyTheme(next);
-  }, []);
-
-  const toggleTheme = useCallback(() => {
-    setTheme(resolveTheme(getStoredTheme()) === 'dark' ? 'light' : 'dark');
-  }, [setTheme]);
-
-  useEffect(() => {
-    applyTheme(theme);
-    if (theme !== 'system') return;
-    const media = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = () => applyTheme('system');
-    media.addEventListener('change', handler);
-    return () => media.removeEventListener('change', handler);
-  }, [theme]);
-
-  return { theme, resolvedTheme: resolveTheme(theme), setTheme, toggleTheme };
+  const snap = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const theme = snap.split(':')[0] as Theme;
+  return {
+    theme,
+    resolvedTheme: resolveTheme(theme),
+    setTheme: useCallback((next: Theme) => setTheme(next), []),
+    toggleTheme: useCallback(() => toggleTheme(), []),
+  };
 }
