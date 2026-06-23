@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Tahoma&display=swap');
 
+/* Enable class-based dark mode: `<html class="dark">` toggles the variant */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary-50: #e8f4fc;
   --color-primary-100: #d1e9f9;
@@ -17,9 +20,36 @@
   --font-family-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Theme tokens — light (default) */
+:root {
+  --ehr-desktop: #d4d0c8;
+  --ehr-text: #333333;
+  --ehr-text-muted: #666666;
+  --ehr-surface: #f5f5f5;
+  --ehr-surface-2: #fafafa;
+  --ehr-surface-input: #ffffff;
+  --ehr-border: #999999;
+  --ehr-border-light: #cccccc;
+  --ehr-statusbar: #ece9d8;
+}
+
+/* Theme tokens — dark */
+.dark {
+  --ehr-desktop: #14171c;
+  --ehr-text: #d7dbe0;
+  --ehr-text-muted: #9aa3ad;
+  --ehr-surface: #21262e;
+  --ehr-surface-2: #272d36;
+  --ehr-surface-input: #1b1f25;
+  --ehr-border: #3a414c;
+  --ehr-border-light: #333a44;
+  --ehr-statusbar: #1b1f25;
+}
+
 body {
   font-size: 11px;
-  background-color: #d4d0c8;
+  background-color: var(--ehr-desktop);
+  color: var(--ehr-text);
 }
 
 input, select, textarea, button {
@@ -32,17 +62,28 @@ table {
 
 th {
   background: linear-gradient(to bottom, #f8f8f8 0%, #e8e8e8 100%);
-  border: 1px solid #999;
+  border: 1px solid var(--ehr-border);
   font-weight: 600;
 }
 
 td {
-  border: 1px solid #ccc;
+  border: 1px solid var(--ehr-border-light);
+}
+
+/* Desktop shell + status bar (driven by App.tsx) */
+.ehr-desktop-bg {
+  background: var(--ehr-desktop);
+}
+
+.ehr-statusbar {
+  background: var(--ehr-statusbar);
+  border-top: 1px solid var(--ehr-border-light);
+  color: var(--ehr-text-muted);
 }
 
 .ehr-panel {
-  background: #f5f5f5;
-  border: 1px solid #999;
+  background: var(--ehr-surface);
+  border: 1px solid var(--ehr-border);
   box-shadow: inset 1px 1px 0 #fff, 1px 1px 2px rgba(0,0,0,0.1);
 }
 
@@ -77,7 +118,8 @@ td {
 .ehr-input {
   border: 1px solid #7f9db9;
   padding: 2px 4px;
-  background: white;
+  background: var(--ehr-surface-input);
+  color: var(--ehr-text);
   font-size: 11px;
 }
 
@@ -88,16 +130,16 @@ td {
 }
 
 .ehr-fieldset {
-  border: 1px solid #999;
+  border: 1px solid var(--ehr-border);
   padding: 8px;
   margin: 4px 0;
-  background: #fafafa;
+  background: var(--ehr-surface-2);
 }
 
 .ehr-fieldset legend {
   font-weight: 600;
   padding: 0 4px;
-  color: #333;
+  color: var(--ehr-text);
 }
 
 .ehr-checkbox {
@@ -105,7 +147,7 @@ td {
 }
 
 .ehr-label {
-  color: #333;
+  color: var(--ehr-text);
   font-size: 11px;
 }
 
@@ -122,7 +164,7 @@ td {
   color: #333;
   padding: 2px 6px;
   font-weight: 600;
-  border-bottom: 1px solid #999;
+  border-bottom: 1px solid var(--ehr-border);
   font-size: 10px;
 }
 
@@ -141,11 +183,11 @@ td {
 }
 
 .ehr-status-bar {
-  background: #ece9d8;
+  background: var(--ehr-statusbar);
   border-top: 1px solid #fff;
   padding: 2px 8px;
   font-size: 10px;
-  color: #333;
+  color: var(--ehr-text);
 }
 
 .ehr-tab {
@@ -159,8 +201,8 @@ td {
 }
 
 .ehr-tab.active {
-  background: #fff;
-  border-bottom: 1px solid #fff;
+  background: var(--ehr-surface-input);
+  border-bottom: 1px solid var(--ehr-surface-input);
   margin-bottom: -1px;
   position: relative;
   z-index: 1;
@@ -168,7 +210,7 @@ td {
 
 .ehr-tab-content {
   border: 1px solid #888;
-  background: #fff;
+  background: var(--ehr-surface-input);
   padding: 8px;
 }
 
@@ -205,7 +247,7 @@ td {
 
 .ehr-toolbar {
   background: linear-gradient(to bottom, #f5f5f5 0%, #e5e5e5 100%);
-  border-bottom: 1px solid #999;
+  border-bottom: 1px solid var(--ehr-border);
   padding: 2px 4px;
 }
 
@@ -228,7 +270,7 @@ td {
 }
 
 .ehr-splitter {
-  background: #d4d0c8;
+  background: var(--ehr-desktop);
   cursor: col-resize;
   width: 4px;
 }
@@ -236,3 +278,152 @@ td {
 .ehr-splitter:hover {
   background: #b0b0b0;
 }
+
+/* ============================================================
+   DARK MODE
+   The pages use ~700 hard-coded Tailwind utility colors, so the
+   utility overrides below remap the common ones in one place
+   instead of editing every component.
+   ============================================================ */
+.dark th {
+  background: linear-gradient(to bottom, #2c333d 0%, #232a32 100%);
+  color: var(--ehr-text);
+}
+
+.dark .ehr-panel {
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.04), 1px 1px 2px rgba(0,0,0,0.4);
+}
+
+.dark .ehr-button {
+  background: linear-gradient(to bottom, #2f3640 0%, #262c34 100%);
+  border-color: #454d59;
+  color: var(--ehr-text);
+  box-shadow: 1px 1px 0 rgba(255,255,255,0.05) inset, -1px -1px 0 rgba(0,0,0,0.4) inset;
+}
+
+.dark .ehr-button:hover {
+  background: linear-gradient(to bottom, #39414c 0%, #2c333d 100%);
+}
+
+.dark .ehr-button-primary {
+  background: linear-gradient(to bottom, #2f6db5 0%, #1f4d87 100%);
+  border-color: #14365f;
+  color: #fff;
+}
+
+.dark .ehr-subheader {
+  background: linear-gradient(to bottom, #2c333d 0%, #232a32 100%);
+  color: var(--ehr-text);
+}
+
+.dark .ehr-toolbar {
+  background: linear-gradient(to bottom, #232a32 0%, #1c222a 100%);
+}
+
+.dark .ehr-toolbar-button {
+  color: var(--ehr-text);
+}
+
+.dark .ehr-toolbar-button:hover {
+  background: #2c333d;
+  border-color: #454d59;
+}
+
+.dark .ehr-toolbar-button-active {
+  background: linear-gradient(to bottom, #39414c 0%, #2c333d 100%);
+  border-color: #454d59;
+}
+
+.dark .ehr-tab {
+  background: linear-gradient(to bottom, #2c333d 0%, #232a32 100%);
+  border-color: #454d59;
+  color: var(--ehr-text);
+}
+
+.dark .ehr-tree-item:hover {
+  background: #2c333d;
+}
+
+.dark .ehr-grid-row:nth-child(even) {
+  background: #232a32;
+}
+
+.dark .ehr-grid-row:hover {
+  background: #2c3947;
+}
+
+.dark .ehr-alert-critical {
+  background: #3a1f22; border-color: #a33; color: #ffb3b3;
+}
+
+.dark .ehr-alert-warning {
+  background: #38311a; border-color: #b9933a; color: #ffe08a;
+}
+
+.dark .ehr-alert-info {
+  background: #1c2c3f; border-color: #2f6db5; color: #9ecbff;
+}
+
+/* Tailwind utility remaps under .dark (surfaces) */
+.dark .bg-white { background-color: var(--ehr-surface) !important; }
+.dark .bg-gray-50,
+.dark .bg-gray-100,
+.dark .bg-slate-50,
+.dark .bg-slate-100 { background-color: var(--ehr-surface-2) !important; }
+.dark .bg-gray-200,
+.dark .bg-gray-300,
+.dark .bg-slate-200,
+.dark .bg-slate-300 { background-color: #2c333d !important; }
+
+/* tinted accent backgrounds */
+.dark .bg-blue-50,
+.dark .bg-blue-100,
+.dark .bg-primary-50,
+.dark .bg-primary-100 { background-color: #1c2c3f !important; }
+.dark .bg-green-50,
+.dark .bg-green-100 { background-color: #16291f !important; }
+.dark .bg-red-50,
+.dark .bg-red-100 { background-color: #2f1c1f !important; }
+.dark .bg-yellow-50,
+.dark .bg-yellow-100,
+.dark .bg-amber-50,
+.dark .bg-amber-100 { background-color: #322a16 !important; }
+
+/* text */
+.dark .text-gray-900,
+.dark .text-gray-800,
+.dark .text-gray-700,
+.dark .text-slate-900,
+.dark .text-slate-800,
+.dark .text-slate-700,
+.dark .text-black { color: var(--ehr-text) !important; }
+.dark .text-gray-600,
+.dark .text-gray-500,
+.dark .text-slate-600,
+.dark .text-slate-500 { color: var(--ehr-text-muted) !important; }
+.dark .text-gray-400,
+.dark .text-gray-300,
+.dark .text-slate-400,
+.dark .text-slate-300 { color: #6b7480 !important; }
+
+/* borders + dividers */
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-gray-300,
+.dark .border-slate-100,
+.dark .border-slate-200,
+.dark .border-slate-300 { border-color: var(--ehr-border-light) !important; }
+.dark .border-gray-400,
+.dark .border-gray-500,
+.dark .border-slate-400 { border-color: var(--ehr-border) !important; }
+.dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]),
+.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]),
+.dark .divide-gray-300 > :not([hidden]) ~ :not([hidden]) { border-color: var(--ehr-border-light) !important; }
+
+/* hover states that assume light backgrounds */
+.dark .hover\:bg-gray-50:hover,
+.dark .hover\:bg-gray-100:hover,
+.dark .hover\:bg-slate-50:hover,
+.dark .hover\:bg-slate-100:hover { background-color: #2c333d !important; }
+.dark .hover\:bg-blue-50:hover,
+.dark .hover\:bg-blue-100:hover { background-color: #24364b !important; }
