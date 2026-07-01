@@ -105,7 +105,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="ehr-desktop-bg h-full flex flex-col">
       {/* Header */}
       <div className="ehr-header flex items-center justify-between">
         <span>System Settings</span>

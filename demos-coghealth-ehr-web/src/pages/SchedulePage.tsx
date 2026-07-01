@@ -274,7 +274,7 @@ export default function SchedulePage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="ehr-desktop-bg h-full flex flex-col">
       {/* Toolbar */}
       <div className="ehr-toolbar flex items-center justify-between">
         <div className="flex items-center space-x-1">

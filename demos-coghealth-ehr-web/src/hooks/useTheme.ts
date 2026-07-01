@@ -6,11 +6,14 @@ export function useTheme() {
 
   useEffect(() => {
     applyTheme(theme);
-    setStoredTheme(theme);
   }, [theme]);
 
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    setTheme((prev) => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      setStoredTheme(next);
+      return next;
+    });
   }, []);
 
   return { theme, toggleTheme };
