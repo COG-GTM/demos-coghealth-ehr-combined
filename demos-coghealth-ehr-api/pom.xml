@@ -25,6 +25,21 @@
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <springdoc.version>1.7.0</springdoc.version>
         <hapi.version>2.3</hapi.version>
+
+        <!--
+          Security overrides: the spring-boot-starter-parent 2.7.18 BOM (EOL)
+          pins vulnerable transitive versions. Until a Spring Boot 3.x / Java 17
+          migration is feasible, pin patched, Java 11-compatible releases of the
+          network-reachable components to close the known CVE attack paths
+          (Tomcat/Spring MVC/Jackson DoS, pgjdbc SQLi, SnakeYAML/logback advisories).
+        -->
+        <spring-framework.version>5.3.39</spring-framework.version>
+        <tomcat.version>9.0.120</tomcat.version>
+        <jackson-bom.version>2.17.3</jackson-bom.version>
+        <snakeyaml.version>2.3</snakeyaml.version>
+        <spring-security.version>5.7.14</spring-security.version>
+        <logback.version>1.2.13</logback.version>
+        <postgresql.version>42.7.13</postgresql.version>
     </properties>
 
     <dependencies>
