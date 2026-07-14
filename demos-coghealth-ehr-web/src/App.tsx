@@ -295,7 +295,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="h-screen flex flex-col" style={{ background: '#d4d0c8', fontFamily: 'Tahoma, sans-serif' }}>
+      <div className="ehr-desktop-bg h-screen flex flex-col" style={{ fontFamily: 'Tahoma, sans-serif' }}>
         <Navigation 
           onSessionWarning={handleSessionWarning}
           onSessionExpired={handleSessionExpired}

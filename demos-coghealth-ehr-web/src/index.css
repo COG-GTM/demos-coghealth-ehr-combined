@@ -237,6 +237,15 @@ td {
   background: #b0b0b0;
 }
 
+/* Shared page-container backgrounds (replaces hardcoded inline hex colors) */
+.ehr-desktop-bg {
+  background: #d4d0c8;
+}
+
+.ehr-surface-bg {
+  background: #ece9d8;
+}
+
 /* ==========================================================================
    Dark mode
    Applied via the `dark` class on <html> (see src/store/themeStore.ts).
@@ -424,13 +433,14 @@ td {
   background: var(--ehr-desktop);
 }
 
-/* Inline hex backgrounds used across page containers */
-.dark [style*="#d4d0c8"] {
-  background: var(--ehr-desktop) !important;
+/* Page-container backgrounds */
+.dark .ehr-desktop-bg {
+  background: var(--ehr-desktop);
 }
 
-.dark [style*="#ece9d8"] {
-  background: var(--ehr-surface) !important;
+.dark .ehr-surface-bg,
+.dark .bg-\[\#ece9d8\] {
+  background: var(--ehr-surface);
 }
 
 /* Retrofit common Tailwind utility colors used in page content */
