@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,6 +42,9 @@ public class UserController {
     @Operation(summary = "Update a user's roles")
     public ResponseEntity<UserResponse> updateRoles(@PathVariable Long id,
                                                     @RequestBody UpdateRolesRequest request) {
+        if (request.getRoles() == null || request.getRoles().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
         return userService.updateRoles(id, request.getRoles())
                 .map(UserResponse::from)
                 .map(ResponseEntity::ok)
@@ -81,7 +85,7 @@ public class UserController {
             response.email = user.getEmail();
             response.firstName = user.getFirstName();
             response.lastName = user.getLastName();
-            response.roles = user.getRoles();
+            response.roles = user.getRoles() == null ? null : new HashSet<>(user.getRoles());
             response.enabled = user.getEnabled();
             return response;
         }
