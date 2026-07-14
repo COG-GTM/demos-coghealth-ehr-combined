@@ -45,11 +45,11 @@ export default function VitalsPage() {
     return 'normal';
   };
 
-  const getStatusStyle = (status: string) => {
+  const getStatusClass = (status: string) => {
     switch (status) {
-      case 'critical': return { background: '#ffcccc', color: '#990000', fontWeight: 'bold' };
-      case 'abnormal': return { background: '#fff3cd', color: '#664d00' };
-      default: return {};
+      case 'critical': return 'ehr-cell-critical';
+      case 'abnormal': return 'ehr-cell-abnormal';
+      default: return '';
     }
   };
 
@@ -200,8 +200,9 @@ export default function VitalsPage() {
                     return (
                       <td
                         key={reading.id}
-                        className="px-2 py-1 border border-gray-300 text-center cursor-pointer hover:bg-[#e0e8f0]"
-                        style={getStatusStyle(status)}
+                        className={`px-2 py-1 border border-gray-300 text-center cursor-pointer ${
+                          getStatusClass(status) || 'hover:bg-[#e0e8f0]'
+                        }`}
                         onClick={() => setSelectedReading(reading)}
                       >
                         {value !== undefined ? (
@@ -274,7 +275,7 @@ export default function VitalsPage() {
                   const value = selectedReading[vital.key] as number | undefined;
                   const status = getValueStatus(vital.key, value);
                   return (
-                    <div key={vital.key} className="flex justify-between" style={getStatusStyle(status)}>
+                    <div key={vital.key} className={`flex justify-between ${getStatusClass(status)}`}>
                       <span className="text-gray-600">{vital.name}:</span>
                       <span className="font-mono font-semibold">
                         {value !== undefined ? (vital.key === 'temperature' ? value.toFixed(1) : value) : '-'} {vital.unit}

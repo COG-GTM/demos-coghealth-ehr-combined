@@ -246,6 +246,18 @@ td {
   background: #ece9d8;
 }
 
+/* Result/vitals cell status coloring (theme-aware, replaces inline styles) */
+.ehr-cell-critical {
+  background: #ffcccc;
+  color: #990000;
+  font-weight: 700;
+}
+
+.ehr-cell-abnormal {
+  background: #fff3cd;
+  color: #664d00;
+}
+
 /* ==========================================================================
    Dark mode
    Applied via the `dark` class on <html> (see src/store/themeStore.ts).
@@ -503,4 +515,23 @@ td {
 .dark .hover\:bg-blue-50:hover,
 .dark .hover\:bg-blue-100:hover {
   background-color: #1c3a5c !important;
+}
+
+/* Arbitrary hex utilities used in Lab/Vitals tables */
+.dark .bg-\[\#f8f8f8\] {
+  background-color: var(--ehr-surface-2) !important;
+}
+
+.dark .hover\:bg-\[\#e0e8f0\]:hover {
+  background-color: #2a3a4d !important;
+}
+
+.dark .ehr-cell-critical {
+  background: #3a1c1c;
+  color: #ffb3b3;
+}
+
+.dark .ehr-cell-abnormal {
+  background: #3a301a;
+  color: #ffdd8a;
 }
