@@ -55,7 +55,10 @@ public class UserController {
     @Operation(summary = "Enable or disable a user")
     public ResponseEntity<UserResponse> setStatus(@PathVariable Long id,
                                                   @RequestBody UpdateStatusRequest request) {
-        return userService.setEnabled(id, request.isEnabled())
+        if (request.getEnabled() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return userService.setEnabled(id, request.getEnabled())
                 .map(UserResponse::from)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -106,8 +109,8 @@ public class UserController {
     }
 
     public static class UpdateStatusRequest {
-        private boolean enabled;
-        public boolean isEnabled() { return enabled; }
-        public void setEnabled(boolean enabled) { this.enabled = enabled; }
+        private Boolean enabled;
+        public Boolean getEnabled() { return enabled; }
+        public void setEnabled(Boolean enabled) { this.enabled = enabled; }
     }
 }
