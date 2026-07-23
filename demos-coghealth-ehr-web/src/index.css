@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Tahoma&display=swap');
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary-50: #e8f4fc;
   --color-primary-100: #d1e9f9;
@@ -235,4 +237,343 @@ td {
 
 .ehr-splitter:hover {
   background: #b0b0b0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Themeable surface helpers (replace hardcoded inline backgrounds)   */
+/* ------------------------------------------------------------------ */
+.ehr-desktop {
+  background-color: #d4d0c8;
+}
+
+.ehr-sidebar {
+  background-color: #ece9d8;
+}
+
+.ehr-surface {
+  background-color: #f5f5f5;
+}
+
+.ehr-surface-alt {
+  background-color: #e8e8e8;
+}
+
+/* ================================================================== */
+/* Dark mode                                                          */
+/* Legacy EHR chrome and Tailwind neutrals are remapped to a dark     */
+/* palette. Brand/accent colors (blue header, status hues) are kept.  */
+/* ================================================================== */
+.dark body {
+  background-color: #1b1b1c;
+  color: #dcdcdc;
+}
+
+.dark .ehr-desktop {
+  background-color: #1b1b1c;
+}
+
+.dark .ehr-sidebar {
+  background-color: #232326;
+}
+
+.dark .ehr-surface {
+  background-color: #232326;
+}
+
+.dark .ehr-surface-alt {
+  background-color: #2a2a2e;
+}
+
+/* Tables */
+.dark th {
+  background: linear-gradient(to bottom, #33333a 0%, #2a2a30 100%);
+  border-color: #45454b;
+  color: #e6e6e6;
+}
+
+.dark td {
+  border-color: #3a3a40;
+  color: #dcdcdc;
+}
+
+/* Panels & fieldsets */
+.dark .ehr-panel {
+  background: #232326;
+  border-color: #45454b;
+  box-shadow: inset 1px 1px 0 #3a3a40, 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.dark .ehr-fieldset {
+  border-color: #45454b;
+  background: #232326;
+}
+
+.dark .ehr-fieldset legend {
+  color: #cfcfcf;
+}
+
+.dark .ehr-label {
+  color: #cfcfcf;
+}
+
+/* Buttons */
+.dark .ehr-button {
+  background: linear-gradient(to bottom, #3a3a40 0%, #2a2a30 100%);
+  border-color: #55555c;
+  color: #e6e6e6;
+  box-shadow: 1px 1px 0 #4a4a52 inset, -1px -1px 0 #202024 inset;
+}
+
+.dark .ehr-button:hover {
+  background: linear-gradient(to bottom, #45454d 0%, #33333a 100%);
+}
+
+.dark .ehr-button:active {
+  background: linear-gradient(to bottom, #26262b 0%, #33333a 100%);
+  box-shadow: -1px -1px 0 #4a4a52 inset, 1px 1px 0 #202024 inset;
+}
+
+.dark .ehr-button-primary {
+  background: linear-gradient(to bottom, #2f6fb0 0%, #1e4f8a 100%);
+  border-color: #14375f;
+  color: #ffffff;
+}
+
+.dark .ehr-button-primary:hover {
+  background: linear-gradient(to bottom, #3a7fc4 0%, #285f9c 100%);
+}
+
+/* Inputs */
+.dark .ehr-input {
+  border-color: #55555c;
+  background: #1b1b1c;
+  color: #e6e6e6;
+}
+
+.dark .ehr-input::placeholder {
+  color: #8a8a92;
+}
+
+.dark .ehr-input:focus {
+  border-color: #4a90d9;
+  box-shadow: 0 0 3px rgba(74, 144, 217, 0.6);
+}
+
+/* Header / subheader / toolbar */
+.dark .ehr-header {
+  background: linear-gradient(to bottom, #2d5a86 0%, #1c3a5a 100%);
+  border-bottom-color: #14283f;
+}
+
+.dark .ehr-subheader {
+  background: linear-gradient(to bottom, #33333a 0%, #26262b 100%);
+  color: #dcdcdc;
+  border-bottom-color: #45454b;
+}
+
+.dark .ehr-toolbar {
+  background: linear-gradient(to bottom, #2a2a30 0%, #202024 100%);
+  border-bottom-color: #45454b;
+  color: #dcdcdc;
+}
+
+.dark .ehr-toolbar-button {
+  color: #dcdcdc;
+}
+
+.dark .ehr-toolbar-button:hover {
+  background: #33333a;
+  border-color: #55555c;
+}
+
+.dark .ehr-toolbar-button-active {
+  background: linear-gradient(to bottom, #3a3a40 0%, #2a2a30 100%);
+  border-color: #55555c;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Tabs */
+.dark .ehr-tab {
+  background: linear-gradient(to bottom, #33333a 0%, #26262b 100%);
+  border-color: #45454b;
+  color: #dcdcdc;
+}
+
+.dark .ehr-tab.active {
+  background: #232326;
+  border-bottom-color: #232326;
+}
+
+.dark .ehr-tab-content {
+  border-color: #45454b;
+  background: #232326;
+}
+
+/* Tree items */
+.dark .ehr-tree-item:hover {
+  background: #2c3a4c;
+}
+
+/* Grid rows */
+.dark .ehr-grid-row:nth-child(even) {
+  background: #26262b;
+}
+
+.dark .ehr-grid-row:hover {
+  background: #2c3a4c;
+}
+
+/* Status bar */
+.dark .ehr-status-bar {
+  background: #232326;
+  border-top-color: #45454b;
+  color: #b8b8b8;
+}
+
+/* Alerts (tinted, darker) */
+.dark .ehr-alert-critical {
+  background: #3a1c1c;
+  border-color: #a03030;
+  color: #ffb3b3;
+}
+
+.dark .ehr-alert-warning {
+  background: #3a3320;
+  border-color: #b8901f;
+  color: #ffe08a;
+}
+
+.dark .ehr-alert-info {
+  background: #1c2c3f;
+  border-color: #2f6fb0;
+  color: #a8cdf5;
+}
+
+/* ------------------------------------------------------------------ */
+/* Tailwind neutral utility remaps under .dark                        */
+/* These flip surfaces/borders/text used throughout the pages without */
+/* editing thousands of inline utility classes.                       */
+/* ------------------------------------------------------------------ */
+.dark .bg-white {
+  background-color: #232326 !important;
+}
+.dark .bg-gray-50 {
+  background-color: #26262b !important;
+}
+.dark .bg-gray-100 {
+  background-color: #2a2a30 !important;
+}
+.dark .bg-gray-200 {
+  background-color: #33333a !important;
+}
+.dark .bg-gray-300 {
+  background-color: #3f3f46 !important;
+}
+.dark .bg-gray-600 {
+  background-color: #3f3f46 !important;
+}
+
+.dark .hover\:bg-white:hover {
+  background-color: #2a2a30 !important;
+}
+.dark .hover\:bg-white\/50:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+.dark .hover\:bg-gray-50:hover {
+  background-color: #2a2a30 !important;
+}
+.dark .hover\:bg-gray-100:hover {
+  background-color: #33333a !important;
+}
+.dark .hover\:bg-gray-200:hover {
+  background-color: #3f3f46 !important;
+}
+
+.dark .text-gray-900 {
+  color: #f2f2f2 !important;
+}
+.dark .text-gray-800 {
+  color: #e6e6e6 !important;
+}
+.dark .text-gray-700 {
+  color: #d6d6d6 !important;
+}
+.dark .text-gray-600 {
+  color: #b6b6b6 !important;
+}
+.dark .text-gray-500 {
+  color: #9a9aa0 !important;
+}
+.dark .text-gray-400 {
+  color: #808088 !important;
+}
+
+.dark .border-gray-200 {
+  border-color: #33333a !important;
+}
+.dark .border-gray-300 {
+  border-color: #3a3a40 !important;
+}
+.dark .border-gray-400 {
+  border-color: #45454b !important;
+}
+.dark .border-gray-500 {
+  border-color: #55555c !important;
+}
+.dark .border-gray-700 {
+  border-color: #6a6a72 !important;
+}
+
+/* Light-blue selection/hover tints */
+.dark .bg-blue-50 {
+  background-color: #1c2c3f !important;
+}
+.dark .bg-blue-100 {
+  background-color: #22344a !important;
+}
+.dark .hover\:bg-blue-50:hover {
+  background-color: #1c2c3f !important;
+}
+.dark .hover\:bg-blue-100:hover {
+  background-color: #22344a !important;
+}
+
+/* Accent tint backgrounds */
+.dark .bg-red-50 {
+  background-color: #3a1c1c !important;
+}
+.dark .bg-yellow-100 {
+  background-color: #3a3320 !important;
+}
+.dark .bg-green-50 {
+  background-color: #17301f !important;
+}
+
+/* Darker accent text -> lighter so it stays legible on dark surfaces */
+.dark .text-red-800,
+.dark .text-red-900 {
+  color: #ff9a9a !important;
+}
+.dark .text-blue-800 {
+  color: #7fb2ee !important;
+}
+.dark .text-green-700 {
+  color: #6fce8f !important;
+}
+.dark .text-yellow-800 {
+  color: #e6c25a !important;
+}
+.dark .text-purple-800 {
+  color: #c39be6 !important;
+}
+
+/* Arbitrary-value surfaces used in a few components */
+.dark .bg-\[\#ece9d8\] {
+  background-color: #232326 !important;
+}
+.dark .bg-\[\#e0e8f0\] {
+  background-color: #2c3a4c !important;
+}
+.dark .bg-\[\#f8f8f8\] {
+  background-color: #26262b !important;
 }

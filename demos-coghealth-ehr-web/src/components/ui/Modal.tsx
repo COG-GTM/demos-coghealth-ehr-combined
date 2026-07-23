@@ -1,5 +1,6 @@
 import { type ReactNode, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { useThemeStore } from '../../stores/themeStore';
 
 interface ModalProps {
   isOpen: boolean;
@@ -127,12 +128,21 @@ interface AlertDialogProps {
 }
 
 export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: AlertDialogProps) {
-  const bgColors = {
-    info: '#cce5ff',
-    success: '#d4edda',
-    warning: '#fff3cd',
-    error: '#f8d7da',
-  };
+  const isDark = useThemeStore((s) => s.resolved) === 'dark';
+  const bgColors = isDark
+    ? {
+        info: '#1c2c3f',
+        success: '#17301f',
+        warning: '#3a3320',
+        error: '#3a1c1c',
+      }
+    : {
+        info: '#cce5ff',
+        success: '#d4edda',
+        warning: '#fff3cd',
+        error: '#f8d7da',
+      };
+  const textColor = isDark ? '#e6e6e6' : '#1a1a1a';
   
   return (
     <Modal
@@ -147,7 +157,7 @@ export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: 
       }
     >
       <div className="p-2 border border-gray-400" style={{ background: bgColors[type] }}>
-        <p className="text-[11px]">{message}</p>
+        <p className="text-[11px]" style={{ color: textColor }}>{message}</p>
       </div>
     </Modal>
   );
