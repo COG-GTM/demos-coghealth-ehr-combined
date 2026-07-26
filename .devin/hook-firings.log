@@ -1,0 +1,4 @@
+2026-07-27 08:34:04 [SessionStart] session-briefing fired
+2026-07-27 08:34:36 [PostToolUse] lint-feedback fired (file: /Users/wesconvery/dev/cog-gtm/workshop/.devin/hooks/log-prompt.sh)
+2026-07-27 08:34:45 [PostToolUse] lint-feedback fired (file: /Users/wesconvery/dev/cog-gtm/workshop/.devin/hooks.v1.json)
+2026-07-27 08:34:52 [UserPromptSubmit] prompt: make it so session start also pastes the prompt that was sent

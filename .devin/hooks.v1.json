@@ -11,7 +11,8 @@
     {
       "matcher": "",
       "hooks": [
-        { "type": "command", "command": "\"$DEVIN_PROJECT_DIR/.devin/hooks/login-concierge.sh\"", "timeout": 5 }
+        { "type": "command", "command": "\"$DEVIN_PROJECT_DIR/.devin/hooks/login-concierge.sh\"", "timeout": 5 },
+        { "type": "command", "command": "\"$DEVIN_PROJECT_DIR/.devin/hooks/log-prompt.sh\"", "timeout": 5 }
       ]
     }
   ],
