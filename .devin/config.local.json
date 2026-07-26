@@ -5,7 +5,8 @@
       "Exec(sed)",
       "Exec(grep)",
       "Exec(/usr/bin/grep)",
-      "Exec(git)"
+      "Exec(git)",
+      "Exec(true)"
     ]
   },
   "mcpServers": {
