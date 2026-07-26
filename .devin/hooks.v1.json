@@ -1,0 +1,42 @@
+{
+  "SessionStart": [
+    {
+      "matcher": "",
+      "hooks": [
+        { "type": "command", "command": "\"$DEVIN_PROJECT_DIR/.devin/hooks/session-briefing.sh\"", "timeout": 10 }
+      ]
+    }
+  ],
+  "UserPromptSubmit": [
+    {
+      "matcher": "",
+      "hooks": [
+        { "type": "command", "command": "\"$DEVIN_PROJECT_DIR/.devin/hooks/login-concierge.sh\"", "timeout": 5 }
+      ]
+    }
+  ],
+  "PreToolUse": [
+    {
+      "matcher": "^exec$",
+      "hooks": [
+        { "type": "command", "command": "\"$DEVIN_PROJECT_DIR/.devin/hooks/java-env-shim.sh\"", "timeout": 5 }
+      ]
+    }
+  ],
+  "PostToolUse": [
+    {
+      "matcher": "^(edit|write)$",
+      "hooks": [
+        { "type": "command", "command": "\"$DEVIN_PROJECT_DIR/.devin/hooks/lint-feedback.sh\"", "timeout": 30 }
+      ]
+    }
+  ],
+  "PermissionRequest": [
+    {
+      "matcher": "^exec$",
+      "hooks": [
+        { "type": "command", "command": "\"$DEVIN_PROJECT_DIR/.devin/hooks/auto-approve-reads.sh\"", "timeout": 5 }
+      ]
+    }
+  ]
+}

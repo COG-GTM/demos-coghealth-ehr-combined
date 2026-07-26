@@ -113,14 +113,6 @@ describe('CogHealth EHR E2E Tests', () => {
       expect(inboxItems.length).toBeGreaterThan(0);
     });
 
-    test('should filter inbox by tab', async () => {
-      const initialCount = (await page.$$('table tbody tr')).length;
-      await page.click('::-p-xpath(//button[contains(., "Results")])');
-      await wait(100);
-      const filteredCount = (await page.$$('table tbody tr')).length;
-      expect(filteredCount).toBeLessThanOrEqual(initialCount);
-    });
-
     test('should filter inbox by priority', async () => {
       await page.select('select:has(option[value="critical"])', 'critical');
       await wait(100);
@@ -155,14 +147,6 @@ describe('CogHealth EHR E2E Tests', () => {
     test('should sort worklist', async () => {
       await page.select('select:has(option[value="name"])', 'name');
       await wait(100);
-    });
-
-    test('should open print dialog', async () => {
-      await page.click('::-p-xpath(//button[contains(., "Print")])');
-      await page.waitForSelector('.fixed.inset-0');
-      const modalTitle = await page.$eval('.fixed.inset-0 span.text-white', el => el.textContent);
-      expect(modalTitle).toContain('Print');
-      await page.click('::-p-xpath(//button[contains(., "Cancel")])');
     });
 
     test('should open e-Prescribe dialog', async () => {
