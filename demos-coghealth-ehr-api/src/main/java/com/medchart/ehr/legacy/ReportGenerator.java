@@ -9,9 +9,12 @@ import javax.persistence.Query;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -20,7 +23,27 @@ public class ReportGenerator {
     @Autowired
     private EntityManager entityManager;
 
-    private static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
+    /**
+     * Creates a temporary file readable/writable only by the owning process user.
+     * Reports contain PHI (SSN, DOB, addresses), so files must never be created
+     * with predictable names or world-readable permissions in the shared temp dir.
+     */
+    private Path createSecureReportFile(String prefix, String suffix) throws IOException {
+        Set<PosixFilePermission> ownerOnly = PosixFilePermissions.fromString("rw-------");
+        FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions.asFileAttribute(ownerOnly);
+        Path file;
+        try {
+            file = Files.createTempFile(prefix, suffix, attr);
+        } catch (UnsupportedOperationException e) {
+            file = Files.createTempFile(prefix, suffix);
+            file.toFile().setReadable(false, false);
+            file.toFile().setReadable(true, true);
+            file.toFile().setWritable(false, false);
+            file.toFile().setWritable(true, true);
+        }
+        file.toFile().deleteOnExit();
+        return file;
+    }
 
     public String generatePatientRoster() {
         String sql = "SELECT p.id, p.mrn, p.ssn, p.first_name, p.last_name, p.date_of_birth, " +
@@ -34,10 +57,14 @@ public class ReportGenerator {
         Query query = entityManager.createNativeQuery(sql);
         List<Object[]> results = query.getResultList();
         
-        String filename = "patient_roster_" + 
-            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".csv";
-        String filePath = TEMP_DIR + File.separator + filename;
-        
+        String filePath;
+        try {
+            filePath = createSecureReportFile("patient_roster_", ".csv").toString();
+        } catch (IOException e) {
+            log.error("Failed to create secure report file");
+            throw new RuntimeException("Report generation failed", e);
+        }
+
         try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
             writer.println("ID,MRN,SSN,FirstName,LastName,DOB,PhoneHome,PhoneMobile,Email,Address,City,State,Zip,Insurance,MemberID");
             for (Object[] row : results) {
@@ -53,7 +80,7 @@ public class ReportGenerator {
             throw new RuntimeException("Report generation failed", e);
         }
         
-        log.info("Generated patient roster at: {}", filePath);
+        log.info("Generated patient roster");
         return filePath;
     }
 
@@ -71,10 +98,14 @@ public class ReportGenerator {
         query.setParameter(2, endDate);
         List<Object[]> results = query.getResultList();
         
-        String filename = "encounter_summary_" + 
-            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".txt";
-        String filePath = TEMP_DIR + File.separator + filename;
-        
+        String filePath;
+        try {
+            filePath = createSecureReportFile("encounter_summary_", ".txt").toString();
+        } catch (IOException e) {
+            log.error("Failed to create secure report file");
+            throw new RuntimeException("Report generation failed", e);
+        }
+
         try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
             writer.println("ENCOUNTER SUMMARY REPORT");
             writer.println("========================");
@@ -97,18 +128,23 @@ public class ReportGenerator {
             throw new RuntimeException("Report generation failed", e);
         }
         
-        log.info("Generated encounter summary at: {}", filePath);
+        log.info("Generated encounter summary");
         return filePath;
     }
 
     public byte[] generateDailyReport() {
-        String tempFile = generatePatientRoster();
+        Path tempFile = Path.of(generatePatientRoster());
         try {
-            byte[] content = Files.readAllBytes(Path.of(tempFile));
-            return content;
+            return Files.readAllBytes(tempFile);
         } catch (IOException e) {
             log.error("Failed to read temp file", e);
             throw new RuntimeException(e);
+        } finally {
+            try {
+                Files.deleteIfExists(tempFile);
+            } catch (IOException e) {
+                log.warn("Failed to delete temp report file after use");
+            }
         }
     }
 }
