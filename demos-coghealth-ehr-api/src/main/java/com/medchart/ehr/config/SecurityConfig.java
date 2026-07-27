@@ -14,6 +14,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,7 +29,43 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new MaxLengthBCryptPasswordEncoder();
+    }
+
+    /**
+     * BCrypt only considers the first 72 bytes of a password. Older
+     * spring-security-crypto (CVE-2025-22228) silently ignores the excess, so two
+     * passwords sharing their first 72 bytes are treated as equal. This encoder
+     * rejects raw passwords longer than 72 bytes on both encode and match, matching
+     * the behaviour of the patched BCryptPasswordEncoder.
+     */
+    static final class MaxLengthBCryptPasswordEncoder implements PasswordEncoder {
+
+        private static final int MAX_BYTE_LENGTH = 72;
+
+        private final BCryptPasswordEncoder delegate = new BCryptPasswordEncoder();
+
+        @Override
+        public String encode(CharSequence rawPassword) {
+            checkLength(rawPassword);
+            return delegate.encode(rawPassword);
+        }
+
+        @Override
+        public boolean matches(CharSequence rawPassword, String encodedPassword) {
+            if (rawPassword != null
+                    && rawPassword.toString().getBytes(StandardCharsets.UTF_8).length > MAX_BYTE_LENGTH) {
+                return false;
+            }
+            return delegate.matches(rawPassword, encodedPassword);
+        }
+
+        private static void checkLength(CharSequence rawPassword) {
+            if (rawPassword != null
+                    && rawPassword.toString().getBytes(StandardCharsets.UTF_8).length > MAX_BYTE_LENGTH) {
+                throw new IllegalArgumentException("Password cannot be more than " + MAX_BYTE_LENGTH + " bytes");
+            }
+        }
     }
 
     @Bean
