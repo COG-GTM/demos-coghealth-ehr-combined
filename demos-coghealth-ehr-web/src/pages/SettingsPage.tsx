@@ -14,6 +14,7 @@ import {
   Check
 } from 'lucide-react';
 import { AlertDialog } from '../components/ui/Modal';
+import { useThemeStore, type ThemeMode } from '../store/themeStore';
 
 type SettingsTab = 'profile' | 'notifications' | 'security' | 'appearance' | 'practice';
 
@@ -70,6 +71,9 @@ export default function SettingsPage() {
     setExpandedSections(newExpanded);
   };
 
+  const themeMode = useThemeStore((s) => s.mode);
+  const setThemeMode = useThemeStore((s) => s.setMode);
+
   const [profile, setProfile] = useState<UserProfile>(defaultProfile);
   const [notifications, setNotifications] = useState(defaultNotifications);
   const [appearance, setAppearance] = useState(defaultAppearance);
@@ -99,13 +103,16 @@ export default function SettingsPage() {
   ];
 
   const handleSave = () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ profile, notifications, appearance }));
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ profile, notifications, appearance: { ...appearance, theme: themeMode } })
+    );
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="ehr-desktop-bg h-full flex flex-col">
       {/* Header */}
       <div className="ehr-header flex items-center justify-between">
         <span>System Settings</span>
@@ -121,7 +128,7 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Navigation */}
-        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: '#ece9d8' }}>
+        <div className="ehr-surface-bg w-48 overflow-auto p-2 space-y-1">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -385,12 +392,12 @@ export default function SettingsPage() {
               <fieldset className="ehr-fieldset">
                 <legend>Theme</legend>
                 <div className="grid grid-cols-3 gap-2">
-                  {['light', 'dark', 'system'].map((theme) => (
+                  {(['light', 'dark', 'system'] as ThemeMode[]).map((theme) => (
                     <button
                       key={theme}
-                      onClick={() => setAppearance({ ...appearance, theme })}
+                      onClick={() => setThemeMode(theme)}
                       className={`p-2 border text-center text-[11px] ${
-                        appearance.theme === theme
+                        themeMode === theme
                           ? 'border-gray-600 bg-white'
                           : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
                       }`}
