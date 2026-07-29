@@ -212,6 +212,12 @@ td {
   border-bottom: 1px solid #1a4080;
 }
 
+/* Logo mark keeps its light chip in both themes; it sits on the blue header. */
+.ehr-logo-mark {
+  background: #ffffff;
+  color: #1e40af;
+}
+
 .ehr-subheader {
   background: linear-gradient(to bottom, var(--ehr-subheader-from) 0%, var(--ehr-subheader-to) 100%);
   color: var(--ehr-text);

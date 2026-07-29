@@ -131,8 +131,8 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
       {/* Application Header */}
       <div className="ehr-header flex items-center justify-between px-3">
         <div className="flex items-center space-x-3">
-          <div className="w-5 h-5 bg-white flex items-center justify-center border border-blue-300">
-            <span className="text-blue-800 font-bold text-[11px]">C</span>
+          <div className="ehr-logo-mark w-5 h-5 flex items-center justify-center border border-blue-300">
+            <span className="font-bold text-[11px]">C</span>
           </div>
           <span className="font-semibold">CogHealth EHR</span>
           <span className="text-blue-200 text-[10px]">v4.2.1</span>
