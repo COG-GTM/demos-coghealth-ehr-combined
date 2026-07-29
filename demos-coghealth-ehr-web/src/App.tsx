@@ -27,6 +27,7 @@ import SettingsPage from './pages/SettingsPage';
 import LabResultsPage from './pages/LabResultsPage';
 import VitalsPage from './pages/VitalsPage';
 import { AlertDialog, ConfirmDialog } from './components/ui/Modal';
+import { ThemeToggle } from './components/ui/ThemeToggle';
 import { logLogout } from './services/auditService';
 
 const SESSION_TIMEOUT_MS = 15 * 60 * 1000;
@@ -130,8 +131,8 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
       {/* Application Header */}
       <div className="ehr-header flex items-center justify-between px-3">
         <div className="flex items-center space-x-3">
-          <div className="w-5 h-5 bg-white flex items-center justify-center border border-blue-300">
-            <span className="text-blue-800 font-bold text-[11px]">C</span>
+          <div className="ehr-logo-mark w-5 h-5 flex items-center justify-center border border-blue-300">
+            <span className="font-bold text-[11px]">C</span>
           </div>
           <span className="font-semibold">CogHealth EHR</span>
           <span className="text-blue-200 text-[10px]">v4.2.1</span>
@@ -185,6 +186,8 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
             <User className="w-3 h-3" />
             <span>Dr. Sarah Anderson</span>
           </div>
+          <span className="text-blue-300">|</span>
+          <ThemeToggle />
           <button onClick={onLogout} className="flex items-center space-x-1 hover:text-white text-blue-200">
             <LogOut className="w-3 h-3" />
             <span>Logout</span>
@@ -280,7 +283,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="h-screen flex flex-col" style={{ background: '#d4d0c8', fontFamily: 'Tahoma, sans-serif' }}>
+      <div className="h-screen flex flex-col ehr-desktop" style={{ fontFamily: 'Tahoma, sans-serif' }}>
         <Navigation 
           onSessionWarning={handleSessionWarning}
           onSessionExpired={handleSessionExpired}
@@ -301,7 +304,7 @@ function App() {
         </main>
 
         {/* Status Bar - Windows XP style */}
-        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
+        <div className="ehr-status-bar ehr-status-bar-muted h-5 flex items-center justify-between px-2 text-[10px]">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
               <Shield className="w-3 h-3 text-green-600" />

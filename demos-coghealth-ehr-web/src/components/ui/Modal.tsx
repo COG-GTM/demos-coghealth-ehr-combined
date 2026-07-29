@@ -41,10 +41,7 @@ export function Modal({ isOpen, onClose, title, children, width = 'md', footer }
         {/* Window frame */}
         <div className="bg-white border-2 border-gray-400 shadow-lg flex flex-col" style={{ boxShadow: '2px 2px 8px rgba(0,0,0,0.3)' }}>
           {/* Title bar */}
-          <div 
-            className="flex items-center justify-between px-2 py-1"
-            style={{ background: 'linear-gradient(to bottom, #6699cc 0%, #336699 100%)' }}
-          >
+          <div className="ehr-header flex items-center justify-between px-2 py-1">
             <span className="text-white font-semibold text-[11px]">{title}</span>
             <button 
               onClick={onClose}
@@ -127,13 +124,13 @@ interface AlertDialogProps {
 }
 
 export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: AlertDialogProps) {
-  const bgColors = {
-    info: '#cce5ff',
-    success: '#d4edda',
-    warning: '#fff3cd',
-    error: '#f8d7da',
+  const boxClass = {
+    info: 'ehr-badge-info',
+    success: 'ehr-badge-success',
+    warning: 'ehr-badge-warning',
+    error: 'ehr-badge-danger',
   };
-  
+
   return (
     <Modal
       isOpen={isOpen}
@@ -146,7 +143,7 @@ export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: 
         </button>
       }
     >
-      <div className="p-2 border border-gray-400" style={{ background: bgColors[type] }}>
+      <div className={`p-2 ${boxClass[type]}`}>
         <p className="text-[11px]">{message}</p>
       </div>
     </Modal>
