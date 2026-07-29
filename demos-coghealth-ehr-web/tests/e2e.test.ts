@@ -61,6 +61,15 @@ describe('CogHealth EHR E2E Tests', () => {
       expect(statusText).toContain('Medications');
     });
 
+    test('should navigate to Refill Queue page', async () => {
+      await page.click('a[href="/refills"]');
+      await page.waitForFunction(
+        () => window.location.pathname === '/refills' &&
+              document.body.textContent?.includes('Refill Queue')
+      );
+      expect(await page.$eval('body', el => el.textContent)).toContain('Refill Queue');
+    });
+
     test('should navigate to Reports page', async () => {
       await page.click('a[href="/reports"]');
       await page.waitForFunction(
