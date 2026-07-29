@@ -56,6 +56,8 @@
 
   --ehr-grid-even: #f0f4f8;
   --ehr-grid-hover: #d0e0f0;
+
+  --ehr-status-border: #ffffff;
 }
 
 /* ---- Theme tokens (dark) ---- */
@@ -97,6 +99,8 @@
 
   --ehr-grid-even: #26262b;
   --ehr-grid-hover: #33404f;
+
+  --ehr-status-border: rgba(255, 255, 255, 0.08);
 
   color-scheme: dark;
 }
@@ -244,10 +248,19 @@ td {
 
 .ehr-status-bar {
   background: var(--ehr-sidebar);
-  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-top: 1px solid var(--ehr-status-border);
   padding: 2px 8px;
   font-size: 10px;
   color: var(--ehr-text);
+}
+
+/* Opt-in muted variant; matches the Tailwind text-gray-600 the app shell used. */
+.ehr-status-bar-muted {
+  color: #4b5563;
+}
+
+.dark .ehr-status-bar-muted {
+  color: #b2b2ba;
 }
 
 .ehr-tab {
