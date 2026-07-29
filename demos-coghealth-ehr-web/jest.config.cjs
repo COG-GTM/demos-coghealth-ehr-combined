@@ -4,11 +4,6 @@ module.exports = {
   testMatch: ['**/tests/**/*.test.ts'],
   testTimeout: 30000,
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', {
-      tsconfig: {
-        module: 'commonjs',
-        esModuleInterop: true,
-      }
-    }]
+    '^.+\\.tsx?$': '<rootDir>/tests/jest-transformer.cjs',
   },
 };

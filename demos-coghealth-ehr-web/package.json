@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "jest",
-    "test:e2e": "jest --testPathPattern=tests/e2e"
+    "test:unit": "jest --testPathPatterns=tests/unit",
+    "test:e2e": "jest --testPathPatterns=tests/e2e"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
