@@ -236,3 +236,239 @@ td {
 .ehr-splitter:hover {
   background: #b0b0b0;
 }
+
+/* ============================================================
+   Theming: surface tokens + dark mode
+   Light values are the original XP/EHR palette; the `.dark`
+   class on <html> swaps tokens and overrides the design system.
+   ============================================================ */
+
+:root {
+  --surface-app: #d4d0c8;
+  --surface-panel: #ece9d8;
+  --surface-raised: #f5f5f5;
+  --surface-sunken: #e8e8e8;
+}
+
+html.dark {
+  --surface-app: #1e1e22;
+  --surface-panel: #26262b;
+  --surface-raised: #2d2d33;
+  --surface-sunken: #1a1a1e;
+}
+
+/* Themeable surface helpers used in place of hardcoded inline backgrounds */
+.surface-app { background: var(--surface-app); }
+.surface-panel { background: var(--surface-panel); }
+.surface-raised { background: var(--surface-raised); }
+.surface-sunken { background: var(--surface-sunken); }
+
+.ehr-statusbar {
+  background: linear-gradient(to bottom, var(--surface-panel) 0%, var(--surface-app) 100%);
+}
+
+/* ---------- Dark mode: base + design system ---------- */
+
+.dark body {
+  background-color: var(--surface-app);
+  color: #cfcfcf;
+}
+
+.dark th {
+  background: linear-gradient(to bottom, #3a3a42 0%, #2d2d33 100%);
+  border-color: #50505a;
+  color: #dcdce2;
+}
+
+.dark td {
+  border-color: #3a3a42;
+  color: #cfcfcf;
+}
+
+.dark .ehr-panel {
+  background: #26262b;
+  border-color: #45454d;
+  box-shadow: inset 1px 1px 0 #3a3a42, 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.dark .ehr-button {
+  background: linear-gradient(to bottom, #3a3a42 0%, #2a2a30 100%);
+  border-color: #55555f;
+  color: #dcdce2;
+  box-shadow: 1px 1px 0 #4a4a52 inset, -1px -1px 0 #1a1a1e inset;
+}
+
+.dark .ehr-button:hover {
+  background: linear-gradient(to bottom, #44444d 0%, #32323a 100%);
+}
+
+.dark .ehr-button:active {
+  background: linear-gradient(to bottom, #26262b 0%, #32323a 100%);
+  box-shadow: -1px -1px 0 #4a4a52 inset, 1px 1px 0 #1a1a1e inset;
+}
+
+.dark .ehr-button-primary {
+  background: linear-gradient(to bottom, #2a5db0 0%, #1a4080 100%);
+  border-color: #13315f;
+  color: #fff;
+}
+
+.dark .ehr-button-primary:hover {
+  background: linear-gradient(to bottom, #3a6dc0 0%, #2a5db0 100%);
+}
+
+.dark .ehr-input {
+  background: #1f1f24;
+  border-color: #50505a;
+  color: #e6e6e6;
+}
+
+.dark .ehr-input:focus {
+  border-color: #4a90d9;
+  box-shadow: 0 0 2px rgba(74, 144, 217, 0.6);
+}
+
+.dark .ehr-fieldset {
+  background: #232328;
+  border-color: #45454d;
+}
+
+.dark .ehr-fieldset legend { color: #cfcfcf; }
+.dark .ehr-label { color: #cfcfcf; }
+
+.dark .ehr-header {
+  background: linear-gradient(to bottom, #2d4a66 0%, #1c3550 100%);
+  border-bottom-color: #13315f;
+}
+
+.dark .ehr-subheader {
+  background: linear-gradient(to bottom, #32323a 0%, #26262b 100%);
+  color: #cfcfcf;
+  border-bottom-color: #45454d;
+}
+
+.dark .ehr-tree-item:hover { background: #2c3540; }
+.dark .ehr-tree-item.selected { background: #1e4a8a; color: #fff; }
+
+.dark .ehr-status-bar {
+  background: #26262b;
+  border-top-color: #45454d;
+  color: #cfcfcf;
+}
+
+.dark .ehr-statusbar {
+  background: linear-gradient(to bottom, #26262b 0%, #1e1e22 100%);
+}
+
+.dark .ehr-tab {
+  background: linear-gradient(to bottom, #3a3a42 0%, #2a2a30 100%);
+  border-color: #55555f;
+  color: #cfcfcf;
+}
+
+.dark .ehr-tab.active {
+  background: #2d2d33;
+  border-bottom-color: #2d2d33;
+}
+
+.dark .ehr-tab-content {
+  background: #2d2d33;
+  border-color: #55555f;
+}
+
+.dark .ehr-grid-row:nth-child(even) { background: #232328; }
+.dark .ehr-grid-row:hover { background: #2c3540; }
+.dark .ehr-grid-row.selected { background: #1e4a8a; color: #fff; }
+
+.dark .ehr-alert-critical { background: #3a1f1f; border-color: #cc0000; color: #ff9b9b; }
+.dark .ehr-alert-warning { background: #3a341f; border-color: #cc9900; color: #e8d28a; }
+.dark .ehr-alert-info { background: #1e2a3a; border-color: #3a7bd5; color: #9cc5ff; }
+
+.dark .ehr-toolbar {
+  background: linear-gradient(to bottom, #2a2a30 0%, #232328 100%);
+  border-bottom-color: #45454d;
+}
+
+.dark .ehr-toolbar-button { color: #cfcfcf; }
+
+.dark .ehr-toolbar-button:hover {
+  background: #2c3540;
+  border-color: #55555f;
+}
+
+.dark .ehr-toolbar-button-active {
+  background: linear-gradient(to bottom, #3a3a42 0%, #2a2a30 100%);
+  border-color: #55555f;
+}
+
+.dark .ehr-splitter { background: #1e1e22; }
+.dark .ehr-splitter:hover { background: #3a3a42; }
+
+/* ---------- Dark mode: Tailwind utility overrides ---------- */
+
+.dark .bg-white { background-color: var(--surface-raised); }
+.dark .bg-gray-50 { background-color: #232328; }
+.dark .bg-gray-100 { background-color: #292930; }
+.dark .bg-gray-200 { background-color: #32323a; }
+.dark .bg-gray-300 { background-color: #3a3a42; }
+.dark .bg-gray-400 { background-color: #44444d; }
+.dark .bg-gray-500 { background-color: #55555f; }
+.dark .bg-gray-600 { background-color: #4a4a52; }
+.dark .bg-blue-50 { background-color: #1e2a3a; }
+.dark .bg-blue-100 { background-color: #23344a; }
+.dark .bg-red-50 { background-color: #3a1f1f; }
+.dark .bg-red-100 { background-color: #3a1f1f; }
+.dark .bg-green-100 { background-color: #1f3a24; }
+.dark .bg-yellow-100 { background-color: #3a341f; }
+
+.dark .text-gray-400 { color: #8a8a92; }
+.dark .text-gray-500 { color: #9a9aa2; }
+.dark .text-gray-600 { color: #b4b4bc; }
+.dark .text-gray-700 { color: #c8c8d0; }
+.dark .text-gray-800 { color: #dcdce2; }
+.dark .text-gray-900 { color: #ececf0; }
+
+.dark .border-gray-200 { border-color: #34343b; }
+.dark .border-gray-300 { border-color: #3a3a42; }
+.dark .border-gray-400 { border-color: #45454d; }
+.dark .border-gray-500 { border-color: #50505a; }
+.dark .border-gray-600 { border-color: #5a5a64; }
+.dark .border-gray-700 { border-color: #6a6a74; }
+
+.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) { border-color: #34343b; }
+
+.dark .hover\:bg-gray-50:hover { background-color: #26262c; }
+.dark .hover\:bg-gray-100:hover { background-color: #2c2c34; }
+.dark .hover\:bg-gray-200:hover { background-color: #34343c; }
+.dark .hover\:bg-blue-50:hover { background-color: #1e2a3a; }
+.dark .hover\:bg-blue-100:hover { background-color: #23344a; }
+
+/* Arbitrary-value surfaces used in Lab/Vitals tables */
+.dark .bg-\[\#f8f8f8\] { background-color: #232328; }
+.dark .hover\:bg-\[\#e0e8f0\]:hover { background-color: #2c3540; }
+.dark .from-\[\#f8f8f8\].to-\[\#e8e8e8\] { background-image: linear-gradient(to bottom, #32323a, #26262b); }
+.dark .from-\[\#f0f0f0\].to-\[\#e0e0e0\] { background-image: linear-gradient(to bottom, #2d2d33, #232328); }
+.dark .hover\:from-\[\#fff\]:hover { background-image: linear-gradient(to bottom, #3a3a42, #2f2f36); }
+
+/* Accent text: lighten for contrast on dark surfaces */
+.dark .text-red-500 { color: #ff7373; }
+.dark .text-red-600 { color: #ff8080; }
+.dark .text-red-700 { color: #ff8f8f; }
+.dark .text-red-800 { color: #ff9b9b; }
+.dark .text-red-900 { color: #ffabab; }
+.dark .text-green-600 { color: #5fd07a; }
+.dark .text-green-700 { color: #52c46e; }
+.dark .text-green-800 { color: #46b862; }
+.dark .text-yellow-700 { color: #e0c24a; }
+.dark .text-yellow-800 { color: #d6b840; }
+.dark .text-amber-600 { color: #e0a83a; }
+.dark .text-amber-700 { color: #d69a30; }
+.dark .text-blue-500 { color: #5aa0e9; }
+.dark .text-blue-600 { color: #5aa0e9; }
+.dark .text-blue-800 { color: #7ab0ef; }
+.dark .text-purple-500 { color: #b48ce0; }
+.dark .text-purple-600 { color: #b48ce0; }
+.dark .text-purple-800 { color: #c4a0ec; }
+.dark .text-orange-500 { color: #e0903a; }
+.dark .text-orange-600 { color: #e0903a; }
+.dark .text-orange-800 { color: #ecaa5a; }
