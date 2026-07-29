@@ -14,7 +14,8 @@ import {
   Lock,
   Shield,
   FlaskConical,
-  Activity
+  Activity,
+  ClipboardCheck
 } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import PatientSearchPage from './pages/PatientSearchPage';
@@ -26,8 +27,10 @@ import ReportsPage from './pages/ReportsPage';
 import SettingsPage from './pages/SettingsPage';
 import LabResultsPage from './pages/LabResultsPage';
 import VitalsPage from './pages/VitalsPage';
+import RefillQueuePage from './pages/RefillQueuePage';
 import { AlertDialog, ConfirmDialog } from './components/ui/Modal';
 import { logLogout } from './services/auditService';
+import { refillRequestService } from './services/refillRequestService';
 
 const SESSION_TIMEOUT_MS = 15 * 60 * 1000;
 const SESSION_WARNING_MS = 2 * 60 * 1000;
@@ -55,6 +58,24 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
   const [searchResults, setSearchResults] = useState<typeof defaultPatientSearch>([]);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [sessionTime, setSessionTime] = useState(SESSION_TIMEOUT_MS);
+  const [pendingRefillCount, setPendingRefillCount] = useState(0);
+
+  const loadPendingRefillCount = useCallback(async () => {
+    try {
+      setPendingRefillCount((await refillRequestService.getPending()).length);
+    } catch {
+      setPendingRefillCount(0);
+    }
+  }, []);
+
+  useEffect(() => {
+    const initialLoad = window.setTimeout(() => void loadPendingRefillCount(), 0);
+    window.addEventListener('refill-queue-updated', loadPendingRefillCount);
+    return () => {
+      window.clearTimeout(initialLoad);
+      window.removeEventListener('refill-queue-updated', loadPendingRefillCount);
+    };
+  }, [loadPendingRefillCount]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -121,6 +142,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
     { path: '/labs', icon: FlaskConical, label: 'Lab Results' },
     { path: '/vitals', icon: Activity, label: 'Vitals' },
     { path: '/medications', icon: Pill, label: 'Medications' },
+    { path: '/refills', icon: ClipboardCheck, label: 'Refill Queue', badge: pendingRefillCount },
     { path: '/reports', icon: FileText, label: 'Reports' },
     { path: '/settings', icon: Settings, label: 'Settings' },
   ];
@@ -207,6 +229,11 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
               >
                 <Icon className="w-3.5 h-3.5 mr-1" />
                 {item.label}
+                {item.badge !== undefined && item.badge > 0 && (
+                  <span className="ml-1 min-w-4 h-4 px-1 flex items-center justify-center bg-red-700 text-white border border-red-900 text-[9px] leading-none">
+                    {item.badge}
+                  </span>
+                )}
               </Link>
             );
           })}
@@ -246,6 +273,11 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
                 >
                   <Icon className="w-4 h-4 mr-2" />
                   {item.label}
+                  {item.badge !== undefined && item.badge > 0 && (
+                    <span className="ml-auto min-w-4 h-4 px-1 flex items-center justify-center bg-red-700 text-white border border-red-900 text-[9px] leading-none">
+                      {item.badge}
+                    </span>
+                  )}
                 </Link>
               );
             })}
@@ -295,6 +327,7 @@ function App() {
             <Route path="/labs" element={<LabResultsPage />} />
             <Route path="/vitals" element={<VitalsPage />} />
             <Route path="/medications" element={<MedicationsPage />} />
+            <Route path="/refills" element={<RefillQueuePage />} />
             <Route path="/reports" element={<ReportsPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Routes>
