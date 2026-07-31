@@ -14,6 +14,8 @@ import {
   Check
 } from 'lucide-react';
 import { AlertDialog } from '../components/ui/Modal';
+import { useTheme } from '../context/useTheme';
+import type { Theme } from '../context/themeContextValue';
 
 type SettingsTab = 'profile' | 'notifications' | 'security' | 'appearance' | 'practice';
 
@@ -49,12 +51,12 @@ const defaultNotifications = {
 };
 
 const defaultAppearance = {
-  theme: 'light',
   compactMode: false,
   fontSize: 'medium',
 };
 
 export default function SettingsPage() {
+  const { theme, setTheme } = useTheme();
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
   const [saved, setSaved] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['channels', 'alerts', 'security', 'hours']));
@@ -105,7 +107,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col" style={{ background: 'var(--ehr-desktop-bg)' }}>
       {/* Header */}
       <div className="ehr-header flex items-center justify-between">
         <span>System Settings</span>
@@ -121,7 +123,7 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Navigation */}
-        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: '#ece9d8' }}>
+        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: 'var(--ehr-sidebar-bg)' }}>
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -385,20 +387,25 @@ export default function SettingsPage() {
               <fieldset className="ehr-fieldset">
                 <legend>Theme</legend>
                 <div className="grid grid-cols-3 gap-2">
-                  {['light', 'dark', 'system'].map((theme) => (
-                    <button
-                      key={theme}
-                      onClick={() => setAppearance({ ...appearance, theme })}
-                      className={`p-2 border text-center text-[11px] ${
-                        appearance.theme === theme
-                          ? 'border-gray-600 bg-white'
-                          : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
-                      }`}
-                    >
-                      <Monitor className="w-4 h-4 mx-auto mb-1 text-gray-600" />
-                      <span className="capitalize">{theme}</span>
-                    </button>
-                  ))}
+                  {(['light', 'dark', 'system'] as Theme[]).map((option) => {
+                    const selected = theme === option;
+                    return (
+                      <button
+                        key={option}
+                        onClick={() => setTheme(option)}
+                        aria-pressed={selected}
+                        className="p-2 border text-center text-[11px]"
+                        style={
+                          selected
+                            ? { borderColor: '#1a4080', borderWidth: 2, background: 'linear-gradient(to bottom, #4a90d9 0%, #2a5db0 100%)', color: '#fff' }
+                            : undefined
+                        }
+                      >
+                        <Monitor className={`w-4 h-4 mx-auto mb-1 ${selected ? '' : 'text-gray-600'}`} />
+                        <span className="capitalize">{option}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </fieldset>
 
