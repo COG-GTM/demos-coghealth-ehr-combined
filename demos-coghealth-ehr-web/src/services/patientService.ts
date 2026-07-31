@@ -19,6 +19,9 @@ export const patientService = {
   search: (query: string, page = 0, size = 20) => 
     api.get<Page<Patient>>('/v1/patients/search', { q: query, page, size }),
 
+  vectorSearch: (query: string, limit = 20) =>
+    api.get<Patient[]>('/v1/patients/search/vector', { q: query, limit }),
+
   create: (patient: Partial<Patient>) => 
     api.post<Patient>('/v1/patients', patient),
 

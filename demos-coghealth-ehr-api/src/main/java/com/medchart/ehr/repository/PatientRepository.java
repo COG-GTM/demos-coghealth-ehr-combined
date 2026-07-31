@@ -4,7 +4,9 @@ import com.medchart.ehr.domain.patient.Patient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -25,6 +27,19 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
            "LOWER(p.firstName) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
            "p.mrn LIKE CONCAT('%', :searchTerm, '%')")
     Page<Patient> searchPatients(String searchTerm, Pageable pageable);
+
+    @Query(value = "SELECT p.* FROM patients p " +
+           "WHERE p.embedding IS NOT NULL " +
+           "ORDER BY p.embedding <=> CAST(:queryVector AS vector) " +
+           "LIMIT :limit",
+           nativeQuery = true)
+    List<Patient> vectorSearch(@Param("queryVector") String queryVector,
+                               @Param("limit") int limit);
+
+    @Modifying
+    @Query(value = "UPDATE patients SET embedding = CAST(:embedding AS vector) WHERE id = :patientId",
+           nativeQuery = true)
+    void updateEmbedding(@Param("patientId") Long patientId, @Param("embedding") String embedding);
 
     List<Patient> findByDateOfBirth(LocalDate dateOfBirth);
 
