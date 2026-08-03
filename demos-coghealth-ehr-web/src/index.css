@@ -55,6 +55,7 @@
 
   --ehr-selected-bg: #316ac5;
   --ehr-selected-text: #ffffff;
+  --ehr-selected-text-muted: #cccccc;
   --ehr-row-alt: #f0f4f8;
   --ehr-row-hover: #d0e0f0;
   --ehr-hover-soft: #e0e8f0;
@@ -113,6 +114,7 @@
 
   --ehr-selected-bg: #2f6fbf;
   --ehr-selected-text: #ffffff;
+  --ehr-selected-text-muted: #d3e2f5;
   --ehr-row-alt: #1e242c;
   --ehr-row-hover: #26313d;
   --ehr-hover-soft: #26313d;
@@ -383,7 +385,9 @@ td {
 /*
  * Dark-mode remapping of the light utility palette used throughout the pages.
  * These rules are intentionally unlayered so they win over Tailwind utilities
- * without every call site needing a `dark:` variant.
+ * without every call site needing a `dark:` variant. They also outrank layered
+ * `dark:` utilities, so a call site needing its own dark colour should set it
+ * inline or via an `--ehr-*` token rather than a `dark:` class.
  */
 .dark .bg-white { background-color: var(--ehr-surface); }
 .dark .bg-gray-50 { background-color: var(--ehr-surface-alt); }
