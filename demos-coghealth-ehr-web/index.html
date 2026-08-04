@@ -5,6 +5,20 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CogHealth EHR</title>
+    <script>
+      // Apply the persisted theme before first paint to avoid a light flash.
+      // Mirrors THEME_STORAGE_KEY and the resolution in src/context/; keep in sync.
+      (function () {
+        try {
+          var stored = localStorage.getItem('coghealth-theme');
+          var useDark =
+            stored === 'dark' ||
+            ((!stored || stored === 'system') &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (useDark) document.documentElement.classList.add('dark');
+        } catch (e) { /* storage unavailable */ }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

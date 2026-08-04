@@ -14,9 +14,13 @@ import {
   Lock,
   Shield,
   FlaskConical,
-  Activity
+  Activity,
+  Sun,
+  Moon,
+  Monitor
 } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
+import { useTheme, type Theme } from './context/themeContext';
 import PatientSearchPage from './pages/PatientSearchPage';
 import PatientChartPage from './pages/PatientChartPage';
 import DashboardPage from './pages/DashboardPage';
@@ -40,6 +44,27 @@ const defaultPatientSearch = [
   { id: 5, name: 'Davis, Robert', mrn: 'MRN001238', dob: '08/20/1945' },
   { id: 6, name: 'Martinez, Maria', mrn: 'MRN001240', dob: '12/05/1970' },
 ];
+
+const THEME_CYCLE: Theme[] = ['light', 'dark', 'system'];
+const THEME_ICONS = { light: Sun, dark: Moon, system: Monitor };
+
+function ThemeToggle() {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+  const nextTheme = THEME_CYCLE[(THEME_CYCLE.indexOf(theme) + 1) % THEME_CYCLE.length];
+  const Icon = THEME_ICONS[theme];
+
+  return (
+    <button
+      onClick={() => setTheme(nextTheme)}
+      title={`Theme: ${theme}${theme === 'system' ? ` (${resolvedTheme})` : ''} — click to switch to ${nextTheme}`}
+      aria-label={`Theme: ${theme}. Switch to ${nextTheme}`}
+      className="flex items-center space-x-1 hover:text-white text-blue-200"
+    >
+      <Icon className="w-3 h-3" />
+      <span className="capitalize">{theme}</span>
+    </button>
+  );
+}
 
 interface NavigationProps {
   onSessionWarning: () => void;
@@ -185,6 +210,9 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
             <User className="w-3 h-3" />
             <span>Dr. Sarah Anderson</span>
           </div>
+          <span className="text-blue-300">|</span>
+          <ThemeToggle />
+          <span className="text-blue-300">|</span>
           <button onClick={onLogout} className="flex items-center space-x-1 hover:text-white text-blue-200">
             <LogOut className="w-3 h-3" />
             <span>Logout</span>
@@ -228,7 +256,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-300 bg-white">
+        <div className="md:hidden border-t border-gray-300 bg-white text-gray-800">
           <div className="px-2 py-1 space-y-0.5">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -280,7 +308,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="h-screen flex flex-col" style={{ background: '#d4d0c8', fontFamily: 'Tahoma, sans-serif' }}>
+      <div className="h-screen flex flex-col" style={{ background: 'var(--ehr-desktop)', fontFamily: 'Tahoma, sans-serif' }}>
         <Navigation 
           onSessionWarning={handleSessionWarning}
           onSessionExpired={handleSessionExpired}
@@ -301,7 +329,7 @@ function App() {
         </main>
 
         {/* Status Bar - Windows XP style */}
-        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
+        <div className="ehr-status-bar h-5 border-t border-gray-400 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
               <Shield className="w-3 h-3 text-green-600" />

@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Tahoma&display=swap');
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary-50: #e8f4fc;
   --color-primary-100: #d1e9f9;
@@ -17,9 +19,128 @@
   --font-family-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+:root {
+  color-scheme: light;
+
+  --ehr-desktop: #d4d0c8;
+  --ehr-pane: #ece9d8;
+  --ehr-panel: #f5f5f5;
+  --ehr-surface: #ffffff;
+  --ehr-surface-alt: #fafafa;
+  --ehr-border: #999999;
+  --ehr-border-soft: #cccccc;
+  --ehr-text: #333333;
+  --ehr-text-muted: #666666;
+  --ehr-bevel: #ffffff;
+  --ehr-shadow: rgba(0, 0, 0, 0.1);
+
+  --ehr-header-from: #6699cc;
+  --ehr-header-to: #336699;
+  --ehr-header-border: #1a4080;
+  --ehr-subheader-from: #e8e8e8;
+  --ehr-subheader-to: #d0d0d0;
+
+  --ehr-button-from: #f8f8f8;
+  --ehr-button-to: #e0e0e0;
+  --ehr-button-hover-from: #ffffff;
+  --ehr-button-hover-to: #e8e8e8;
+  --ehr-button-border: #888888;
+  --ehr-button-primary-from: #4a90d9;
+  --ehr-button-primary-to: #2a5db0;
+  --ehr-button-primary-border: #1a4080;
+
+  --ehr-input-bg: #ffffff;
+  --ehr-input-border: #7f9db9;
+  --ehr-accent: #4a90d9;
+
+  --ehr-selected-bg: #316ac5;
+  --ehr-selected-text: #ffffff;
+  --ehr-selected-text-muted: #cccccc;
+  --ehr-row-alt: #f0f4f8;
+  --ehr-row-hover: #d0e0f0;
+  --ehr-hover-soft: #e0e8f0;
+
+  --ehr-th-from: #f8f8f8;
+  --ehr-th-to: #e8e8e8;
+  --ehr-status-bar: #ece9d8;
+
+  --ehr-alert-critical-bg: #ffcccc;
+  --ehr-alert-critical-border: #cc0000;
+  --ehr-alert-critical-text: #990000;
+  --ehr-alert-warning-bg: #fff3cd;
+  --ehr-alert-warning-border: #cc9900;
+  --ehr-alert-warning-text: #664d00;
+  --ehr-alert-info-bg: #cce5ff;
+  --ehr-alert-info-border: #0066cc;
+  --ehr-alert-info-text: #004085;
+  --ehr-alert-success-bg: #d4edda;
+  --ehr-alert-success-border: #2f8a4c;
+  --ehr-alert-success-text: #155724;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --ehr-desktop: #12151a;
+  --ehr-pane: #1a1f26;
+  --ehr-panel: #1e242c;
+  --ehr-surface: #1b2027;
+  --ehr-surface-alt: #222933;
+  --ehr-border: #39424e;
+  --ehr-border-soft: #2c333c;
+  --ehr-text: #dfe4ea;
+  --ehr-text-muted: #9aa5b1;
+  --ehr-bevel: rgba(255, 255, 255, 0.06);
+  --ehr-shadow: rgba(0, 0, 0, 0.5);
+
+  --ehr-header-from: #1e3a5c;
+  --ehr-header-to: #14263c;
+  --ehr-header-border: #0d1a2b;
+  --ehr-subheader-from: #262d36;
+  --ehr-subheader-to: #1d232b;
+
+  --ehr-button-from: #2a323c;
+  --ehr-button-to: #202730;
+  --ehr-button-hover-from: #333c47;
+  --ehr-button-hover-to: #262e38;
+  --ehr-button-border: #454f5b;
+  --ehr-button-primary-from: #3a7ac0;
+  --ehr-button-primary-to: #24568f;
+  --ehr-button-primary-border: #16385e;
+
+  --ehr-input-bg: #12161b;
+  --ehr-input-border: #3d4855;
+  --ehr-accent: #5aa0e9;
+
+  --ehr-selected-bg: #2f6fbf;
+  --ehr-selected-text: #ffffff;
+  --ehr-selected-text-muted: #d3e2f5;
+  --ehr-row-alt: #1e242c;
+  --ehr-row-hover: #26313d;
+  --ehr-hover-soft: #26313d;
+
+  --ehr-th-from: #262e38;
+  --ehr-th-to: #1e242c;
+  --ehr-status-bar: #171c22;
+
+  --ehr-alert-critical-bg: #3a1416;
+  --ehr-alert-critical-border: #a33a3a;
+  --ehr-alert-critical-text: #ffb4b4;
+  --ehr-alert-warning-bg: #3a2f10;
+  --ehr-alert-warning-border: #a8842c;
+  --ehr-alert-warning-text: #f0d68a;
+  --ehr-alert-info-bg: #122c47;
+  --ehr-alert-info-border: #2f6fbf;
+  --ehr-alert-info-text: #a8cef5;
+  --ehr-alert-success-bg: #12301f;
+  --ehr-alert-success-border: #2c6b47;
+  --ehr-alert-success-text: #9fe0b8;
+}
+
 body {
   font-size: 11px;
-  background-color: #d4d0c8;
+  background-color: var(--ehr-desktop);
+  color: var(--ehr-text);
 }
 
 input, select, textarea, button {
@@ -31,73 +152,89 @@ table {
 }
 
 th {
-  background: linear-gradient(to bottom, #f8f8f8 0%, #e8e8e8 100%);
-  border: 1px solid #999;
+  background: linear-gradient(to bottom, var(--ehr-th-from) 0%, var(--ehr-th-to) 100%);
+  border: 1px solid var(--ehr-border);
   font-weight: 600;
 }
 
 td {
-  border: 1px solid #ccc;
+  border: 1px solid var(--ehr-border-soft);
+}
+
+/* Window chrome surfaces (replaces hard-coded inline backgrounds) */
+.ehr-desktop {
+  background: var(--ehr-desktop);
+}
+
+.ehr-pane {
+  background: var(--ehr-pane);
+}
+
+.ehr-surface {
+  background: var(--ehr-surface);
 }
 
 .ehr-panel {
-  background: #f5f5f5;
-  border: 1px solid #999;
-  box-shadow: inset 1px 1px 0 #fff, 1px 1px 2px rgba(0,0,0,0.1);
+  background: var(--ehr-panel);
+  border: 1px solid var(--ehr-border);
+  box-shadow: inset 1px 1px 0 var(--ehr-bevel), 1px 1px 2px var(--ehr-shadow);
 }
 
 .ehr-button {
-  background: linear-gradient(to bottom, #f8f8f8 0%, #e0e0e0 100%);
-  border: 1px solid #888;
+  background: linear-gradient(to bottom, var(--ehr-button-from) 0%, var(--ehr-button-to) 100%);
+  border: 1px solid var(--ehr-button-border);
+  color: var(--ehr-text);
   padding: 2px 8px;
   font-size: 11px;
   cursor: pointer;
-  box-shadow: 1px 1px 0 #fff inset, -1px -1px 0 #999 inset;
+  box-shadow: 1px 1px 0 var(--ehr-bevel) inset, -1px -1px 0 var(--ehr-border) inset;
 }
 
 .ehr-button:hover {
-  background: linear-gradient(to bottom, #fff 0%, #e8e8e8 100%);
+  background: linear-gradient(to bottom, var(--ehr-button-hover-from) 0%, var(--ehr-button-hover-to) 100%);
 }
 
 .ehr-button:active {
-  background: linear-gradient(to bottom, #d8d8d8 0%, #e8e8e8 100%);
-  box-shadow: -1px -1px 0 #fff inset, 1px 1px 0 #999 inset;
+  background: linear-gradient(to bottom, var(--ehr-button-to) 0%, var(--ehr-button-hover-to) 100%);
+  box-shadow: -1px -1px 0 var(--ehr-bevel) inset, 1px 1px 0 var(--ehr-border) inset;
 }
 
 .ehr-button-primary {
-  background: linear-gradient(to bottom, #4a90d9 0%, #2a5db0 100%);
-  border: 1px solid #1a4080;
+  background: linear-gradient(to bottom, var(--ehr-button-primary-from) 0%, var(--ehr-button-primary-to) 100%);
+  border: 1px solid var(--ehr-button-primary-border);
   color: white;
 }
 
 .ehr-button-primary:hover {
-  background: linear-gradient(to bottom, #5aa0e9 0%, #3a6dc0 100%);
+  background: linear-gradient(to bottom, var(--ehr-button-primary-from) 0%, var(--ehr-button-primary-to) 100%);
+  filter: brightness(1.15);
 }
 
 .ehr-input {
-  border: 1px solid #7f9db9;
+  border: 1px solid var(--ehr-input-border);
   padding: 2px 4px;
-  background: white;
+  background: var(--ehr-input-bg);
+  color: var(--ehr-text);
   font-size: 11px;
 }
 
 .ehr-input:focus {
   outline: none;
-  border-color: #4a90d9;
-  box-shadow: 0 0 2px rgba(74, 144, 217, 0.5);
+  border-color: var(--ehr-accent);
+  box-shadow: 0 0 2px color-mix(in srgb, var(--ehr-accent) 50%, transparent);
 }
 
 .ehr-fieldset {
-  border: 1px solid #999;
+  border: 1px solid var(--ehr-border);
   padding: 8px;
   margin: 4px 0;
-  background: #fafafa;
+  background: var(--ehr-surface-alt);
 }
 
 .ehr-fieldset legend {
   font-weight: 600;
   padding: 0 4px;
-  color: #333;
+  color: var(--ehr-text);
 }
 
 .ehr-checkbox {
@@ -105,24 +242,24 @@ td {
 }
 
 .ehr-label {
-  color: #333;
+  color: var(--ehr-text);
   font-size: 11px;
 }
 
 .ehr-header {
-  background: linear-gradient(to bottom, #6699cc 0%, #336699 100%);
+  background: linear-gradient(to bottom, var(--ehr-header-from) 0%, var(--ehr-header-to) 100%);
   color: white;
   padding: 4px 8px;
   font-weight: 600;
-  border-bottom: 1px solid #1a4080;
+  border-bottom: 1px solid var(--ehr-header-border);
 }
 
 .ehr-subheader {
-  background: linear-gradient(to bottom, #e8e8e8 0%, #d0d0d0 100%);
-  color: #333;
+  background: linear-gradient(to bottom, var(--ehr-subheader-from) 0%, var(--ehr-subheader-to) 100%);
+  color: var(--ehr-text);
   padding: 2px 6px;
   font-weight: 600;
-  border-bottom: 1px solid #999;
+  border-bottom: 1px solid var(--ehr-border);
   font-size: 10px;
 }
 
@@ -132,26 +269,27 @@ td {
 }
 
 .ehr-tree-item:hover {
-  background: #e0e8f0;
+  background: var(--ehr-hover-soft);
 }
 
 .ehr-tree-item.selected {
-  background: #316ac5;
-  color: white;
+  background: var(--ehr-selected-bg);
+  color: var(--ehr-selected-text);
 }
 
 .ehr-status-bar {
-  background: #ece9d8;
-  border-top: 1px solid #fff;
+  background: var(--ehr-status-bar);
+  border-top: 1px solid var(--ehr-bevel);
   padding: 2px 8px;
   font-size: 10px;
-  color: #333;
+  color: var(--ehr-text);
 }
 
 .ehr-tab {
-  background: linear-gradient(to bottom, #f8f8f8 0%, #e0e0e0 100%);
-  border: 1px solid #888;
+  background: linear-gradient(to bottom, var(--ehr-button-from) 0%, var(--ehr-button-to) 100%);
+  border: 1px solid var(--ehr-button-border);
   border-bottom: none;
+  color: var(--ehr-text);
   padding: 3px 12px;
   margin-right: 2px;
   cursor: pointer;
@@ -159,53 +297,60 @@ td {
 }
 
 .ehr-tab.active {
-  background: #fff;
-  border-bottom: 1px solid #fff;
+  background: var(--ehr-surface);
+  border-bottom: 1px solid var(--ehr-surface);
   margin-bottom: -1px;
   position: relative;
   z-index: 1;
 }
 
 .ehr-tab-content {
-  border: 1px solid #888;
-  background: #fff;
+  border: 1px solid var(--ehr-button-border);
+  background: var(--ehr-surface);
   padding: 8px;
 }
 
 .ehr-grid-row:nth-child(even) {
-  background: #f0f4f8;
+  background: var(--ehr-row-alt);
 }
 
 .ehr-grid-row:hover {
-  background: #d0e0f0;
+  background: var(--ehr-row-hover);
 }
 
 .ehr-grid-row.selected {
-  background: #316ac5;
-  color: white;
+  background: var(--ehr-selected-bg);
+  color: var(--ehr-selected-text);
 }
 
 .ehr-alert-critical {
-  background: #ffcccc;
-  border: 1px solid #cc0000;
-  color: #990000;
+  background: var(--ehr-alert-critical-bg);
+  border: 1px solid var(--ehr-alert-critical-border);
+  color: var(--ehr-alert-critical-text);
 }
 
 .ehr-alert-warning {
-  background: #fff3cd;
-  border: 1px solid #cc9900;
-  color: #664d00;
+  background: var(--ehr-alert-warning-bg);
+  border: 1px solid var(--ehr-alert-warning-border);
+  color: var(--ehr-alert-warning-text);
 }
 
 .ehr-alert-info {
-  background: #cce5ff;
-  border: 1px solid #0066cc;
-  color: #004085;
+  background: var(--ehr-alert-info-bg);
+  border: 1px solid var(--ehr-alert-info-border);
+  color: var(--ehr-alert-info-text);
+}
+
+.ehr-alert-success {
+  background: var(--ehr-alert-success-bg);
+  border: 1px solid var(--ehr-alert-success-border);
+  color: var(--ehr-alert-success-text);
 }
 
 .ehr-toolbar {
-  background: linear-gradient(to bottom, #f5f5f5 0%, #e5e5e5 100%);
-  border-bottom: 1px solid #999;
+  background: linear-gradient(to bottom, var(--ehr-panel) 0%, var(--ehr-subheader-to) 100%);
+  border-bottom: 1px solid var(--ehr-border);
+  color: var(--ehr-text);
   padding: 2px 4px;
 }
 
@@ -217,22 +362,93 @@ td {
 }
 
 .ehr-toolbar-button:hover {
-  background: #e0e8f0;
-  border: 1px solid #999;
+  background: var(--ehr-hover-soft);
+  border: 1px solid var(--ehr-border);
 }
 
 .ehr-toolbar-button-active {
-  background: linear-gradient(to bottom, #fff 0%, #e8e8e8 100%);
-  border: 1px solid #888;
-  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.15);
+  background: linear-gradient(to bottom, var(--ehr-button-hover-from) 0%, var(--ehr-button-hover-to) 100%);
+  border: 1px solid var(--ehr-button-border);
+  box-shadow: inset 1px 1px 2px var(--ehr-shadow);
 }
 
 .ehr-splitter {
-  background: #d4d0c8;
+  background: var(--ehr-desktop);
   cursor: col-resize;
   width: 4px;
 }
 
 .ehr-splitter:hover {
-  background: #b0b0b0;
+  background: var(--ehr-border);
 }
+
+/*
+ * Dark-mode remapping of the light utility palette used throughout the pages.
+ * These rules are intentionally unlayered so they win over Tailwind utilities
+ * without every call site needing a `dark:` variant. They also outrank layered
+ * `dark:` utilities, so a call site needing its own dark colour should set it
+ * inline or via an `--ehr-*` token rather than a `dark:` class.
+ */
+.dark .bg-white { background-color: var(--ehr-surface); }
+.dark .bg-gray-50 { background-color: var(--ehr-surface-alt); }
+.dark .bg-gray-100 { background-color: #232a33; }
+.dark .bg-gray-200 { background-color: #2b333d; }
+.dark .bg-gray-300 { background-color: #333c47; }
+.dark .bg-gray-400 { background-color: #3d4753; }
+.dark .bg-gray-500 { background-color: #4a5561; }
+.dark .bg-gray-600 { background-color: #58636f; }
+.dark .hover\:bg-gray-50:hover { background-color: var(--ehr-surface-alt); }
+.dark .hover\:bg-gray-100:hover { background-color: #262e38; }
+.dark .hover\:bg-gray-200:hover { background-color: #2f3944; }
+
+.dark .text-gray-900 { color: #eef1f5; }
+.dark .text-gray-800 { color: #dfe4ea; }
+.dark .text-gray-700 { color: #c6cdd5; }
+.dark .text-gray-600 { color: #b0b9c3; }
+.dark .text-gray-500 { color: #9aa5b1; }
+.dark .text-gray-400 { color: #838e9a; }
+.dark .text-gray-200 { color: #d7dde4; }
+
+.dark .border-gray-200 { border-color: #2c333c; }
+.dark .border-gray-300 { border-color: #333b45; }
+.dark .border-gray-400 { border-color: var(--ehr-border); }
+.dark .border-gray-500 { border-color: #4a5561; }
+.dark .border-gray-600 { border-color: #566270; }
+.dark .border-gray-700 { border-color: #626e7c; }
+.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) { border-color: #2c333c; }
+
+.dark .bg-blue-100 { background-color: #16324f; }
+.dark .hover\:bg-blue-50:hover { background-color: #16324f; }
+.dark .hover\:bg-blue-100:hover { background-color: #1b3d61; }
+.dark .bg-red-50 { background-color: #2e1416; }
+.dark .bg-red-100 { background-color: #3a1416; }
+.dark .bg-green-100 { background-color: #123122; }
+.dark .bg-yellow-100 { background-color: #33290f; }
+
+.dark .text-blue-600 { color: #6fb0f0; }
+.dark .text-blue-800 { color: #9cc9f5; }
+.dark .text-red-500 { color: #f08b8b; }
+.dark .text-red-600 { color: #ef7d7d; }
+.dark .text-red-700 { color: #f09a9a; }
+.dark .text-red-800 { color: #f2adad; }
+.dark .text-red-900 { color: #f5bfbf; }
+.dark .text-green-600 { color: #5ec98c; }
+.dark .text-green-700 { color: #6fd398; }
+.dark .text-green-800 { color: #86dcaa; }
+.dark .text-yellow-700 { color: #e0c069; }
+.dark .text-yellow-800 { color: #e8cd83; }
+.dark .text-amber-600 { color: #e2ac52; }
+.dark .text-amber-700 { color: #e8bb6e; }
+.dark .text-orange-500 { color: #f0954f; }
+.dark .text-orange-600 { color: #f0a066; }
+.dark .text-orange-800 { color: #f3bb90; }
+.dark .text-purple-500 { color: #b18ae0; }
+.dark .text-purple-600 { color: #bb99e6; }
+.dark .text-purple-800 { color: #cdb2ee; }
+
+.dark .border-blue-300 { border-color: #2f6fbf; }
+.dark .border-red-200 { border-color: #5a2528; }
+.dark .border-red-300 { border-color: #7a3033; }
+.dark .border-red-500 { border-color: #a33a3a; }
+.dark .border-green-300 { border-color: #2c6b47; }
+.dark .border-yellow-300 { border-color: #6d5a22; }
