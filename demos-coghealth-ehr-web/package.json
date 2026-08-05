@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "test": "jest",
     "test:unit": "jest --testPathPatterns=tests/unit",
-    "test:e2e": "jest --testPathPatterns=tests/e2e --testPathIgnorePatterns=/node_modules/"
+    "test:e2e": "jest --config jest.e2e.config.cjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
