@@ -370,6 +370,16 @@ td {
   color: white;
 }
 
+/* Sparkline strokes: set via class so var() resolves as a CSS declaration
+   rather than an SVG presentation attribute. */
+.ehr-trend-normal {
+  stroke: var(--ehr-trend-normal);
+}
+
+.ehr-trend-abnormal {
+  stroke: var(--ehr-trend-abnormal);
+}
+
 .ehr-window-shadow {
   box-shadow: 2px 2px 8px var(--ehr-window-shadow-color);
 }
@@ -456,6 +466,11 @@ td {
 
 .ehr-button-ghost:hover {
   background: var(--ehr-hover);
+}
+
+.ehr-button-ghost:active {
+  background: transparent;
+  box-shadow: none;
 }
 
 .ehr-button-violet {

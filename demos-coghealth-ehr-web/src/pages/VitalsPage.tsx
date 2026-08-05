@@ -106,9 +106,9 @@ export default function VitalsPage() {
     return (
       <svg width={width} height={height} className="inline-block ml-1">
         <polyline
+          className={isAbnormal ? 'ehr-trend-abnormal' : 'ehr-trend-normal'}
           points={points}
           fill="none"
-          stroke={isAbnormal ? 'var(--ehr-trend-abnormal)' : 'var(--ehr-trend-normal)'}
           strokeWidth="1.5"
         />
       </svg>
