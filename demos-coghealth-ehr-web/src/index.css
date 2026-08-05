@@ -102,13 +102,19 @@
 
   --ehr-ok-from: #66cc66;
   --ehr-ok-to: #339933;
+  --ehr-ok-hover-from: #7add7a;
+  --ehr-ok-hover-to: #43ab43;
   --ehr-ok-border: #206020;
   --ehr-danger-from: #e87458;
   --ehr-danger-to: #c84030;
+  --ehr-danger-hover-from: #f5876b;
+  --ehr-danger-hover-to: #d85040;
   --ehr-danger-border: #a02010;
   --ehr-danger-solid: #cc0000;
   --ehr-violet-from: #9966cc;
   --ehr-violet-to: #663399;
+  --ehr-violet-hover-from: #aa7add;
+  --ehr-violet-hover-to: #7643a9;
   --ehr-violet-border: #4a2080;
 
   --ehr-alert-critical-bg: #ffcccc;
@@ -198,13 +204,19 @@
 
   --ehr-ok-from: #2e7d46;
   --ehr-ok-to: #1e5c30;
+  --ehr-ok-hover-from: #3a9455;
+  --ehr-ok-hover-to: #26713d;
   --ehr-ok-border: #123d1f;
   --ehr-danger-from: #a33b34;
   --ehr-danger-to: #7a1f1a;
+  --ehr-danger-hover-from: #bc4941;
+  --ehr-danger-hover-to: #932a24;
   --ehr-danger-border: #4d1310;
   --ehr-danger-solid: #a33b34;
   --ehr-violet-from: #6b4a99;
   --ehr-violet-to: #4b2f73;
+  --ehr-violet-hover-from: #7f5ab0;
+  --ehr-violet-hover-to: #5b3b8a;
   --ehr-violet-border: #2f1c4d;
 
   --ehr-alert-critical-bg: #3a1a1a;
@@ -405,16 +417,28 @@ td {
   color: white;
 }
 
+.ehr-button-ok:hover {
+  background: linear-gradient(to bottom, var(--ehr-ok-hover-from) 0%, var(--ehr-ok-hover-to) 100%);
+}
+
 .ehr-button-danger {
   background: linear-gradient(to bottom, var(--ehr-danger-from) 0%, var(--ehr-danger-to) 100%);
   border: 1px solid var(--ehr-danger-border);
   color: white;
 }
 
+.ehr-button-danger:hover {
+  background: linear-gradient(to bottom, var(--ehr-danger-hover-from) 0%, var(--ehr-danger-hover-to) 100%);
+}
+
 .ehr-button-danger-solid {
   background: var(--ehr-danger-solid);
   border: 1px solid var(--ehr-danger-border);
   color: white;
+}
+
+.ehr-button-danger-solid:hover {
+  background: var(--ehr-danger-hover-from);
 }
 
 .ehr-button-ghost {
@@ -425,6 +449,10 @@ td {
 
 .ehr-button-ghost:hover {
   background: var(--ehr-hover);
+}
+
+.ehr-button-violet:hover {
+  background: linear-gradient(to bottom, var(--ehr-violet-hover-from) 0%, var(--ehr-violet-hover-to) 100%);
 }
 
 .ehr-button-violet {

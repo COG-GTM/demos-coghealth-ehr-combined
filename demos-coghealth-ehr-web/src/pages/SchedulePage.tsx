@@ -372,7 +372,7 @@ export default function SchedulePage() {
                     </td>
                     <td className="px-1 py-1">
                       <div className="font-semibold">{apt.patientName}</div>
-                      <div className="text-[10px]" style={isSelected ? { color: '#ccc' } : { color: '#666' }}>
+                      <div className={`text-[10px] ${isSelected ? 'text-white/70' : 'text-ink-3'}`}>
                         {apt.patientMrn} • {apt.patientAge}{apt.patientGender}
                       </div>
                       <div className="flex space-x-0.5 mt-0.5">

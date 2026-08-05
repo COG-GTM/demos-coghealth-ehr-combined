@@ -3,9 +3,14 @@ import { THEME_STORAGE_KEY, ThemeContext, type Theme } from './theme';
 
 const DARK_QUERY = '(prefers-color-scheme: dark)';
 
+/* Storage can be blocked (privacy mode, embedded contexts); fall back to following the OS. */
 function getStoredTheme(): Theme {
-  const stored = localStorage.getItem(THEME_STORAGE_KEY);
-  return stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    return stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+  } catch {
+    return 'system';
+  }
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
@@ -26,7 +31,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [resolvedTheme]);
 
   const setTheme = useCallback((next: Theme) => {
-    localStorage.setItem(THEME_STORAGE_KEY, next);
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, next);
+    } catch {
+      /* preference is not persisted, but the theme still applies for this session */
+    }
     setThemeState(next);
   }, []);
 
