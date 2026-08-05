@@ -413,6 +413,12 @@ td {
   background: linear-gradient(to bottom, var(--ehr-accent-hover-from) 0%, var(--ehr-accent-hover-to) 100%);
 }
 
+/* Pressed variants flip their own gradient; without them the neutral
+   .ehr-button:active fill wins and leaves white text on light gray. */
+.ehr-button-primary:active {
+  background: linear-gradient(to bottom, var(--ehr-accent-to) 0%, var(--ehr-accent-from) 100%);
+}
+
 /* Colour-coded action buttons (start visit, discontinue, room assignment). */
 .ehr-button-ok {
   background: linear-gradient(to bottom, var(--ehr-ok-from) 0%, var(--ehr-ok-to) 100%);
@@ -424,6 +430,10 @@ td {
   background: linear-gradient(to bottom, var(--ehr-ok-hover-from) 0%, var(--ehr-ok-hover-to) 100%);
 }
 
+.ehr-button-ok:active {
+  background: linear-gradient(to bottom, var(--ehr-ok-to) 0%, var(--ehr-ok-from) 100%);
+}
+
 .ehr-button-danger {
   background: linear-gradient(to bottom, var(--ehr-danger-from) 0%, var(--ehr-danger-to) 100%);
   border: 1px solid var(--ehr-danger-border);
@@ -432,6 +442,10 @@ td {
 
 .ehr-button-danger:hover {
   background: linear-gradient(to bottom, var(--ehr-danger-hover-from) 0%, var(--ehr-danger-hover-to) 100%);
+}
+
+.ehr-button-danger:active {
+  background: linear-gradient(to bottom, var(--ehr-danger-to) 0%, var(--ehr-danger-from) 100%);
 }
 
 .ehr-button-ghost {
@@ -452,6 +466,10 @@ td {
 
 .ehr-button-violet:hover {
   background: linear-gradient(to bottom, var(--ehr-violet-hover-from) 0%, var(--ehr-violet-hover-to) 100%);
+}
+
+.ehr-button-violet:active {
+  background: linear-gradient(to bottom, var(--ehr-violet-to) 0%, var(--ehr-violet-from) 100%);
 }
 
 .ehr-input {

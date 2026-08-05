@@ -47,7 +47,7 @@ export default function PatientBanner({ patient, allergies = [] }: PatientBanner
                 <span className="px-1.5 py-0.5 bg-surface-inverse text-white text-[10px] font-bold border border-line-4">DECEASED</span>
               )}
               {!patient.active && !patient.deceased && (
-                <span className="px-1.5 py-0.5 bg-gray-500 text-white text-[10px] font-bold border border-line-3">INACTIVE</span>
+                <span className="px-1.5 py-0.5 bg-surface-inverse text-white text-[10px] font-bold border border-line-3">INACTIVE</span>
               )}
             </div>
             

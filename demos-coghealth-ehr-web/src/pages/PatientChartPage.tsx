@@ -201,7 +201,7 @@ export default function PatientChartPage() {
                         {problems.map((problem, idx) => (
                           <tr key={problem.id} className={idx % 2 === 1 ? 'bg-surface-2' : ''}>
                             <td className="px-2 py-1">
-                              <span className={`inline-block w-2 h-2 mr-1 border border-line-4 ${problem.priority === 'high' ? 'bg-gray-400' : problem.priority === 'medium' ? 'bg-surface-5' : 'bg-surface-4'}`} />
+                              <span className={`inline-block w-2 h-2 mr-1 border border-line-4 ${problem.priority === 'high' ? 'bg-surface-inverse' : problem.priority === 'medium' ? 'bg-surface-5' : 'bg-surface-4'}`} />
                               {problem.name}
                             </td>
                             <td className="px-2 py-1 font-mono text-[10px]">{problem.icd10}</td>
