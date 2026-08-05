@@ -434,16 +434,6 @@ td {
   background: linear-gradient(to bottom, var(--ehr-danger-hover-from) 0%, var(--ehr-danger-hover-to) 100%);
 }
 
-.ehr-button-danger-solid {
-  background: var(--ehr-danger-solid);
-  border: 1px solid var(--ehr-danger-border);
-  color: white;
-}
-
-.ehr-button-danger-solid:hover {
-  background: var(--ehr-danger-hover-from);
-}
-
 .ehr-button-ghost {
   background: transparent;
   border: 1px solid transparent;

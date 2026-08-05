@@ -10,7 +10,8 @@
       (function () {
         try {
           var stored = localStorage.getItem('coghealth-theme');
-          var dark = stored === 'dark' || ((!stored || stored === 'system') &&
+          // Anything unrecognised normalises to 'system', matching getStoredTheme().
+          var dark = stored === 'dark' || (stored !== 'light' &&
             window.matchMedia('(prefers-color-scheme: dark)').matches);
           if (dark) document.documentElement.classList.add('dark');
         } catch (e) { /* storage blocked: fall back to light */ }

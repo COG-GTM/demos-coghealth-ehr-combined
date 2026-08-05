@@ -141,7 +141,7 @@ export default function SettingsPage() {
                 className={`w-full flex items-center px-2 py-1.5 text-[11px] ${
                   activeTab === tab.id
                     ? 'bg-surface border border-line-3 font-semibold'
-                    : 'hover:bg-white/50'
+                    : 'hover:bg-surface-3'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5 mr-2" />
