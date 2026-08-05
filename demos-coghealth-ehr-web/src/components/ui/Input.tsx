@@ -24,7 +24,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {error && <p className="mt-1 text-[10px] text-red-600">{error}</p>}
-        {helperText && !error && <p className="mt-1 text-[10px] text-gray-500">{helperText}</p>}
+        {helperText && !error && <p className="mt-1 text-[10px] text-ink-3">{helperText}</p>}
       </div>
     );
   }

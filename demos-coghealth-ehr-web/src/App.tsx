@@ -14,7 +14,10 @@ import {
   Lock,
   Shield,
   FlaskConical,
-  Activity
+  Activity,
+  Sun,
+  Moon,
+  MonitorCog
 } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import PatientSearchPage from './pages/PatientSearchPage';
@@ -28,6 +31,7 @@ import LabResultsPage from './pages/LabResultsPage';
 import VitalsPage from './pages/VitalsPage';
 import { AlertDialog, ConfirmDialog } from './components/ui/Modal';
 import { logLogout } from './services/auditService';
+import { useTheme, type Theme } from './context/theme';
 
 const SESSION_TIMEOUT_MS = 15 * 60 * 1000;
 const SESSION_WARNING_MS = 2 * 60 * 1000;
@@ -40,6 +44,27 @@ const defaultPatientSearch = [
   { id: 5, name: 'Davis, Robert', mrn: 'MRN001238', dob: '08/20/1945' },
   { id: 6, name: 'Martinez, Maria', mrn: 'MRN001240', dob: '12/05/1970' },
 ];
+
+const themeCycle: Record<Theme, Theme> = { light: 'dark', dark: 'system', system: 'light' };
+const themeIcons: Record<Theme, typeof Sun> = { light: Sun, dark: Moon, system: MonitorCog };
+
+function ThemeToggle() {
+  const { theme, resolvedTheme, setTheme } = useTheme();
+  const Icon = themeIcons[theme];
+  const label = theme === 'system' ? `System (${resolvedTheme})` : theme === 'dark' ? 'Dark' : 'Light';
+
+  return (
+    <button
+      onClick={() => setTheme(themeCycle[theme])}
+      title={`Display: ${label} — click for ${themeCycle[theme]} mode`}
+      aria-label={`Display theme: ${label}. Switch to ${themeCycle[theme]} mode`}
+      className="flex items-center space-x-1 hover:bg-white/15 px-1 py-0.5"
+    >
+      <Icon className="w-3 h-3" />
+      <span>{label}</span>
+    </button>
+  );
+}
 
 interface NavigationProps {
   onSessionWarning: () => void;
@@ -130,8 +155,8 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
       {/* Application Header */}
       <div className="ehr-header flex items-center justify-between px-3">
         <div className="flex items-center space-x-3">
-          <div className="w-5 h-5 bg-white flex items-center justify-center border border-blue-300">
-            <span className="text-blue-800 font-bold text-[11px]">C</span>
+          <div className="ehr-logo-mark w-5 h-5 flex items-center justify-center">
+            <span className="font-bold text-[11px]">C</span>
           </div>
           <span className="font-semibold">CogHealth EHR</span>
           <span className="text-blue-200 text-[10px]">v4.2.1</span>
@@ -151,28 +176,28 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
               />
             </div>
             {showSearchDropdown && searchResults.length > 0 && (
-              <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-400 shadow-lg z-50">
+              <div className="absolute top-full left-0 mt-1 w-64 bg-surface border border-line-3 shadow-lg z-50">
                 {searchResults.map((patient) => (
                   <div
                     key={patient.id}
                     onClick={() => selectPatient(patient.id)}
-                    className="px-2 py-1.5 hover:bg-blue-100 cursor-pointer text-[11px] text-gray-800 border-b border-gray-200"
+                    className="px-2 py-1.5 hover:bg-blue-100 cursor-pointer text-[11px] text-ink border-b border-line"
                   >
                     <div className="font-semibold">{patient.name}</div>
-                    <div className="text-gray-500 text-[10px]">{patient.mrn} • DOB: {patient.dob}</div>
+                    <div className="text-ink-3 text-[10px]">{patient.mrn} • DOB: {patient.dob}</div>
                   </div>
                 ))}
               </div>
             )}
             {showSearchDropdown && searchResults.length === 0 && globalSearch.length >= 2 && (
-              <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-400 shadow-lg z-50 p-2 text-[11px] text-gray-500">
+              <div className="absolute top-full left-0 mt-1 w-64 bg-surface border border-line-3 shadow-lg z-50 p-2 text-[11px] text-ink-3">
                 No patients found
               </div>
             )}
           </div>
         </div>
         <div className="flex items-center space-x-3 text-[10px]">
-          <span className="text-blue-100">Springfield Medical Center</span>
+          <span className="text-blue-200">Springfield Medical Center</span>
           <span className="text-blue-300">|</span>
           <div className="flex items-center space-x-1">
             <Lock className="w-3 h-3" />
@@ -180,6 +205,8 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
               Session: {formatSessionTime()}
             </span>
           </div>
+          <span className="text-blue-300">|</span>
+          <ThemeToggle />
           <span className="text-blue-300">|</span>
           <div className="flex items-center space-x-1">
             <User className="w-3 h-3" />
@@ -212,15 +239,15 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
           })}
         </div>
 
-        <div className="flex items-center space-x-2 text-[10px] text-gray-600">
+        <div className="flex items-center space-x-2 text-[10px] text-ink-2">
           <span>{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
-          <span className="text-gray-400">|</span>
+          <span className="text-ink-4">|</span>
           <span>{new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</span>
         </div>
 
         {/* Mobile menu button */}
         <button
-          className="md:hidden p-1 hover:bg-gray-200"
+          className="md:hidden p-1 hover:bg-surface-4"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -228,7 +255,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-300 bg-white">
+        <div className="md:hidden border-t border-line-2 bg-surface">
           <div className="px-2 py-1 space-y-0.5">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -241,7 +268,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
                   className={`flex items-center px-2 py-1.5 text-[11px] ${
                     isActive
                       ? 'bg-blue-100 border border-blue-300'
-                      : 'hover:bg-gray-100'
+                      : 'hover:bg-surface-3'
                   }`}
                 >
                   <Icon className="w-4 h-4 mr-2" />
@@ -280,7 +307,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="h-screen flex flex-col" style={{ background: '#d4d0c8', fontFamily: 'Tahoma, sans-serif' }}>
+      <div className="ehr-desktop h-screen flex flex-col" style={{ fontFamily: 'Tahoma, sans-serif' }}>
         <Navigation 
           onSessionWarning={handleSessionWarning}
           onSessionExpired={handleSessionExpired}
@@ -301,23 +328,23 @@ function App() {
         </main>
 
         {/* Status Bar - Windows XP style */}
-        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
+        <div className="ehr-taskbar h-5 border-t border-line-3 flex items-center justify-between px-2 text-[10px]">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
               <Shield className="w-3 h-3 text-green-600" />
               <span>HIPAA Compliant</span>
             </div>
-            <span className="text-gray-400">|</span>
+            <span className="text-ink-4">|</span>
             <span>Encrypted Connection (TLS 1.3)</span>
-            <span className="text-gray-400">|</span>
+            <span className="text-ink-4">|</span>
             <span>Audit Logging: Active</span>
           </div>
           <div className="flex items-center space-x-4">
             <span>Database: Connected</span>
-            <span className="text-gray-400">|</span>
+            <span className="text-ink-4">|</span>
             <span>Last Sync: Just now</span>
-            <span className="text-gray-400">|</span>
-            <span className="text-gray-500">CogHealth EHR v4.2.1 - For Demo Use Only</span>
+            <span className="text-ink-4">|</span>
+            <span className="text-ink-3">CogHealth EHR v4.2.1 - For Demo Use Only</span>
           </div>
         </div>
 
