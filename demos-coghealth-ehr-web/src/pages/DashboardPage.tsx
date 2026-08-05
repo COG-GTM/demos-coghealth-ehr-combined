@@ -259,29 +259,29 @@ export default function DashboardPage() {
 
   const getStatusStyle = (status: string) => {
     switch (status) {
-      case 'critical': return 'bg-gray-300 text-gray-800 font-bold';
-      case 'waiting': return 'bg-gray-200 text-gray-700';
-      case 'roomed': return 'bg-gray-200 text-gray-700';
-      case 'in-progress': return 'bg-gray-300 text-gray-800';
-      case 'ready-discharge': return 'bg-gray-100 text-gray-600';
-      default: return 'bg-gray-100 text-gray-600';
+      case 'critical': return 'bg-surface-5 text-ink font-bold';
+      case 'waiting': return 'bg-surface-4 text-ink';
+      case 'roomed': return 'bg-surface-4 text-ink';
+      case 'in-progress': return 'bg-surface-5 text-ink';
+      case 'ready-discharge': return 'bg-surface-3 text-ink-2';
+      default: return 'bg-surface-3 text-ink-2';
     }
   };
 
   const getFlagStyle = (flag: string) => {
     switch (flag) {
-      case 'fall-risk': return { label: 'FALL', bg: 'bg-gray-200', color: 'text-gray-800' };
-      case 'isolation': return { label: 'ISO', bg: 'bg-gray-200', color: 'text-gray-800' };
-      case 'npo': return { label: 'NPO', bg: 'bg-gray-200', color: 'text-gray-800' };
-      case 'allergy': return { label: 'ALLERGY', bg: 'bg-gray-200', color: 'text-gray-800' };
-      case 'code-status': return { label: 'DNR', bg: 'bg-gray-300', color: 'text-gray-800' };
-      case 'vip': return { label: 'VIP', bg: 'bg-gray-100', color: 'text-gray-700' };
-      default: return { label: flag, bg: 'bg-gray-100', color: 'text-gray-700' };
+      case 'fall-risk': return { label: 'FALL', bg: 'bg-surface-4', color: 'text-ink' };
+      case 'isolation': return { label: 'ISO', bg: 'bg-surface-4', color: 'text-ink' };
+      case 'npo': return { label: 'NPO', bg: 'bg-surface-4', color: 'text-ink' };
+      case 'allergy': return { label: 'ALLERGY', bg: 'bg-surface-4', color: 'text-ink' };
+      case 'code-status': return { label: 'DNR', bg: 'bg-surface-5', color: 'text-ink' };
+      case 'vip': return { label: 'VIP', bg: 'bg-surface-3', color: 'text-ink' };
+      default: return { label: flag, bg: 'bg-surface-3', color: 'text-ink' };
     }
   };
 
   return (
-    <div className="h-full flex flex-col relative" style={{ background: '#d4d0c8' }}>
+    <div className="ehr-desktop h-full flex flex-col relative">
       <LoadingOverlay isLoading={loading} text="Loading dashboard..." />
       {/* Toolbar */}
       <div className="ehr-toolbar flex items-center justify-between">
@@ -289,7 +289,7 @@ export default function DashboardPage() {
           <button className="ehr-toolbar-button flex items-center" onClick={() => setShowAlert({ title: 'Refreshed', message: 'Dashboard data has been refreshed.', type: 'info' })}>
             <RefreshCw className="w-3.5 h-3.5 mr-1" /> Refresh
           </button>
-          <span className="text-gray-400">|</span>
+          <span className="text-ink-4">|</span>
           <button className="ehr-toolbar-button flex items-center" onClick={() => setShowRxDialog(true)}>
             <Pill className="w-3.5 h-3.5 mr-1" /> e-Prescribe
           </button>
@@ -305,7 +305,7 @@ export default function DashboardPage() {
           <button className="ehr-toolbar-button flex items-center" onClick={() => setShowAlert({ title: 'Referral', message: 'Select a patient first to create a referral.', type: 'info' })}>
             <Send className="w-3.5 h-3.5 mr-1" /> Referral
           </button>
-          <span className="text-gray-400">|</span>
+          <span className="text-ink-4">|</span>
           <button className="ehr-toolbar-button flex items-center" onClick={() => setShowPrintDialog(true)}>
             <Printer className="w-3.5 h-3.5 mr-1" /> Print
           </button>
@@ -313,7 +313,7 @@ export default function DashboardPage() {
         <div className="flex items-center space-x-2">
           <button className="ehr-toolbar-button relative">
             <Bell className="w-4 h-4" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-gray-600 text-white text-[9px] flex items-center justify-center border border-gray-700">3</span>
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-surface-inverse text-white text-[9px] flex items-center justify-center border border-line-4">3</span>
           </button>
         </div>
       </div>
@@ -375,7 +375,7 @@ export default function DashboardPage() {
                       {tab.label} {tab.count > 0 && <span className="ml-1 text-[9px]">({tab.count})</span>}
                     </button>
                   ))}
-                  <span className="text-gray-400 mx-1">|</span>
+                  <span className="text-ink-4 mx-1">|</span>
                   <select 
                     value={inboxPriority} 
                     onChange={(e) => setInboxPriority(e.target.value as InboxPriority)}
@@ -399,7 +399,7 @@ export default function DashboardPage() {
                   <button className="ehr-toolbar-button p-0.5 text-[10px]" onClick={markAllAsRead}>Mark All Read</button>
                   <button className="ehr-toolbar-button p-0.5"><RefreshCw className="w-3 h-3" /></button>
                 </div>
-                <div className="flex-1 overflow-auto bg-white">
+                <div className="flex-1 overflow-auto bg-surface">
                   <table className="w-full text-[11px]">
                     <thead className="sticky top-0">
                       <tr>
@@ -415,22 +415,22 @@ export default function DashboardPage() {
                       {filteredInbox.map((item, idx) => (
                         <tr 
                           key={item.id} 
-                          className={`cursor-pointer ${item.priority === 'critical' ? 'ehr-alert-critical' : idx % 2 === 1 ? 'bg-gray-50' : ''} ${!item.read ? 'font-semibold' : ''}`}
+                          className={`cursor-pointer ${item.priority === 'critical' ? 'ehr-alert-critical' : idx % 2 === 1 ? 'bg-surface-2' : ''} ${!item.read ? 'font-semibold' : ''}`}
                         >
                           <td className="px-1 py-0.5">
-                            {!item.read && <span className="w-2 h-2 bg-gray-600 inline-block border border-gray-700" />}
+                            {!item.read && <span className="w-2 h-2 bg-surface-inverse inline-block border border-line-4" />}
                             {item.flagged && <Flag className="w-3 h-3 text-red-600 inline" />}
                           </td>
                           <td className="px-1 py-0.5">{getInboxIcon(item.type)}</td>
                           <td className="px-1 py-0.5">
                             <span>{item.patientName}</span>
-                            <span className="text-gray-500 ml-1 text-[10px]">{item.patientMrn}</span>
+                            <span className="text-ink-3 ml-1 text-[10px]">{item.patientMrn}</span>
                           </td>
                           <td className="px-1 py-0.5">
                             <div className={item.priority === 'critical' ? 'text-red-800' : ''}>{item.title}</div>
-                            <div className="text-gray-500 text-[10px] truncate max-w-[300px]">{item.detail}</div>
+                            <div className="text-ink-3 text-[10px] truncate max-w-[300px]">{item.detail}</div>
                           </td>
-                          <td className="px-1 py-0.5 text-gray-500">{item.timestamp}</td>
+                          <td className="px-1 py-0.5 text-ink-3">{item.timestamp}</td>
                           <td className="px-1 py-0.5 text-center">
                             <button className="ehr-toolbar-button p-0.5" onClick={() => { markAsRead(item.id); navigate(`/patients/1`); }} title="View"><Eye className="w-3 h-3" /></button>
                             <button className="ehr-toolbar-button p-0.5" onClick={() => markAsRead(item.id)} title="Mark Read"><CheckCircle2 className="w-3 h-3" /></button>
@@ -476,8 +476,8 @@ export default function DashboardPage() {
                       {filter.label}
                     </button>
                   ))}
-                  <span className="text-gray-400 mx-1">|</span>
-                  <span className="text-[10px] text-gray-600">Sort:</span>
+                  <span className="text-ink-4 mx-1">|</span>
+                  <span className="text-[10px] text-ink-2">Sort:</span>
                   <select 
                     value={worklistSort} 
                     onChange={(e) => setWorklistSort(e.target.value as WorklistSort)}
@@ -498,7 +498,7 @@ export default function DashboardPage() {
                     <Printer className="w-3 h-3 mr-1" /> Print List
                   </button>
                 </div>
-                <div className="flex-1 overflow-auto bg-white">
+                <div className="flex-1 overflow-auto bg-surface">
                   <table className="w-full text-[11px]">
                     <thead className="sticky top-0">
                       <tr>
@@ -515,12 +515,12 @@ export default function DashboardPage() {
                       {filteredWorklist.map((patient, idx) => (
                         <tr 
                           key={patient.id} 
-                          className={`cursor-pointer hover:bg-blue-50 ${patient.status === 'critical' ? 'ehr-alert-critical' : idx % 2 === 1 ? 'bg-gray-50' : ''}`}
+                          className={`cursor-pointer hover:bg-blue-50 ${patient.status === 'critical' ? 'ehr-alert-critical' : idx % 2 === 1 ? 'bg-surface-2' : ''}`}
                           onClick={() => navigate(`/patients/${patient.id}`)}
                         >
                           <td className="px-1 py-0.5">
                             <div className="font-semibold">{patient.name}</div>
-                            <div className="text-gray-500 text-[10px]">{patient.mrn} • {patient.age}{patient.gender}</div>
+                            <div className="text-ink-3 text-[10px]">{patient.mrn} • {patient.age}{patient.gender}</div>
                             <div className="flex space-x-0.5 mt-0.5">
                               {patient.flags.map((flag) => {
                                 const style = getFlagStyle(flag);
@@ -534,11 +534,11 @@ export default function DashboardPage() {
                           </td>
                           <td className="px-1 py-0.5">
                             <div>{patient.room || patient.appointmentTime}</div>
-                            <div className="text-gray-500 text-[10px]">{patient.location}</div>
+                            <div className="text-ink-3 text-[10px]">{patient.location}</div>
                           </td>
                           <td className="px-1 py-0.5">
                             <div>{patient.chiefComplaint}</div>
-                            {patient.admitDate && <div className="text-gray-500 text-[10px]">Admit: {patient.admitDate}</div>}
+                            {patient.admitDate && <div className="text-ink-3 text-[10px]">Admit: {patient.admitDate}</div>}
                           </td>
                           <td className="px-1 py-0.5 text-[10px]">
                             {patient.lastVitals ? (
@@ -547,7 +547,7 @@ export default function DashboardPage() {
                                 <div>HR: {patient.lastVitals.hr} SpO2: {patient.lastVitals.spo2}%</div>
                               </>
                             ) : (
-                              <span className="text-gray-400">-</span>
+                              <span className="text-ink-4">-</span>
                             )}
                           </td>
                           <td className="px-1 py-0.5">
@@ -560,7 +560,7 @@ export default function DashboardPage() {
                                 ))}
                               </div>
                             ) : (
-                              <span className="text-gray-400 text-[10px]">None</span>
+                              <span className="text-ink-4 text-[10px]">None</span>
                             )}
                           </td>
                           <td className="px-1 py-0.5">
@@ -602,12 +602,12 @@ export default function DashboardPage() {
               </div>
             </div>
             {expandedPanels.unsigned && (
-              <div className="bg-white">
+              <div className="bg-surface">
                 {unsignedNotes.map((note, idx) => (
-                  <div key={note.id} className={`px-2 py-1.5 border-b border-gray-200 flex items-center justify-between ${idx % 2 === 1 ? 'bg-gray-50' : ''}`}>
+                  <div key={note.id} className={`px-2 py-1.5 border-b border-line flex items-center justify-between ${idx % 2 === 1 ? 'bg-surface-2' : ''}`}>
                     <div>
                       <div className="font-semibold text-[11px]">{note.patientName}</div>
-                      <div className="text-[10px] text-gray-500">{note.type} • {note.date}</div>
+                      <div className="text-[10px] text-ink-3">{note.type} • {note.date}</div>
                     </div>
                     <div className="flex items-center space-x-1">
                       {note.daysOld >= 2 && <span className="text-[9px] text-red-600 font-semibold">{note.daysOld}d</span>}
@@ -615,7 +615,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                 ))}
-                <div className="p-1 bg-gray-100 border-t">
+                <div className="p-1 bg-surface-3 border-t">
                   <button className="ehr-button w-full text-[10px]">Sign All Notes</button>
                 </div>
               </div>
@@ -636,19 +636,19 @@ export default function DashboardPage() {
               </div>
             </div>
             {expandedPanels.orders && (
-              <div className="bg-white">
+              <div className="bg-surface">
                 {pendingOrders.map((order, idx) => (
-                  <div key={order.id} className={`px-2 py-1.5 border-b border-gray-200 ${idx % 2 === 1 ? 'bg-gray-50' : ''}`}>
+                  <div key={order.id} className={`px-2 py-1.5 border-b border-line ${idx % 2 === 1 ? 'bg-surface-2' : ''}`}>
                     <div className="flex items-start justify-between">
                       <div>
                         <div className="font-semibold text-[11px]">{order.patientName}</div>
-                        <div className="text-[10px] text-gray-700">{order.order}</div>
+                        <div className="text-[10px] text-ink">{order.order}</div>
                         <div className="flex space-x-1 mt-0.5">
-                          <span className="text-[9px] px-1 py-0 bg-gray-200 text-gray-700 border border-gray-400">{order.type}</span>
-                          <span className={`text-[9px] px-1 py-0 border border-gray-400 ${
-                            order.status === 'draft' ? 'bg-gray-100 text-gray-600' :
-                            order.status === 'pending-approval' ? 'bg-gray-200 text-gray-700' :
-                            'bg-gray-100 text-gray-600'
+                          <span className="text-[9px] px-1 py-0 bg-surface-4 text-ink border border-line-3">{order.type}</span>
+                          <span className={`text-[9px] px-1 py-0 border border-line-3 ${
+                            order.status === 'draft' ? 'bg-surface-3 text-ink-2' :
+                            order.status === 'pending-approval' ? 'bg-surface-4 text-ink' :
+                            'bg-surface-3 text-ink-2'
                           }`}>{order.status}</span>
                         </div>
                       </div>
@@ -674,9 +674,9 @@ export default function DashboardPage() {
               </div>
             </div>
             {expandedPanels.schedule && (
-              <div className="bg-white p-2">
+              <div className="bg-surface p-2">
                 <div className="flex items-center justify-between mb-2 text-[11px]">
-                  <span className="text-gray-500">January 18, 2024</span>
+                  <span className="text-ink-3">January 18, 2024</span>
                   <span className="font-semibold">8 appointments</span>
                 </div>
                 <div className="space-y-1">
@@ -688,9 +688,9 @@ export default function DashboardPage() {
                     { time: '2:00 PM', patient: 'Wilson, Patricia', status: 'upcoming' },
                   ].map((slot, i) => (
                     <div key={i} className={`flex items-center justify-between py-1 px-2 text-[11px] ${
-                      slot.status === 'current' ? 'bg-gray-200 border border-gray-400' :
-                      slot.status === 'next' ? 'bg-gray-100' :
-                      slot.status === 'done' ? 'bg-gray-50 text-gray-400' : ''
+                      slot.status === 'current' ? 'bg-surface-4 border border-line-3' :
+                      slot.status === 'next' ? 'bg-surface-3' :
+                      slot.status === 'done' ? 'bg-surface-2 text-ink-4' : ''
                     }`}>
                       <span>{slot.time}</span>
                       <span className={slot.status === 'current' ? 'font-semibold' : ''}>{slot.patient}</span>
@@ -708,15 +708,15 @@ export default function DashboardPage() {
               <span className="w-4 h-4 mr-2 flex items-center justify-center border border-white/50 text-[10px] font-bold">!</span>
               <span>System Messages</span>
             </div>
-            <div className="bg-white text-[10px]">
-              <div className="px-2 py-1 border-b border-gray-200">
-                <span className="text-gray-500">01/18 08:00</span> - System maintenance scheduled for 01/20 2:00 AM
+            <div className="bg-surface text-[10px]">
+              <div className="px-2 py-1 border-b border-line">
+                <span className="text-ink-3">01/18 08:00</span> - System maintenance scheduled for 01/20 2:00 AM
               </div>
-              <div className="px-2 py-1 border-b border-gray-200">
-                <span className="text-gray-500">01/17 14:30</span> - New formulary updates available
+              <div className="px-2 py-1 border-b border-line">
+                <span className="text-ink-3">01/17 14:30</span> - New formulary updates available
               </div>
               <div className="px-2 py-1">
-                <span className="text-gray-500">01/16 09:15</span> - Lab interface upgraded to v3.2
+                <span className="text-ink-3">01/16 09:15</span> - Lab interface upgraded to v3.2
               </div>
             </div>
           </div>
@@ -726,24 +726,24 @@ export default function DashboardPage() {
             <div className="ehr-header flex items-center">
               <span>System Status</span>
             </div>
-            <div className="bg-white p-2 text-[10px]">
+            <div className="bg-surface p-2 text-[10px]">
               <table className="w-full">
                 <tbody>
                   <tr>
-                    <td className="border border-gray-300 px-1 py-0.5">Database</td>
-                    <td className="border border-gray-300 px-1 py-0.5 text-green-700">Connected</td>
+                    <td className="border border-line-2 px-1 py-0.5">Database</td>
+                    <td className="border border-line-2 px-1 py-0.5 text-green-700">Connected</td>
                   </tr>
                   <tr>
-                    <td className="border border-gray-300 px-1 py-0.5 bg-gray-50">HL7 Interface</td>
-                    <td className="border border-gray-300 px-1 py-0.5 bg-gray-50 text-green-700">Active</td>
+                    <td className="border border-line-2 px-1 py-0.5 bg-surface-2">HL7 Interface</td>
+                    <td className="border border-line-2 px-1 py-0.5 bg-surface-2 text-green-700">Active</td>
                   </tr>
                   <tr>
-                    <td className="border border-gray-300 px-1 py-0.5">Pharmacy Link</td>
-                    <td className="border border-gray-300 px-1 py-0.5 text-green-700">Online</td>
+                    <td className="border border-line-2 px-1 py-0.5">Pharmacy Link</td>
+                    <td className="border border-line-2 px-1 py-0.5 text-green-700">Online</td>
                   </tr>
                   <tr>
-                    <td className="border border-gray-300 px-1 py-0.5 bg-gray-50">Last Sync</td>
-                    <td className="border border-gray-300 px-1 py-0.5 bg-gray-50">2 min ago</td>
+                    <td className="border border-line-2 px-1 py-0.5 bg-surface-2">Last Sync</td>
+                    <td className="border border-line-2 px-1 py-0.5 bg-surface-2">2 min ago</td>
                   </tr>
                 </tbody>
               </table>

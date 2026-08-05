@@ -1,6 +1,20 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Tahoma&display=swap');
 
+/* Dark mode is driven by a `dark` class on <html> (see context/ThemeProvider.tsx),
+   not by prefers-color-scheme alone, so the user can override the OS setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Semantic color tokens.
+ *
+ * Every value below is redefined under `.dark`, so components should use these
+ * tokens (bg-surface, text-ink-3, border-line-2, ...) instead of raw gray/white
+ * utilities. Numeric suffixes step away from the default:
+ *   surface  -> surface-5 : lightest content bg -> heaviest chrome bg
+ *   ink      -> ink-4     : highest contrast text -> lowest contrast text
+ *   line     -> line-4    : faintest border -> strongest border
+ */
 @theme {
   --color-primary-50: #e8f4fc;
   --color-primary-100: #d1e9f9;
@@ -13,13 +27,275 @@
   --color-primary-800: #0a3a5a;
   --color-primary-900: #051d2d;
   --color-primary-950: #020e16;
-  
+
   --font-family-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  /* Content surfaces */
+  --color-surface: #ffffff;
+  --color-surface-2: #fafafa;
+  --color-surface-3: #f3f4f6;
+  --color-surface-4: #e5e7eb;
+  --color-surface-5: #d1d5db;
+  --color-surface-inverse: #4b5563;
+
+  /* Application chrome (desktop backdrop, side rails, panels) */
+  --color-desktop: #d4d0c8;
+  --color-chrome: #ece9d8;
+  --color-panel: #f5f5f5;
+
+  /* Text */
+  --color-ink: #1f2937;
+  --color-ink-2: #4b5563;
+  --color-ink-3: #6b7280;
+  --color-ink-4: #9ca3af;
+
+  /* Borders */
+  --color-line: #e5e7eb;
+  --color-line-2: #d1d5db;
+  --color-line-3: #9ca3af;
+  --color-line-4: #6b7280;
+}
+
+:root {
+  color-scheme: light;
+
+  /* Chrome gradients + bevels, consumed by the .ehr-* classes below. */
+  --ehr-titlebar-from: #6699cc;
+  --ehr-titlebar-to: #336699;
+  --ehr-titlebar-border: #1a4080;
+  --ehr-titlebar-ink: #ffffff;
+
+  --ehr-raised-from: #f8f8f8;
+  --ehr-raised-to: #e0e0e0;
+  --ehr-raised-hover-from: #ffffff;
+  --ehr-raised-hover-to: #e8e8e8;
+  --ehr-raised-border: #888888;
+
+  --ehr-subheader-from: #e8e8e8;
+  --ehr-subheader-to: #d0d0d0;
+
+  --ehr-bevel-light: rgba(255, 255, 255, 0.9);
+  --ehr-bevel-dark: rgba(0, 0, 0, 0.18);
+  --ehr-shadow: rgba(0, 0, 0, 0.1);
+
+  --ehr-banner-from: #4a6ea5;
+  --ehr-banner-to: #2d4a7c;
+  --ehr-trend-normal: #2563eb;
+  --ehr-trend-abnormal: #dc2626;
+  --ehr-window-shadow-color: rgba(0, 0, 0, 0.3);
+  --ehr-scrim: rgba(128, 128, 128, 0.5);
+
+  --ehr-select: #316ac5;
+  --ehr-select-ink: #ffffff;
+  --ehr-hover: #e0e8f0;
+  --ehr-row-alt: #f0f4f8;
+
+  --ehr-field-bg: #ffffff;
+  --ehr-field-border: #7f9db9;
+  --ehr-field-focus: #4a90d9;
+
+  --ehr-accent-from: #4a90d9;
+  --ehr-accent-to: #2a5db0;
+  --ehr-accent-hover-from: #5aa0e9;
+  --ehr-accent-hover-to: #3a6dc0;
+  --ehr-accent-border: #1a4080;
+
+  --ehr-ok-from: #66cc66;
+  --ehr-ok-to: #339933;
+  --ehr-ok-hover-from: #7add7a;
+  --ehr-ok-hover-to: #43ab43;
+  --ehr-ok-border: #206020;
+  --ehr-danger-from: #e87458;
+  --ehr-danger-to: #c84030;
+  --ehr-danger-hover-from: #f5876b;
+  --ehr-danger-hover-to: #d85040;
+  --ehr-danger-border: #a02010;
+  --ehr-danger-solid: #cc0000;
+  --ehr-violet-from: #9966cc;
+  --ehr-violet-to: #663399;
+  --ehr-violet-hover-from: #aa7add;
+  --ehr-violet-hover-to: #7643a9;
+  --ehr-violet-border: #4a2080;
+
+  --ehr-alert-critical-bg: #ffcccc;
+  --ehr-alert-critical-border: #cc0000;
+  --ehr-alert-critical-ink: #990000;
+  --ehr-alert-warning-bg: #fff3cd;
+  --ehr-alert-warning-border: #cc9900;
+  --ehr-alert-warning-ink: #664d00;
+  --ehr-alert-info-bg: #cce5ff;
+  --ehr-alert-info-border: #0066cc;
+  --ehr-alert-info-ink: #004085;
+  --ehr-alert-success-bg: #d4edda;
+  --ehr-alert-success-border: #28a745;
+  --ehr-alert-success-ink: #155724;
+  --ehr-alert-neutral-bg: #e8e8e8;
+  --ehr-alert-neutral-border: #999999;
+  --ehr-alert-neutral-ink: #333333;
+}
+
+/*
+ * Night-shift palette: desaturated slate-blues rather than pure black, so the
+ * dense clinical grids stay readable on a dim ward workstation.
+ */
+.dark {
+  color-scheme: dark;
+
+  --color-surface: #1c232c;
+  --color-surface-2: #202832;
+  --color-surface-3: #252e39;
+  --color-surface-4: #2c3641;
+  --color-surface-5: #35404d;
+  --color-surface-inverse: #5a6878;
+
+  --color-desktop: #0e1319;
+  --color-chrome: #161c24;
+  --color-panel: #1a212a;
+
+  --color-ink: #e3eaf2;
+  --color-ink-2: #b7c2ce;
+  --color-ink-3: #8b96a3;
+  --color-ink-4: #6b7683;
+
+  --color-line: #242c36;
+  --color-line-2: #2e3742;
+  --color-line-3: #3a4551;
+  --color-line-4: #4a5665;
+
+  --ehr-titlebar-from: #23425f;
+  --ehr-titlebar-to: #16293f;
+  --ehr-titlebar-border: #0b1826;
+  --ehr-titlebar-ink: #dbe8f5;
+
+  --ehr-raised-from: #2b333d;
+  --ehr-raised-to: #222932;
+  --ehr-raised-hover-from: #35404d;
+  --ehr-raised-hover-to: #2a323c;
+  --ehr-raised-border: #46525f;
+
+  --ehr-subheader-from: #262f3a;
+  --ehr-subheader-to: #1e252e;
+
+  --ehr-bevel-light: rgba(255, 255, 255, 0.06);
+  --ehr-bevel-dark: rgba(0, 0, 0, 0.5);
+  --ehr-shadow: rgba(0, 0, 0, 0.55);
+
+  --ehr-banner-from: #24435f;
+  --ehr-banner-to: #172c42;
+  --ehr-trend-normal: #6cb6ff;
+  --ehr-trend-abnormal: #ff7b72;
+  --ehr-window-shadow-color: rgba(0, 0, 0, 0.7);
+  --ehr-scrim: rgba(4, 8, 12, 0.65);
+
+  --ehr-select: #2d5c9e;
+  --ehr-select-ink: #f2f7fd;
+  --ehr-hover: #29394d;
+  --ehr-row-alt: #20272f;
+
+  --ehr-field-bg: #131920;
+  --ehr-field-border: #46596e;
+  --ehr-field-focus: #58a6ff;
+
+  --ehr-accent-from: #2f5f9e;
+  --ehr-accent-to: #1e3f6d;
+  --ehr-accent-hover-from: #3a71b8;
+  --ehr-accent-hover-to: #274d84;
+  --ehr-accent-border: #0f2540;
+
+  --ehr-ok-from: #2e7d46;
+  --ehr-ok-to: #1e5c30;
+  --ehr-ok-hover-from: #3a9455;
+  --ehr-ok-hover-to: #26713d;
+  --ehr-ok-border: #123d1f;
+  --ehr-danger-from: #a33b34;
+  --ehr-danger-to: #7a1f1a;
+  --ehr-danger-hover-from: #bc4941;
+  --ehr-danger-hover-to: #932a24;
+  --ehr-danger-border: #4d1310;
+  --ehr-danger-solid: #a33b34;
+  --ehr-violet-from: #6b4a99;
+  --ehr-violet-to: #4b2f73;
+  --ehr-violet-hover-from: #7f5ab0;
+  --ehr-violet-hover-to: #5b3b8a;
+  --ehr-violet-border: #2f1c4d;
+
+  --ehr-alert-critical-bg: #3a1a1a;
+  --ehr-alert-critical-border: #b3453c;
+  --ehr-alert-critical-ink: #ffb3ac;
+  --ehr-alert-warning-bg: #362a10;
+  --ehr-alert-warning-border: #a8801f;
+  --ehr-alert-warning-ink: #f0c674;
+  --ehr-alert-info-bg: #14293f;
+  --ehr-alert-info-border: #2f6ba8;
+  --ehr-alert-info-ink: #9ec9f5;
+  --ehr-alert-success-bg: #15301f;
+  --ehr-alert-success-border: #2f7d4a;
+  --ehr-alert-success-ink: #7ee787;
+  --ehr-alert-neutral-bg: #2b333d;
+  --ehr-alert-neutral-border: #4a5665;
+  --ehr-alert-neutral-ink: #c3ced9;
+
+  /*
+   * Status hues keep their Tailwind names throughout the clinical views
+   * (red = critical, yellow = caution, green = normal). Rather than annotating
+   * ~60 call sites, the scale itself is re-tinted for dark backgrounds: light
+   * shades become deep tints for fills, dark shades become bright for text.
+   * Exception: the 200/300 steps of yellow, orange, purple and blue are only
+   * used as foreground (text/icons on the selected-row and title-bar blues) or
+   * as badge borders, never as fills, so they stay light in both themes.
+   */
+  --color-red-50: #2a1416;
+  --color-red-100: #3a181b;
+  --color-red-200: #4d1f22;
+  --color-red-300: #6a2a2d;
+  --color-red-500: #f0736c;
+  --color-red-600: #ff7b72;
+  --color-red-700: #ff9b93;
+  --color-red-800: #ffb3ac;
+  --color-red-900: #ffcac4;
+
+  --color-green-100: #16301f;
+  --color-green-300: #2c5a3a;
+  --color-green-500: #46c86e;
+  --color-green-600: #56d364;
+  --color-green-700: #7ee787;
+  --color-green-800: #9ff0a4;
+
+  --color-yellow-100: #33280c;
+  --color-yellow-200: #f5dfa0;
+  --color-yellow-300: #e6c46a;
+  --color-yellow-400: #d9a520;
+  --color-yellow-700: #f0c674;
+  --color-yellow-800: #ffd97d;
+
+  --color-amber-600: #f0b429;
+  --color-amber-700: #ffcf5c;
+
+  --color-orange-200: #f2c39a;
+  --color-orange-500: #ff9b5a;
+  --color-orange-600: #ffa066;
+  --color-orange-800: #ffc49b;
+
+  --color-purple-200: #cbb6f0;
+  --color-purple-500: #b78bf5;
+  --color-purple-600: #c09cf7;
+  --color-purple-800: #d9c2ff;
+
+  --color-blue-50: #16222f;
+  --color-blue-100: #1a2c3f;
+  --color-blue-200: #a8c7e8;
+  --color-blue-300: #7fa8d4;
+  --color-blue-400: #3d6da3;
+  --color-blue-500: #58a6ff;
+  --color-blue-600: #6cb6ff;
+  --color-blue-800: #9ec9f5;
+  --color-blue-900: #0d1b2a;
 }
 
 body {
   font-size: 11px;
-  background-color: #d4d0c8;
+  background-color: var(--color-desktop);
+  color: var(--color-ink);
 }
 
 input, select, textarea, button {
@@ -31,73 +307,212 @@ table {
 }
 
 th {
-  background: linear-gradient(to bottom, #f8f8f8 0%, #e8e8e8 100%);
-  border: 1px solid #999;
+  background: linear-gradient(to bottom, var(--ehr-raised-from) 0%, var(--ehr-subheader-from) 100%);
+  border: 1px solid var(--color-line-3);
   font-weight: 600;
 }
 
 td {
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-line-2);
+}
+
+/* Desktop backdrop / side rails / panel fills used by full-page layouts. */
+.ehr-desktop {
+  background: var(--color-desktop);
+}
+
+.ehr-chrome {
+  background: var(--color-chrome);
+}
+
+/* Raised (beveled) chrome fill without the button padding/bevel. */
+.ehr-raised {
+  background: linear-gradient(to bottom, var(--ehr-raised-from) 0%, var(--ehr-raised-to) 100%);
+  color: var(--color-ink);
+}
+
+.ehr-raised:hover {
+  background: linear-gradient(to bottom, var(--ehr-raised-hover-from) 0%, var(--ehr-raised-hover-to) 100%);
+}
+
+.ehr-patient-banner {
+  background: linear-gradient(to bottom, var(--ehr-banner-from) 0%, var(--ehr-banner-to) 100%);
+}
+
+.ehr-avatar {
+  background: var(--ehr-titlebar-from);
+}
+
+.ehr-logo-mark {
+  background: var(--ehr-titlebar-ink);
+  color: var(--ehr-titlebar-to);
+  border: 1px solid var(--ehr-titlebar-border);
+}
+
+/* Result rows flagged by the lab: colour carries the clinical meaning, so the
+   tint is re-derived per theme instead of being fixed light pink/amber. */
+.ehr-result-critical,
+.ehr-result-critical td {
+  background: var(--ehr-alert-critical-bg);
+  color: var(--ehr-alert-critical-ink);
+  font-weight: bold;
+}
+
+.ehr-result-abnormal,
+.ehr-result-abnormal td {
+  background: var(--ehr-alert-warning-bg);
+  color: var(--ehr-alert-warning-ink);
+}
+
+/* Solid critical strip used for allergy / interaction panel headers. */
+.ehr-banner-critical {
+  background: var(--ehr-danger-solid);
+  color: white;
+}
+
+/* Sparkline strokes: set via class so var() resolves as a CSS declaration
+   rather than an SVG presentation attribute. */
+.ehr-trend-normal {
+  stroke: var(--ehr-trend-normal);
+}
+
+.ehr-trend-abnormal {
+  stroke: var(--ehr-trend-abnormal);
+}
+
+.ehr-window-shadow {
+  box-shadow: 2px 2px 8px var(--ehr-window-shadow-color);
+}
+
+.ehr-scrim {
+  background-color: var(--ehr-scrim);
 }
 
 .ehr-panel {
-  background: #f5f5f5;
-  border: 1px solid #999;
-  box-shadow: inset 1px 1px 0 #fff, 1px 1px 2px rgba(0,0,0,0.1);
+  background: var(--color-panel);
+  border: 1px solid var(--color-line-3);
+  box-shadow: inset 1px 1px 0 var(--ehr-bevel-light), 1px 1px 2px var(--ehr-shadow);
 }
 
 .ehr-button {
-  background: linear-gradient(to bottom, #f8f8f8 0%, #e0e0e0 100%);
-  border: 1px solid #888;
+  background: linear-gradient(to bottom, var(--ehr-raised-from) 0%, var(--ehr-raised-to) 100%);
+  border: 1px solid var(--ehr-raised-border);
+  color: var(--color-ink);
   padding: 2px 8px;
   font-size: 11px;
   cursor: pointer;
-  box-shadow: 1px 1px 0 #fff inset, -1px -1px 0 #999 inset;
+  box-shadow: 1px 1px 0 var(--ehr-bevel-light) inset, -1px -1px 0 var(--ehr-bevel-dark) inset;
 }
 
 .ehr-button:hover {
-  background: linear-gradient(to bottom, #fff 0%, #e8e8e8 100%);
+  background: linear-gradient(to bottom, var(--ehr-raised-hover-from) 0%, var(--ehr-raised-hover-to) 100%);
 }
 
 .ehr-button:active {
-  background: linear-gradient(to bottom, #d8d8d8 0%, #e8e8e8 100%);
-  box-shadow: -1px -1px 0 #fff inset, 1px 1px 0 #999 inset;
+  background: linear-gradient(to bottom, var(--ehr-raised-to) 0%, var(--ehr-raised-from) 100%);
+  box-shadow: -1px -1px 0 var(--ehr-bevel-light) inset, 1px 1px 0 var(--ehr-bevel-dark) inset;
 }
 
 .ehr-button-primary {
-  background: linear-gradient(to bottom, #4a90d9 0%, #2a5db0 100%);
-  border: 1px solid #1a4080;
+  background: linear-gradient(to bottom, var(--ehr-accent-from) 0%, var(--ehr-accent-to) 100%);
+  border: 1px solid var(--ehr-accent-border);
   color: white;
 }
 
 .ehr-button-primary:hover {
-  background: linear-gradient(to bottom, #5aa0e9 0%, #3a6dc0 100%);
+  background: linear-gradient(to bottom, var(--ehr-accent-hover-from) 0%, var(--ehr-accent-hover-to) 100%);
+}
+
+/* Pressed variants flip their own gradient; without them the neutral
+   .ehr-button:active fill wins and leaves white text on light gray. */
+.ehr-button-primary:active {
+  background: linear-gradient(to bottom, var(--ehr-accent-to) 0%, var(--ehr-accent-from) 100%);
+}
+
+/* Colour-coded action buttons (start visit, discontinue, room assignment). */
+.ehr-button-ok {
+  background: linear-gradient(to bottom, var(--ehr-ok-from) 0%, var(--ehr-ok-to) 100%);
+  border: 1px solid var(--ehr-ok-border);
+  color: white;
+}
+
+.ehr-button-ok:hover {
+  background: linear-gradient(to bottom, var(--ehr-ok-hover-from) 0%, var(--ehr-ok-hover-to) 100%);
+}
+
+.ehr-button-ok:active {
+  background: linear-gradient(to bottom, var(--ehr-ok-to) 0%, var(--ehr-ok-from) 100%);
+}
+
+.ehr-button-danger {
+  background: linear-gradient(to bottom, var(--ehr-danger-from) 0%, var(--ehr-danger-to) 100%);
+  border: 1px solid var(--ehr-danger-border);
+  color: white;
+}
+
+.ehr-button-danger:hover {
+  background: linear-gradient(to bottom, var(--ehr-danger-hover-from) 0%, var(--ehr-danger-hover-to) 100%);
+}
+
+.ehr-button-danger:active {
+  background: linear-gradient(to bottom, var(--ehr-danger-to) 0%, var(--ehr-danger-from) 100%);
+}
+
+.ehr-button-ghost {
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+}
+
+.ehr-button-ghost:hover {
+  background: var(--ehr-hover);
+}
+
+.ehr-button-ghost:active {
+  background: transparent;
+  box-shadow: none;
+}
+
+.ehr-button-violet {
+  background: linear-gradient(to bottom, var(--ehr-violet-from) 0%, var(--ehr-violet-to) 100%);
+  border: 1px solid var(--ehr-violet-border);
+  color: white;
+}
+
+.ehr-button-violet:hover {
+  background: linear-gradient(to bottom, var(--ehr-violet-hover-from) 0%, var(--ehr-violet-hover-to) 100%);
+}
+
+.ehr-button-violet:active {
+  background: linear-gradient(to bottom, var(--ehr-violet-to) 0%, var(--ehr-violet-from) 100%);
 }
 
 .ehr-input {
-  border: 1px solid #7f9db9;
+  border: 1px solid var(--ehr-field-border);
   padding: 2px 4px;
-  background: white;
+  background: var(--ehr-field-bg);
+  color: var(--color-ink);
   font-size: 11px;
 }
 
 .ehr-input:focus {
   outline: none;
-  border-color: #4a90d9;
-  box-shadow: 0 0 2px rgba(74, 144, 217, 0.5);
+  border-color: var(--ehr-field-focus);
+  box-shadow: 0 0 2px var(--ehr-field-focus);
 }
 
 .ehr-fieldset {
-  border: 1px solid #999;
+  border: 1px solid var(--color-line-3);
   padding: 8px;
   margin: 4px 0;
-  background: #fafafa;
+  background: var(--color-surface-2);
+  color: var(--color-ink);
 }
 
 .ehr-fieldset legend {
   font-weight: 600;
   padding: 0 4px;
-  color: #333;
+  color: var(--color-ink);
 }
 
 .ehr-checkbox {
@@ -105,24 +520,24 @@ td {
 }
 
 .ehr-label {
-  color: #333;
+  color: var(--color-ink);
   font-size: 11px;
 }
 
 .ehr-header {
-  background: linear-gradient(to bottom, #6699cc 0%, #336699 100%);
-  color: white;
+  background: linear-gradient(to bottom, var(--ehr-titlebar-from) 0%, var(--ehr-titlebar-to) 100%);
+  color: var(--ehr-titlebar-ink);
   padding: 4px 8px;
   font-weight: 600;
-  border-bottom: 1px solid #1a4080;
+  border-bottom: 1px solid var(--ehr-titlebar-border);
 }
 
 .ehr-subheader {
-  background: linear-gradient(to bottom, #e8e8e8 0%, #d0d0d0 100%);
-  color: #333;
+  background: linear-gradient(to bottom, var(--ehr-subheader-from) 0%, var(--ehr-subheader-to) 100%);
+  color: var(--color-ink);
   padding: 2px 6px;
   font-weight: 600;
-  border-bottom: 1px solid #999;
+  border-bottom: 1px solid var(--color-line-3);
   font-size: 10px;
 }
 
@@ -132,26 +547,33 @@ td {
 }
 
 .ehr-tree-item:hover {
-  background: #e0e8f0;
+  background: var(--ehr-hover);
 }
 
 .ehr-tree-item.selected {
-  background: #316ac5;
-  color: white;
+  background: var(--ehr-select);
+  color: var(--ehr-select-ink);
+}
+
+/* Application-wide footer bar (distinct from a page's own status bar). */
+.ehr-taskbar {
+  background: linear-gradient(to bottom, var(--color-chrome) 0%, var(--color-desktop) 100%);
+  color: var(--color-ink-2);
 }
 
 .ehr-status-bar {
-  background: #ece9d8;
-  border-top: 1px solid #fff;
+  background: var(--color-chrome);
+  border-top: 1px solid var(--ehr-bevel-light);
   padding: 2px 8px;
   font-size: 10px;
-  color: #333;
+  color: var(--color-ink-2);
 }
 
 .ehr-tab {
-  background: linear-gradient(to bottom, #f8f8f8 0%, #e0e0e0 100%);
-  border: 1px solid #888;
+  background: linear-gradient(to bottom, var(--ehr-raised-from) 0%, var(--ehr-raised-to) 100%);
+  border: 1px solid var(--ehr-raised-border);
   border-bottom: none;
+  color: var(--color-ink-2);
   padding: 3px 12px;
   margin-right: 2px;
   cursor: pointer;
@@ -159,53 +581,68 @@ td {
 }
 
 .ehr-tab.active {
-  background: #fff;
-  border-bottom: 1px solid #fff;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-surface);
+  color: var(--color-ink);
   margin-bottom: -1px;
   position: relative;
   z-index: 1;
 }
 
 .ehr-tab-content {
-  border: 1px solid #888;
-  background: #fff;
+  border: 1px solid var(--ehr-raised-border);
+  background: var(--color-surface);
   padding: 8px;
 }
 
 .ehr-grid-row:nth-child(even) {
-  background: #f0f4f8;
+  background: var(--ehr-row-alt);
 }
 
 .ehr-grid-row:hover {
-  background: #d0e0f0;
+  background: var(--ehr-hover);
 }
 
-.ehr-grid-row.selected {
-  background: #316ac5;
-  color: white;
+.ehr-grid-row.selected,
+.ehr-row-selected {
+  background: var(--ehr-select);
+  color: var(--ehr-select-ink);
 }
 
 .ehr-alert-critical {
-  background: #ffcccc;
-  border: 1px solid #cc0000;
-  color: #990000;
+  background: var(--ehr-alert-critical-bg);
+  border: 1px solid var(--ehr-alert-critical-border);
+  color: var(--ehr-alert-critical-ink);
 }
 
 .ehr-alert-warning {
-  background: #fff3cd;
-  border: 1px solid #cc9900;
-  color: #664d00;
+  background: var(--ehr-alert-warning-bg);
+  border: 1px solid var(--ehr-alert-warning-border);
+  color: var(--ehr-alert-warning-ink);
 }
 
 .ehr-alert-info {
-  background: #cce5ff;
-  border: 1px solid #0066cc;
-  color: #004085;
+  background: var(--ehr-alert-info-bg);
+  border: 1px solid var(--ehr-alert-info-border);
+  color: var(--ehr-alert-info-ink);
+}
+
+.ehr-alert-success {
+  background: var(--ehr-alert-success-bg);
+  border: 1px solid var(--ehr-alert-success-border);
+  color: var(--ehr-alert-success-ink);
+}
+
+.ehr-alert-neutral {
+  background: var(--ehr-alert-neutral-bg);
+  border: 1px solid var(--ehr-alert-neutral-border);
+  color: var(--ehr-alert-neutral-ink);
 }
 
 .ehr-toolbar {
-  background: linear-gradient(to bottom, #f5f5f5 0%, #e5e5e5 100%);
-  border-bottom: 1px solid #999;
+  background: linear-gradient(to bottom, var(--ehr-raised-from) 0%, var(--ehr-raised-to) 100%);
+  border-bottom: 1px solid var(--color-line-3);
+  color: var(--color-ink);
   padding: 2px 4px;
 }
 
@@ -217,22 +654,22 @@ td {
 }
 
 .ehr-toolbar-button:hover {
-  background: #e0e8f0;
-  border: 1px solid #999;
+  background: var(--ehr-hover);
+  border: 1px solid var(--color-line-3);
 }
 
 .ehr-toolbar-button-active {
-  background: linear-gradient(to bottom, #fff 0%, #e8e8e8 100%);
-  border: 1px solid #888;
-  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.15);
+  background: linear-gradient(to bottom, var(--ehr-raised-hover-from) 0%, var(--ehr-raised-hover-to) 100%);
+  border: 1px solid var(--ehr-raised-border);
+  box-shadow: inset 1px 1px 2px var(--ehr-bevel-dark);
 }
 
 .ehr-splitter {
-  background: #d4d0c8;
+  background: var(--color-desktop);
   cursor: col-resize;
   width: 4px;
 }
 
 .ehr-splitter:hover {
-  background: #b0b0b0;
+  background: var(--color-line-3);
 }

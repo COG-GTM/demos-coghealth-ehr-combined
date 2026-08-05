@@ -112,14 +112,14 @@ export default function LabResultsPage() {
     );
   };
 
-  const getStatusStyle = (status: LabResult['status']) => {
+  const getStatusClass = (status: LabResult['status']) => {
     switch (status) {
       case 'critical':
-        return { background: '#ffcccc', color: '#990000', fontWeight: 'bold' };
+        return 'ehr-result-critical';
       case 'abnormal':
-        return { background: '#fff3cd', color: '#664d00' };
+        return 'ehr-result-abnormal';
       default:
-        return {};
+        return '';
     }
   };
 
@@ -130,7 +130,7 @@ export default function LabResultsPage() {
       case 'preliminary':
         return <span className="px-1.5 py-0.5 text-[9px] bg-yellow-100 text-yellow-800 border border-yellow-300">PRELIM</span>;
       case 'pending':
-        return <span className="px-1.5 py-0.5 text-[9px] bg-gray-100 text-gray-600 border border-gray-300">PENDING</span>;
+        return <span className="px-1.5 py-0.5 text-[9px] bg-surface-3 text-ink-2 border border-line-2">PENDING</span>;
     }
   };
 
@@ -151,7 +151,7 @@ export default function LabResultsPage() {
   const abnormalCount = labPanels.reduce((acc, p) => acc + p.results.filter(r => r.status === 'abnormal').length, 0);
 
   return (
-    <div className="h-full flex flex-col overflow-hidden p-2">
+    <div className="ehr-desktop h-full flex flex-col overflow-hidden p-2">
       <div className="ehr-panel flex-1 flex flex-col overflow-hidden">
         <div className="ehr-header flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -173,8 +173,8 @@ export default function LabResultsPage() {
         <div className="ehr-toolbar flex items-center justify-between py-1">
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-1">
-              <Filter className="w-3 h-3 text-gray-500" />
-              <span className="text-[10px] text-gray-600">Filter:</span>
+              <Filter className="w-3 h-3 text-ink-3" />
+              <span className="text-[10px] text-ink-2">Filter:</span>
             </div>
             <select
               value={filterStatus}
@@ -199,7 +199,7 @@ export default function LabResultsPage() {
               })}
             </select>
             <div className="flex items-center space-x-1">
-              <Calendar className="w-3 h-3 text-gray-500" />
+              <Calendar className="w-3 h-3 text-ink-3" />
               <select
                 value={dateRange}
                 onChange={(e) => setDateRange(e.target.value as typeof dateRange)}
@@ -222,23 +222,23 @@ export default function LabResultsPage() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-auto bg-white border border-gray-400">
+        <div className="flex-1 overflow-auto bg-surface border border-line-3">
           {filteredPanels.length === 0 ? (
-            <div className="p-4 text-center text-gray-500 text-[11px]">
+            <div className="p-4 text-center text-ink-3 text-[11px]">
               No lab results match the selected filters
             </div>
           ) : (
             filteredPanels.map(panel => (
-              <div key={panel.id} className="border-b border-gray-300">
+              <div key={panel.id} className="border-b border-line-2">
                 <div
-                  className="flex items-center justify-between px-2 py-1.5 bg-gradient-to-b from-[#f8f8f8] to-[#e8e8e8] cursor-pointer hover:from-[#fff] hover:to-[#f0f0f0]"
+                  className="ehr-raised flex items-center justify-between px-2 py-1.5 cursor-pointer"
                   onClick={() => togglePanel(panel.id)}
                 >
                   <div className="flex items-center space-x-2">
                     {expandedPanels.includes(panel.id) ? (
-                      <ChevronDown className="w-3 h-3 text-gray-600" />
+                      <ChevronDown className="w-3 h-3 text-ink-2" />
                     ) : (
-                      <ChevronRight className="w-3 h-3 text-gray-600" />
+                      <ChevronRight className="w-3 h-3 text-ink-2" />
                     )}
                     <FlaskConical className="w-3.5 h-3.5 text-blue-600" />
                     <span className="font-semibold text-[11px]">{panel.panelName}</span>
@@ -250,13 +250,13 @@ export default function LabResultsPage() {
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center space-x-4 text-[10px] text-gray-600">
+                  <div className="flex items-center space-x-4 text-[10px] text-ink-2">
                     <span>{panel.patientName}</span>
-                    <span className="text-gray-400">|</span>
+                    <span className="text-ink-4">|</span>
                     <span>{panel.patientMrn}</span>
-                    <span className="text-gray-400">|</span>
+                    <span className="text-ink-4">|</span>
                     <span>Collected: {panel.collectedAt}</span>
-                    <span className="text-gray-400">|</span>
+                    <span className="text-ink-4">|</span>
                     <span>Resulted: {panel.resultedAt}</span>
                   </div>
                 </div>
@@ -264,30 +264,29 @@ export default function LabResultsPage() {
                 {expandedPanels.includes(panel.id) && (
                   <table className="w-full text-[11px]">
                     <thead>
-                      <tr className="bg-gradient-to-b from-[#f0f0f0] to-[#e0e0e0]">
-                        <th className="text-left px-2 py-1 border-b border-gray-400 w-1/4">Test</th>
-                        <th className="text-left px-2 py-1 border-b border-gray-400 w-1/6">Result</th>
-                        <th className="text-left px-2 py-1 border-b border-gray-400 w-1/6">Units</th>
-                        <th className="text-left px-2 py-1 border-b border-gray-400 w-1/4">Reference Range</th>
-                        <th className="text-left px-2 py-1 border-b border-gray-400 w-1/6">Status</th>
+                      <tr className="bg-gradient-to-b from-surface-3 to-surface-5">
+                        <th className="text-left px-2 py-1 border-b border-line-3 w-1/4">Test</th>
+                        <th className="text-left px-2 py-1 border-b border-line-3 w-1/6">Result</th>
+                        <th className="text-left px-2 py-1 border-b border-line-3 w-1/6">Units</th>
+                        <th className="text-left px-2 py-1 border-b border-line-3 w-1/4">Reference Range</th>
+                        <th className="text-left px-2 py-1 border-b border-line-3 w-1/6">Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       {panel.results.map((result, idx) => (
                         <tr
                           key={result.id}
-                          className={`cursor-pointer hover:bg-[#e0e8f0] ${idx % 2 === 0 ? 'bg-white' : 'bg-[#f8f8f8]'}`}
-                          style={getStatusStyle(result.status)}
+                          className={`cursor-pointer hover:bg-surface-4 ${idx % 2 === 0 ? 'bg-surface' : 'bg-surface-2'} ${getStatusClass(result.status)}`}
                           onClick={() => setSelectedResult(result)}
                         >
-                          <td className="px-2 py-1 border-b border-gray-200">{result.testName}</td>
-                          <td className="px-2 py-1 border-b border-gray-200 font-mono">
+                          <td className="px-2 py-1 border-b border-line">{result.testName}</td>
+                          <td className="px-2 py-1 border-b border-line font-mono">
                             {result.status === 'critical' && <AlertTriangle className="w-3 h-3 inline mr-1 text-red-600" />}
                             {result.value}
                           </td>
-                          <td className="px-2 py-1 border-b border-gray-200">{result.unit}</td>
-                          <td className="px-2 py-1 border-b border-gray-200 text-gray-600">{result.referenceRange}</td>
-                          <td className="px-2 py-1 border-b border-gray-200">
+                          <td className="px-2 py-1 border-b border-line">{result.unit}</td>
+                          <td className="px-2 py-1 border-b border-line text-ink-2">{result.referenceRange}</td>
+                          <td className="px-2 py-1 border-b border-line">
                             {result.status === 'critical' && <span className="text-red-700 font-bold">CRITICAL</span>}
                             {result.status === 'abnormal' && <span className="text-yellow-700">Abnormal</span>}
                             {result.status === 'normal' && <span className="text-green-700">Normal</span>}
@@ -325,21 +324,21 @@ export default function LabResultsPage() {
               <legend>Result Information</legend>
               <div className="grid grid-cols-2 gap-2 text-[11px]">
                 <div>
-                  <span className="text-gray-500">Test Name:</span>
+                  <span className="text-ink-3">Test Name:</span>
                   <span className="ml-2 font-semibold">{selectedResult.testName}</span>
                 </div>
                 <div>
-                  <span className="text-gray-500">Status:</span>
-                  <span className="ml-2" style={getStatusStyle(selectedResult.status)}>
+                  <span className="text-ink-3">Status:</span>
+                  <span className={`ml-2 px-1 ${getStatusClass(selectedResult.status)}`}>
                     {selectedResult.status.toUpperCase()}
                   </span>
                 </div>
                 <div>
-                  <span className="text-gray-500">Result:</span>
+                  <span className="text-ink-3">Result:</span>
                   <span className="ml-2 font-mono font-bold">{selectedResult.value} {selectedResult.unit}</span>
                 </div>
                 <div>
-                  <span className="text-gray-500">Reference Range:</span>
+                  <span className="text-ink-3">Reference Range:</span>
                   <span className="ml-2">{selectedResult.referenceRange}</span>
                 </div>
               </div>
@@ -348,19 +347,19 @@ export default function LabResultsPage() {
               <legend>Collection Details</legend>
               <div className="grid grid-cols-2 gap-2 text-[11px]">
                 <div>
-                  <span className="text-gray-500">Collected:</span>
+                  <span className="text-ink-3">Collected:</span>
                   <span className="ml-2">{selectedResult.collectedAt}</span>
                 </div>
                 <div>
-                  <span className="text-gray-500">Resulted:</span>
+                  <span className="text-ink-3">Resulted:</span>
                   <span className="ml-2">{selectedResult.resultedAt}</span>
                 </div>
                 <div>
-                  <span className="text-gray-500">Ordered By:</span>
+                  <span className="text-ink-3">Ordered By:</span>
                   <span className="ml-2">{selectedResult.orderedBy}</span>
                 </div>
                 <div>
-                  <span className="text-gray-500">Performing Lab:</span>
+                  <span className="text-ink-3">Performing Lab:</span>
                   <span className="ml-2">{selectedResult.performingLab}</span>
                 </div>
               </div>

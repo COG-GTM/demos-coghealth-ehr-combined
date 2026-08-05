@@ -87,14 +87,14 @@ export default function ReportsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="ehr-desktop h-full flex flex-col">
       {/* Toolbar */}
       <div className="ehr-toolbar flex items-center justify-between">
         <div className="flex items-center space-x-1">
           <button className="ehr-toolbar-button flex items-center" onClick={() => setShowAlert({ title: 'Refreshed', message: 'Report data has been refreshed.', type: 'info' })}>
             <RefreshCw className="w-3.5 h-3.5 mr-1" /> Refresh
           </button>
-          <span className="text-gray-400">|</span>
+          <span className="text-ink-4">|</span>
           <button className="ehr-toolbar-button flex items-center" onClick={() => { setSelectedReport(null); setShowPrintDialog(true); }}>
             <Printer className="w-3.5 h-3.5 mr-1" /> Print
           </button>
@@ -103,7 +103,7 @@ export default function ReportsPage() {
           </button>
         </div>
         <div className="flex items-center space-x-2">
-          <span className="text-gray-600">Category:</span>
+          <span className="text-ink-2">Category:</span>
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value as CategoryFilter)}
@@ -121,26 +121,26 @@ export default function ReportsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Panel - Report Summary */}
-        <div className="w-56 overflow-auto p-2 space-y-2" style={{ background: '#ece9d8' }}>
+        <div className="ehr-chrome w-56 overflow-auto p-2 space-y-2">
           <fieldset className="ehr-fieldset">
             <legend>Today's Summary</legend>
             <table className="w-full text-[10px]">
               <tbody>
-                <tr className="bg-white">
-                  <td className="px-1 py-0.5 border border-gray-400">Patients</td>
-                  <td className="px-1 py-0.5 border border-gray-400 text-right font-bold">{defaultMetrics.patientsToday}</td>
+                <tr className="bg-surface">
+                  <td className="px-1 py-0.5 border border-line-3">Patients</td>
+                  <td className="px-1 py-0.5 border border-line-3 text-right font-bold">{defaultMetrics.patientsToday}</td>
                 </tr>
                 <tr>
-                  <td className="px-1 py-0.5 border border-gray-400">Encounters</td>
-                  <td className="px-1 py-0.5 border border-gray-400 text-right font-bold">{defaultMetrics.encounters}</td>
+                  <td className="px-1 py-0.5 border border-line-3">Encounters</td>
+                  <td className="px-1 py-0.5 border border-line-3 text-right font-bold">{defaultMetrics.encounters}</td>
                 </tr>
-                <tr className="bg-white">
-                  <td className="px-1 py-0.5 border border-gray-400">Avg Wait Time</td>
-                  <td className="px-1 py-0.5 border border-gray-400 text-right font-bold">{defaultMetrics.avgWaitTime} min</td>
+                <tr className="bg-surface">
+                  <td className="px-1 py-0.5 border border-line-3">Avg Wait Time</td>
+                  <td className="px-1 py-0.5 border border-line-3 text-right font-bold">{defaultMetrics.avgWaitTime} min</td>
                 </tr>
                 <tr>
-                  <td className="px-1 py-0.5 border border-gray-400">Satisfaction</td>
-                  <td className="px-1 py-0.5 border border-gray-400 text-right font-bold">{defaultMetrics.satisfaction}%</td>
+                  <td className="px-1 py-0.5 border border-line-3">Satisfaction</td>
+                  <td className="px-1 py-0.5 border border-line-3 text-right font-bold">{defaultMetrics.satisfaction}%</td>
                 </tr>
               </tbody>
             </table>
@@ -151,26 +151,26 @@ export default function ReportsPage() {
             <table className="w-full text-[10px]">
               <thead>
                 <tr>
-                  <th className="px-1 py-0.5 text-left border border-gray-400 bg-gray-100">Type</th>
-                  <th className="px-1 py-0.5 text-right border border-gray-400 bg-gray-100">Count</th>
+                  <th className="px-1 py-0.5 text-left border border-line-3 bg-surface-3">Type</th>
+                  <th className="px-1 py-0.5 text-right border border-line-3 bg-surface-3">Count</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white">
-                  <td className="px-1 py-0.5 border border-gray-400">Office Visit</td>
-                  <td className="px-1 py-0.5 border border-gray-400 text-right">89</td>
+                <tr className="bg-surface">
+                  <td className="px-1 py-0.5 border border-line-3">Office Visit</td>
+                  <td className="px-1 py-0.5 border border-line-3 text-right">89</td>
                 </tr>
                 <tr>
-                  <td className="px-1 py-0.5 border border-gray-400">Telehealth</td>
-                  <td className="px-1 py-0.5 border border-gray-400 text-right">34</td>
+                  <td className="px-1 py-0.5 border border-line-3">Telehealth</td>
+                  <td className="px-1 py-0.5 border border-line-3 text-right">34</td>
                 </tr>
-                <tr className="bg-white">
-                  <td className="px-1 py-0.5 border border-gray-400">Lab Only</td>
-                  <td className="px-1 py-0.5 border border-gray-400 text-right">18</td>
+                <tr className="bg-surface">
+                  <td className="px-1 py-0.5 border border-line-3">Lab Only</td>
+                  <td className="px-1 py-0.5 border border-line-3 text-right">18</td>
                 </tr>
                 <tr>
-                  <td className="px-1 py-0.5 border border-gray-400">Urgent</td>
-                  <td className="px-1 py-0.5 border border-gray-400 text-right">15</td>
+                  <td className="px-1 py-0.5 border border-line-3">Urgent</td>
+                  <td className="px-1 py-0.5 border border-line-3 text-right">15</td>
                 </tr>
               </tbody>
             </table>
@@ -181,9 +181,9 @@ export default function ReportsPage() {
             <table className="w-full text-[10px]">
               <tbody>
                 {['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map((day, idx) => (
-                  <tr key={day} className={idx % 2 === 0 ? 'bg-white' : ''}>
-                    <td className="px-1 py-0.5 border border-gray-400">{day}</td>
-                    <td className="px-1 py-0.5 border border-gray-400 text-right">{[65, 45, 78, 52, 88][idx]}</td>
+                  <tr key={day} className={idx % 2 === 0 ? 'bg-surface' : ''}>
+                    <td className="px-1 py-0.5 border border-line-3">{day}</td>
+                    <td className="px-1 py-0.5 border border-line-3 text-right">{[65, 45, 78, 52, 88][idx]}</td>
                   </tr>
                 ))}
               </tbody>
@@ -192,22 +192,21 @@ export default function ReportsPage() {
         </div>
 
         {/* Right Panel - Reports */}
-        <div className="flex-1 overflow-auto bg-white border-l border-gray-500">
+        <div className="flex-1 overflow-auto bg-surface border-l border-line-4">
           {Object.entries(reportsByCategory).map(([category, reports]) => {
             const config = categoryConfig[category as keyof typeof categoryConfig];
             return (
-              <div key={category} className="border-b border-gray-300">
+              <div key={category} className="border-b border-line-2">
                 <div
                   onClick={() => toggleCategory(category)}
-                  className="px-2 py-1 bg-gray-100 hover:bg-gray-200 cursor-pointer flex items-center justify-between text-[11px] border-b border-gray-400"
-                  style={{ background: 'linear-gradient(to bottom, #f8f8f8 0%, #e0e0e0 100%)' }}
+                  className="ehr-raised px-2 py-1 cursor-pointer flex items-center justify-between text-[11px] border-b border-line-3"
                 >
                   <div className="flex items-center space-x-2">
-                    <span className="w-4 h-4 border border-gray-500 bg-white flex items-center justify-center text-[10px] font-bold">
+                    <span className="w-4 h-4 border border-line-4 bg-surface flex items-center justify-center text-[10px] font-bold">
                       {expandedCategories.has(category) ? '-' : '+'}
                     </span>
                     <span className="font-semibold">{config.label}</span>
-                    <span className="text-[9px] text-gray-600">({reports.length})</span>
+                    <span className="text-[9px] text-ink-2">({reports.length})</span>
                   </div>
                 </div>
                 {expandedCategories.has(category) && (
@@ -223,11 +222,11 @@ export default function ReportsPage() {
                     </thead>
                     <tbody>
                       {reports.map((report, idx) => (
-                        <tr key={report.id} className={`hover:bg-blue-50 ${idx % 2 === 1 ? 'bg-gray-50' : ''}`}>
+                        <tr key={report.id} className={`hover:bg-blue-50 ${idx % 2 === 1 ? 'bg-surface-2' : ''}`}>
                           <td className="px-2 py-1.5 font-medium">{report.name}</td>
-                          <td className="px-2 py-1.5 text-gray-600">{report.description}</td>
+                          <td className="px-2 py-1.5 text-ink-2">{report.description}</td>
                           <td className="px-2 py-1.5 capitalize">{report.frequency}</td>
-                          <td className="px-2 py-1.5 text-gray-500">
+                          <td className="px-2 py-1.5 text-ink-3">
                             {report.lastRun && (
                               <span className="flex items-center">
                                 <Calendar className="w-3 h-3 mr-1" />

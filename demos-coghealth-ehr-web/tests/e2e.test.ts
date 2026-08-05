@@ -124,11 +124,11 @@ describe('CogHealth EHR E2E Tests', () => {
     test('should mark inbox item as read', async () => {
       const markReadBtn = await page.$('table tbody tr:first-child button[title="Mark Read"]');
       if (!markReadBtn) { console.warn('Skipping: inbox items require backend API'); return; }
-      const unreadBefore = await page.$$('table tbody tr .w-2.h-2.bg-gray-600');
+      const unreadBefore = await page.$$('table tbody tr .w-2.h-2.bg-surface-inverse');
       const countBefore = unreadBefore.length;
       await markReadBtn.click();
       await wait(100);
-      const unreadAfter = await page.$$('table tbody tr .w-2.h-2.bg-gray-600');
+      const unreadAfter = await page.$$('table tbody tr .w-2.h-2.bg-surface-inverse');
       expect(unreadAfter.length).toBeLessThan(countBefore);
     });
 

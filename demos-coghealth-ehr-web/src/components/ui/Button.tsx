@@ -9,24 +9,17 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className = '', variant = 'primary', loading, children, disabled, ...props }, ref) => {
-    const baseClass = variant === 'primary' ? 'ehr-button ehr-button-primary' : 'ehr-button';
-    
-    const dangerStyle = variant === 'danger' ? {
-      background: 'linear-gradient(to bottom, #e87458 0%, #c84030 100%)',
-      color: 'white',
-      border: '1px solid #a02010'
-    } : undefined;
-
-    const ghostStyle = variant === 'ghost' ? {
-      background: 'transparent',
-      border: '1px solid transparent'
-    } : undefined;
+    const variantClass = {
+      primary: 'ehr-button-primary',
+      danger: 'ehr-button-danger',
+      ghost: 'ehr-button-ghost',
+      secondary: '',
+    }[variant];
 
     return (
       <button
         ref={ref}
-        className={`${baseClass} ${className}`}
-        style={dangerStyle || ghostStyle}
+        className={`ehr-button ${variantClass} ${className}`}
         disabled={disabled || loading}
         {...props}
       >
