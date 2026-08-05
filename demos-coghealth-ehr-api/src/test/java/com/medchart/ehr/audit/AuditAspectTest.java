@@ -139,6 +139,7 @@ class AuditAspectTest {
     @Test
     @DisplayName("auditing works outside of a web request")
     void ipAndUserAgentAreNullWithoutRequestContext() throws Throwable {
+        RequestContextHolder.resetRequestAttributes();
         stubJoinPoint(42L);
         when(joinPoint.proceed()).thenReturn("chart");
 
