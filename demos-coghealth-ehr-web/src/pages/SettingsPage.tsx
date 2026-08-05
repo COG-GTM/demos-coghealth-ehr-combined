@@ -87,16 +87,16 @@ export default function SettingsPage() {
 
   const [initialized, setInitialized] = useState(false);
   if (!initialized) {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
         const data = JSON.parse(stored);
         if (data.profile) Object.assign(profile, data.profile);
         if (data.notifications) Object.assign(notifications, data.notifications);
         if (data.appearance) Object.assign(appearance, data.appearance);
-      } catch (e) {
-        console.error('Failed to load settings:', e);
       }
+    } catch (e) {
+      console.error('Failed to load settings:', e);
     }
     setInitialized(true);
   }
@@ -110,7 +110,11 @@ export default function SettingsPage() {
   ];
 
   const handleSave = () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ profile, notifications, appearance }));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ profile, notifications, appearance }));
+    } catch (e) {
+      console.error('Failed to save settings:', e);
+    }
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
