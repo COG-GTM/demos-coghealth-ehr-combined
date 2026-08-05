@@ -240,6 +240,9 @@
    * (red = critical, yellow = caution, green = normal). Rather than annotating
    * ~60 call sites, the scale itself is re-tinted for dark backgrounds: light
    * shades become deep tints for fills, dark shades become bright for text.
+   * Exception: the 200/300 steps of yellow, orange, purple and blue are only
+   * ever used as foreground on the selected-row / title-bar blues, so they stay
+   * light in both themes.
    */
   --color-red-50: #2a1416;
   --color-red-100: #3a181b;
@@ -259,8 +262,8 @@
   --color-green-800: #9ff0a4;
 
   --color-yellow-100: #33280c;
-  --color-yellow-200: #443410;
-  --color-yellow-300: #5c4715;
+  --color-yellow-200: #f5dfa0;
+  --color-yellow-300: #e6c46a;
   --color-yellow-400: #d9a520;
   --color-yellow-700: #f0c674;
   --color-yellow-800: #ffd97d;
@@ -268,12 +271,12 @@
   --color-amber-600: #f0b429;
   --color-amber-700: #ffcf5c;
 
-  --color-orange-200: #4a2a12;
+  --color-orange-200: #f2c39a;
   --color-orange-500: #ff9b5a;
   --color-orange-600: #ffa066;
   --color-orange-800: #ffc49b;
 
-  --color-purple-200: #33234d;
+  --color-purple-200: #cbb6f0;
   --color-purple-500: #b78bf5;
   --color-purple-600: #c09cf7;
   --color-purple-800: #d9c2ff;
