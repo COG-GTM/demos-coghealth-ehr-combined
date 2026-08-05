@@ -241,8 +241,8 @@
    * ~60 call sites, the scale itself is re-tinted for dark backgrounds: light
    * shades become deep tints for fills, dark shades become bright for text.
    * Exception: the 200/300 steps of yellow, orange, purple and blue are only
-   * ever used as foreground on the selected-row / title-bar blues, so they stay
-   * light in both themes.
+   * used as foreground (text/icons on the selected-row and title-bar blues) or
+   * as badge borders, never as fills, so they stay light in both themes.
    */
   --color-red-50: #2a1416;
   --color-red-100: #3a181b;
@@ -444,14 +444,14 @@ td {
   background: var(--ehr-hover);
 }
 
-.ehr-button-violet:hover {
-  background: linear-gradient(to bottom, var(--ehr-violet-hover-from) 0%, var(--ehr-violet-hover-to) 100%);
-}
-
 .ehr-button-violet {
   background: linear-gradient(to bottom, var(--ehr-violet-from) 0%, var(--ehr-violet-to) 100%);
   border: 1px solid var(--ehr-violet-border);
   color: white;
+}
+
+.ehr-button-violet:hover {
+  background: linear-gradient(to bottom, var(--ehr-violet-hover-from) 0%, var(--ehr-violet-hover-to) 100%);
 }
 
 .ehr-input {
