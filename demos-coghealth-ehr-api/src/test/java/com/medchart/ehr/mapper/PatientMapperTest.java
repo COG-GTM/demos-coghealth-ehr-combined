@@ -101,6 +101,20 @@ class PatientMapperTest {
     }
 
     @Test
+    @DisplayName("updateEntityFromDto cannot clear collections because null values are ignored")
+    void updateEntityFromDtoKeepsCollections() {
+        Patient existing = Patient.builder().id(1L).mrn("MRN001").build();
+        existing.addIdentifier(PatientIdentifier.builder()
+                .identifierType(IdentifierType.MRN)
+                .identifierValue("MRN001")
+                .build());
+
+        mapper.updateEntityFromDto(PatientDTO.builder().identifiers(null).build(), existing);
+
+        assertThat(existing.getIdentifiers()).hasSize(1);
+    }
+
+    @Test
     @DisplayName("toDtoList maps every patient in the list")
     void toDtoListMapsEveryPatient() {
         List<PatientDTO> dtos = mapper.toDtoList(List.of(

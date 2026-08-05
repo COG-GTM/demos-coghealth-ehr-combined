@@ -114,12 +114,17 @@ describe('auditService', () => {
     });
 
     it('reuses one session id across events and creates it only once', () => {
+      const setItem = jest.spyOn(sessionStorageMock, 'setItem');
+
       logAuditEvent('LOGIN');
       const sessionId = sessionStorageMock.getItem(SESSION_ID_KEY);
       logAuditEvent('PATIENT_SEARCH');
 
       expect(sessionId).toBeTruthy();
       expect(getAuditLog().map((event) => event.sessionId)).toEqual([sessionId, sessionId]);
+      expect(setItem.mock.calls.filter(([key]) => key === SESSION_ID_KEY)).toEqual([
+        [SESSION_ID_KEY, sessionId],
+      ]);
     });
   });
 
