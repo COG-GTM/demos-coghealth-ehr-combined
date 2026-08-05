@@ -8,9 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "jest --testPathIgnorePatterns=tests/e2e",
+    "test": "jest",
     "test:unit": "jest --testPathPatterns=tests/unit",
-    "test:e2e": "jest --testPathPatterns=tests/e2e"
+    "test:e2e": "jest --testPathPatterns=tests/e2e --testPathIgnorePatterns=/node_modules/"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
