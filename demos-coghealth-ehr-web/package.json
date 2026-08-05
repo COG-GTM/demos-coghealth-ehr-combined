@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "jest",
+    "test": "jest --testPathIgnorePatterns=tests/e2e",
     "test:unit": "jest --testPathPatterns=tests/unit",
     "test:e2e": "jest --testPathPatterns=tests/e2e"
   },

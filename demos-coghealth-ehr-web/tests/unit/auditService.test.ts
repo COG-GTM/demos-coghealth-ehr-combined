@@ -35,19 +35,37 @@ function createMemoryStorage(): Storage {
   };
 }
 
-function installStorage(name: 'localStorage' | 'sessionStorage'): Storage {
+type StorageName = 'localStorage' | 'sessionStorage';
+
+function installStorage(name: StorageName): Storage {
   const storage = createMemoryStorage();
   Object.defineProperty(globalThis, name, { value: storage, configurable: true, writable: true });
   return storage;
+}
+
+function restoreStorage(name: StorageName, original: PropertyDescriptor | undefined) {
+  if (original) {
+    Object.defineProperty(globalThis, name, original);
+  } else {
+    delete (globalThis as Partial<typeof globalThis>)[name];
+  }
 }
 
 describe('auditService', () => {
   let localStorageMock: Storage;
   let sessionStorageMock: Storage;
 
+  const originalLocalStorage = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
+  const originalSessionStorage = Object.getOwnPropertyDescriptor(globalThis, 'sessionStorage');
+
   beforeEach(() => {
     localStorageMock = installStorage('localStorage');
     sessionStorageMock = installStorage('sessionStorage');
+  });
+
+  afterEach(() => {
+    restoreStorage('localStorage', originalLocalStorage);
+    restoreStorage('sessionStorage', originalSessionStorage);
   });
 
   describe('logAuditEvent', () => {
