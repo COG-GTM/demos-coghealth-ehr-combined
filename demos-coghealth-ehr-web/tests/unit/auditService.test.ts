@@ -101,7 +101,14 @@ describe('auditService', () => {
     it('caps the log at 1000 entries and drops the oldest ones', () => {
       const overflowing = Array.from({ length: 1000 }, (_, index) => ({
         id: `seed-${index}`,
+        timestamp: '2026-01-01T00:00:00.000Z',
         eventType: 'LOGIN',
+        userId: 'USR001',
+        userName: 'Dr. Sarah Chen',
+        userRole: 'PHYSICIAN',
+        patientId: `P${index}`,
+        sessionId: 'seed-session',
+        success: true,
       }));
       localStorageMock.setItem(AUDIT_LOG_KEY, JSON.stringify(overflowing));
 
@@ -110,7 +117,7 @@ describe('auditService', () => {
       const log = getAuditLog();
       expect(log).toHaveLength(1000);
       expect(log[0].eventType).toBe('PATIENT_ACCESS');
-      expect(log[log.length - 1].id).toBe('seed-998');
+      expect(log[log.length - 1]).toEqual(overflowing[998]);
     });
 
     it('reuses one session id across events and creates it only once', () => {
