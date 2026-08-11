@@ -121,7 +121,7 @@ export default function ReportsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Panel - Report Summary */}
-        <div className="w-56 overflow-auto p-2 space-y-2" style={{ background: 'var(--ehr-panel)' }}>
+        <div className="w-56 overflow-auto p-2 space-y-2" style={{ background: 'var(--ehr-chrome)' }}>
           <fieldset className="ehr-fieldset">
             <legend>Today's Summary</legend>
             <table className="w-full text-[10px]">

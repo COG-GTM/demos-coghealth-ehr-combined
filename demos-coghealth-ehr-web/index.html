@@ -9,7 +9,10 @@
       // Apply the persisted theme before first paint to avoid a light flash.
       (function () {
         var stored = 'system';
-        try { stored = localStorage.getItem('coghealth-theme') || 'system'; } catch (e) { /* storage blocked */ }
+        try {
+          var raw = localStorage.getItem('coghealth-theme');
+          if (raw === 'light' || raw === 'dark' || raw === 'system') stored = raw;
+        } catch (e) { /* storage blocked */ }
         var dark = stored === 'dark' || (stored === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
         if (dark) document.documentElement.classList.add('dark');
         document.documentElement.style.colorScheme = dark ? 'dark' : 'light';

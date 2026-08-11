@@ -130,7 +130,7 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Navigation */}
-        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: 'var(--ehr-panel)' }}>
+        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: 'var(--ehr-chrome)' }}>
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (

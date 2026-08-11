@@ -56,13 +56,13 @@ export function Modal({ isOpen, onClose, title, children, width = 'md', footer }
           </div>
           
           {/* Content */}
-          <div className="flex-1 overflow-auto p-3 bg-[var(--ehr-panel)]">
+          <div className="flex-1 overflow-auto p-3 bg-[var(--ehr-chrome)]">
             {children}
           </div>
           
           {/* Footer */}
           {footer && (
-            <div className="px-3 py-2 bg-[var(--ehr-panel)] border-t border-gray-400 flex justify-end space-x-2">
+            <div className="px-3 py-2 bg-[var(--ehr-chrome)] border-t border-gray-400 flex justify-end space-x-2">
               {footer}
             </div>
           )}

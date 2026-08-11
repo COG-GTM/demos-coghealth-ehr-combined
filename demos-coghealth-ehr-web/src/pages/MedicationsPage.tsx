@@ -523,7 +523,7 @@ export default function MedicationsPage() {
         </div>
 
         {/* Detail Panel */}
-        <div className="w-80 flex flex-col overflow-hidden" style={{ background: 'var(--ehr-panel)' }}>
+        <div className="w-80 flex flex-col overflow-hidden" style={{ background: 'var(--ehr-chrome)' }}>
           {selectedOrder ? (
             <>
               {/* Medication Header */}

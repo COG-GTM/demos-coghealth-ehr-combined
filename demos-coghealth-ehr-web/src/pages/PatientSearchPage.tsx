@@ -304,7 +304,7 @@ export default function PatientSearchPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Filter Panel */}
-        <div className="w-52 flex flex-col border-r border-gray-500" style={{ background: 'var(--ehr-panel)' }}>
+        <div className="w-52 flex flex-col border-r border-gray-500" style={{ background: 'var(--ehr-chrome)' }}>
           <div className="ehr-header text-xs flex items-center justify-between">
             <span>Filter Patients</span>
             {activeFilterCount > 0 && (
