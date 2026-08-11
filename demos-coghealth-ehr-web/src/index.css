@@ -352,7 +352,7 @@ td {
 .dark .bg-white { background-color: var(--ehr-surface); }
 .dark .bg-gray-50 { background-color: var(--ehr-panel); }
 .dark .bg-gray-100 { background-color: var(--ehr-panel-alt); }
-.dark .bg-gray-200 { background-color: var(--ehr-raised-bottom); }
+.dark .bg-gray-200 { background-color: #303640; }
 .dark .bg-gray-300 { background-color: var(--ehr-raised-top); }
 .dark .bg-gray-400 { background-color: #4c525c; }
 .dark .bg-gray-500 { background-color: #5a616c; }
@@ -379,6 +379,7 @@ td {
 .dark .hover\:bg-gray-200:hover { background-color: var(--ehr-raised-top); }
 .dark .hover\:bg-blue-50:hover { background-color: var(--ehr-accent-soft); }
 .dark .hover\:bg-blue-100:hover { background-color: var(--ehr-accent-soft); }
+.dark .hover\:bg-white\/50:hover { background-color: var(--ehr-raised-top); }
 
 /* Semantic status tints stay readable on dark surfaces. */
 .dark .bg-red-50, .dark .bg-red-100 { background-color: var(--tone-danger-bg); }
