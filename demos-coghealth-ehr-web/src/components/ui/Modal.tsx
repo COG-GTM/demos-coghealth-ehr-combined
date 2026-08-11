@@ -1,5 +1,6 @@
 import { type ReactNode, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { toneFill } from '../../styles/tone';
 
 interface ModalProps {
   isOpen: boolean;
@@ -39,11 +40,11 @@ export function Modal({ isOpen, onClose, title, children, width = 'md', footer }
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
       <div className={`relative ${widthClasses[width]} max-h-[90vh] flex flex-col`} style={{ fontFamily: 'Tahoma, sans-serif' }}>
         {/* Window frame */}
-        <div className="bg-white border-2 border-gray-400 shadow-lg flex flex-col" style={{ boxShadow: '2px 2px 8px rgba(0,0,0,0.3)' }}>
+        <div className="bg-white text-gray-800 border-2 border-gray-400 shadow-lg flex flex-col" style={{ boxShadow: '2px 2px 8px rgba(0,0,0,0.3)' }}>
           {/* Title bar */}
           <div 
             className="flex items-center justify-between px-2 py-1"
-            style={{ background: 'linear-gradient(to bottom, #6699cc 0%, #336699 100%)' }}
+            style={{ background: 'linear-gradient(to bottom, var(--ehr-header-top) 0%, var(--ehr-header-bottom) 100%)' }}
           >
             <span className="text-white font-semibold text-[11px]">{title}</span>
             <button 
@@ -55,13 +56,13 @@ export function Modal({ isOpen, onClose, title, children, width = 'md', footer }
           </div>
           
           {/* Content */}
-          <div className="flex-1 overflow-auto p-3 bg-[#ece9d8]">
+          <div className="flex-1 overflow-auto p-3 bg-[var(--ehr-panel)]">
             {children}
           </div>
           
           {/* Footer */}
           {footer && (
-            <div className="px-3 py-2 bg-[#ece9d8] border-t border-gray-400 flex justify-end space-x-2">
+            <div className="px-3 py-2 bg-[var(--ehr-panel)] border-t border-gray-400 flex justify-end space-x-2">
               {footer}
             </div>
           )}
@@ -126,13 +127,14 @@ interface AlertDialogProps {
   type?: 'info' | 'success' | 'warning' | 'error';
 }
 
+const alertTones = {
+  info: 'info',
+  success: 'success',
+  warning: 'warning',
+  error: 'danger',
+} as const;
+
 export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: AlertDialogProps) {
-  const bgColors = {
-    info: '#cce5ff',
-    success: '#d4edda',
-    warning: '#fff3cd',
-    error: '#f8d7da',
-  };
   
   return (
     <Modal
@@ -146,7 +148,7 @@ export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: 
         </button>
       }
     >
-      <div className="p-2 border border-gray-400" style={{ background: bgColors[type] }}>
+      <div className="p-2 border border-gray-400" style={toneFill(alertTones[type])}>
         <p className="text-[11px]">{message}</p>
       </div>
     </Modal>

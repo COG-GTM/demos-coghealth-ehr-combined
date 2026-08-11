@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FlaskConical, AlertTriangle, ChevronDown, ChevronRight, Printer, RefreshCw, Filter, Calendar } from 'lucide-react';
 import { Modal } from '../components/ui/Modal';
+import { toneFill } from '../styles/tone';
 import type { LabPanel, LabResult } from '../types';
 
 const defaultLabPanels: LabPanel[] = [
@@ -115,9 +116,9 @@ export default function LabResultsPage() {
   const getStatusStyle = (status: LabResult['status']) => {
     switch (status) {
       case 'critical':
-        return { background: '#ffcccc', color: '#990000', fontWeight: 'bold' };
+        return { ...toneFill('danger'), fontWeight: 'bold' };
       case 'abnormal':
-        return { background: '#fff3cd', color: '#664d00' };
+        return toneFill('warning');
       default:
         return {};
     }
@@ -231,7 +232,7 @@ export default function LabResultsPage() {
             filteredPanels.map(panel => (
               <div key={panel.id} className="border-b border-gray-300">
                 <div
-                  className="flex items-center justify-between px-2 py-1.5 bg-gradient-to-b from-[#f8f8f8] to-[#e8e8e8] cursor-pointer hover:from-[#fff] hover:to-[#f0f0f0]"
+                  className="flex items-center justify-between px-2 py-1.5 bg-gradient-to-b from-[var(--ehr-raised-top)] to-[var(--ehr-sunken)] cursor-pointer hover:from-[var(--ehr-highlight)] hover:to-[var(--ehr-raised-bottom)]"
                   onClick={() => togglePanel(panel.id)}
                 >
                   <div className="flex items-center space-x-2">
@@ -276,7 +277,7 @@ export default function LabResultsPage() {
                       {panel.results.map((result, idx) => (
                         <tr
                           key={result.id}
-                          className={`cursor-pointer hover:bg-[#e0e8f0] ${idx % 2 === 0 ? 'bg-white' : 'bg-[#f8f8f8]'}`}
+                          className={`cursor-pointer hover:bg-[var(--ehr-accent-soft)] ${idx % 2 === 0 ? 'bg-white' : 'bg-[var(--ehr-panel)]'}`}
                           style={getStatusStyle(result.status)}
                           onClick={() => setSelectedResult(result)}
                         >

@@ -27,6 +27,8 @@ import SettingsPage from './pages/SettingsPage';
 import LabResultsPage from './pages/LabResultsPage';
 import VitalsPage from './pages/VitalsPage';
 import { AlertDialog, ConfirmDialog } from './components/ui/Modal';
+import ThemeToggle from './components/ui/ThemeToggle';
+import { ThemeProvider } from './context/ThemeProvider';
 import { logLogout } from './services/auditService';
 
 const SESSION_TIMEOUT_MS = 15 * 60 * 1000;
@@ -130,7 +132,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
       {/* Application Header */}
       <div className="ehr-header flex items-center justify-between px-3">
         <div className="flex items-center space-x-3">
-          <div className="w-5 h-5 bg-white flex items-center justify-center border border-blue-300">
+          <div className="w-5 h-5 flex items-center justify-center border border-blue-300" style={{ background: '#ffffff' }}>
             <span className="text-blue-800 font-bold text-[11px]">C</span>
           </div>
           <span className="font-semibold">CogHealth EHR</span>
@@ -181,6 +183,8 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
             </span>
           </div>
           <span className="text-blue-300">|</span>
+          <ThemeToggle />
+          <span className="text-blue-300">|</span>
           <div className="flex items-center space-x-1">
             <User className="w-3 h-3" />
             <span>Dr. Sarah Anderson</span>
@@ -228,7 +232,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-300 bg-white">
+        <div className="md:hidden border-t border-gray-300 bg-white text-gray-800">
           <div className="px-2 py-1 space-y-0.5">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -279,8 +283,9 @@ function App() {
   };
 
   return (
+    <ThemeProvider>
     <BrowserRouter>
-      <div className="h-screen flex flex-col" style={{ background: '#d4d0c8', fontFamily: 'Tahoma, sans-serif' }}>
+      <div className="h-screen flex flex-col" style={{ background: 'var(--ehr-desktop)', color: 'var(--ehr-text)', fontFamily: 'Tahoma, sans-serif' }}>
         <Navigation 
           onSessionWarning={handleSessionWarning}
           onSessionExpired={handleSessionExpired}
@@ -301,7 +306,7 @@ function App() {
         </main>
 
         {/* Status Bar - Windows XP style */}
-        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
+        <div className="ehr-status-bar h-5 flex items-center justify-between px-2 text-[10px]">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
               <Shield className="w-3 h-3 text-green-600" />
@@ -355,6 +360,7 @@ function App() {
         />
       </div>
     </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

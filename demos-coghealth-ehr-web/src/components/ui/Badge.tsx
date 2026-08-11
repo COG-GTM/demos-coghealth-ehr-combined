@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { tone } from '../../styles/tone';
 
 interface BadgeProps {
   children: ReactNode;
@@ -13,11 +14,11 @@ export default function Badge({
   className = '' 
 }: BadgeProps) {
   const variants = {
-    default: { background: '#e8e8e8', border: '1px solid #999', color: '#333' },
-    success: { background: '#d4edda', border: '1px solid #28a745', color: '#155724' },
-    warning: { background: '#fff3cd', border: '1px solid #cc9900', color: '#664d00' },
-    danger: { background: '#ffcccc', border: '1px solid #cc0000', color: '#990000' },
-    info: { background: '#cce5ff', border: '1px solid #0066cc', color: '#004085' },
+    default: tone('neutral'),
+    success: tone('success'),
+    warning: tone('warning'),
+    danger: tone('danger'),
+    info: tone('info'),
   };
 
   return (
