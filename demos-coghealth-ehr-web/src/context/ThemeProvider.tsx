@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react
 import {
   prefersDark,
   readStoredTheme,
+  storeTheme,
   ThemeContext,
-  THEME_STORAGE_KEY,
   type ResolvedTheme,
   type Theme,
 } from './theme';
@@ -29,7 +29,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setTheme = useCallback((next: Theme) => {
-    localStorage.setItem(THEME_STORAGE_KEY, next);
+    storeTheme(next);
     setThemeState(next);
   }, []);
 

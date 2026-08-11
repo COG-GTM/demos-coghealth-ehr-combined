@@ -560,7 +560,7 @@ export default function PatientSearchPage() {
                       onClick={() => handleSelectPatient(patient)}
                       onDoubleClick={() => handleOpenChart(patient.id)}
                       className={`cursor-pointer ${isSelected ? 'ehr-grid-row selected' : `ehr-grid-row ${idx % 2 === 0 ? '' : ''}`}`}
-                      style={isSelected ? { background: '#316ac5', color: 'white' } : idx % 2 === 1 ? { background: '#f0f4f8' } : {}}
+                      style={isSelected ? { background: 'var(--ehr-accent)', color: 'white' } : idx % 2 === 1 ? { background: 'var(--ehr-row-alt)' } : {}}
                     >
                       <td className="px-1 py-0.5">
                         <div className="flex items-center space-x-0.5">
@@ -596,7 +596,7 @@ export default function PatientSearchPage() {
                         {patient.balance > 0 ? (
                           <span className={isSelected ? 'text-white' : 'text-gray-800 font-semibold'}>${patient.balance.toFixed(2)}</span>
                         ) : (
-                          <span className={isSelected ? 'text-gray-200' : 'text-gray-600'}>$0.00</span>
+                          <span className={isSelected ? 'text-white/75' : 'text-gray-600'}>$0.00</span>
                         )}
                       </td>
                       <td className="px-1 py-0.5">
@@ -607,13 +607,13 @@ export default function PatientSearchPage() {
                             </span>
                           )}
                           {patient.recentLabs && (
-                            <span title="Recent labs"><Activity className={`w-3 h-3 ${isSelected ? 'text-gray-200' : 'text-gray-600'}`} /></span>
+                            <span title="Recent labs"><Activity className={`w-3 h-3 ${isSelected ? 'text-white/75' : 'text-gray-600'}`} /></span>
                           )}
                           {patient.recentImaging && (
-                            <span title="Recent imaging"><FileText className={`w-3 h-3 ${isSelected ? 'text-gray-200' : 'text-gray-600'}`} /></span>
+                            <span title="Recent imaging"><FileText className={`w-3 h-3 ${isSelected ? 'text-white/75' : 'text-gray-600'}`} /></span>
                           )}
                           {patient.alerts.length > 0 && (
-                            <span title={patient.alerts.join(', ')}><AlertTriangle className={`w-3 h-3 ${isSelected ? 'text-gray-200' : 'text-gray-600'}`} /></span>
+                            <span title={patient.alerts.join(', ')}><AlertTriangle className={`w-3 h-3 ${isSelected ? 'text-white/75' : 'text-gray-600'}`} /></span>
                           )}
                         </div>
                       </td>

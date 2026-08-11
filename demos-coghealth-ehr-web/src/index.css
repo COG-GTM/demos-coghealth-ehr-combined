@@ -350,7 +350,6 @@ td {
 .dark .text-gray-600 { color: #b0b8c2; }
 .dark .text-gray-500 { color: var(--ehr-text-muted); }
 .dark .text-gray-400 { color: #838c98; }
-.dark .text-gray-200 { color: #6f7783; }
 
 .dark .border-gray-200 { border-color: var(--ehr-border-soft); }
 .dark .border-gray-300 { border-color: var(--ehr-border-soft); }

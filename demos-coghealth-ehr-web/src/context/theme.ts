@@ -18,11 +18,24 @@ export function prefersDark(): boolean {
   return window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
 
+/** Storage access throws in sandboxed frames or with cookies blocked. */
 export function readStoredTheme(): Theme {
   if (typeof window === 'undefined') return 'system';
-  const stored = localStorage.getItem(THEME_STORAGE_KEY);
-  if (stored === 'light' || stored === 'dark' || stored === 'system') return stored;
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    if (stored === 'light' || stored === 'dark' || stored === 'system') return stored;
+  } catch {
+    return 'system';
+  }
   return 'system';
+}
+
+export function storeTheme(theme: Theme): void {
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+  } catch {
+    /* theme still applies for this page view */
+  }
 }
 
 export function useTheme(): ThemeContextValue {
