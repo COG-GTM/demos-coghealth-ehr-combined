@@ -28,7 +28,10 @@
   --ehr-raised-bottom: #e0e0e0;
   --ehr-sunken: #e8e8e8;
   --ehr-border: #999999;
+  --ehr-border-strong: #888888;
   --ehr-border-soft: #cccccc;
+  --ehr-pressed-top: #d8d8d8;
+  --ehr-toolbar-bottom: #e5e5e5;
   --ehr-highlight: #ffffff;
   --ehr-text: #333333;
   --ehr-text-muted: #666666;
@@ -56,6 +59,9 @@
   --tone-danger-bg: #ffcccc;
   --tone-danger-fg: #990000;
   --tone-danger-border: #cc0000;
+  --tone-error-bg: #f8d7da;
+  --tone-error-fg: #721c24;
+  --tone-error-border: #cc0000;
   --tone-info-bg: #cce5ff;
   --tone-info-fg: #004085;
   --tone-info-border: #0066cc;
@@ -70,7 +76,10 @@
   --ehr-raised-bottom: #272b32;
   --ehr-sunken: #1e2126;
   --ehr-border: #4a515c;
+  --ehr-border-strong: #565e6a;
   --ehr-border-soft: #383e47;
+  --ehr-pressed-top: #1f2329;
+  --ehr-toolbar-bottom: #23272e;
   --ehr-highlight: #3a4049;
   --ehr-text: #dfe3ea;
   --ehr-text-muted: #9aa3b0;
@@ -98,6 +107,9 @@
   --tone-danger-bg: #3b1f1f;
   --tone-danger-fg: #ff9d9d;
   --tone-danger-border: #a33b3b;
+  --tone-error-bg: #3b1f1f;
+  --tone-error-fg: #ffb3b3;
+  --tone-error-border: #a33b3b;
   --tone-info-bg: #1e2f45;
   --tone-info-fg: #bcd8f5;
   --tone-info-border: #3a6ea5;
@@ -136,7 +148,7 @@ td {
 
 .ehr-button {
   background: linear-gradient(to bottom, var(--ehr-raised-top) 0%, var(--ehr-raised-bottom) 100%);
-  border: 1px solid var(--ehr-border);
+  border: 1px solid var(--ehr-border-strong);
   color: var(--ehr-text);
   padding: 2px 8px;
   font-size: 11px;
@@ -149,7 +161,7 @@ td {
 }
 
 .ehr-button:active {
-  background: linear-gradient(to bottom, var(--ehr-raised-bottom) 0%, var(--ehr-sunken) 100%);
+  background: linear-gradient(to bottom, var(--ehr-pressed-top) 0%, var(--ehr-sunken) 100%);
   box-shadow: -1px -1px 0 var(--ehr-highlight) inset, 1px 1px 0 var(--ehr-border) inset;
 }
 
@@ -240,7 +252,7 @@ td {
 
 .ehr-tab {
   background: linear-gradient(to bottom, var(--ehr-raised-top) 0%, var(--ehr-raised-bottom) 100%);
-  border: 1px solid var(--ehr-border);
+  border: 1px solid var(--ehr-border-strong);
   border-bottom: none;
   color: var(--ehr-text);
   padding: 3px 12px;
@@ -295,7 +307,7 @@ td {
 }
 
 .ehr-toolbar {
-  background: linear-gradient(to bottom, var(--ehr-panel) 0%, var(--ehr-raised-bottom) 100%);
+  background: linear-gradient(to bottom, var(--ehr-panel) 0%, var(--ehr-toolbar-bottom) 100%);
   border-bottom: 1px solid var(--ehr-border);
   color: var(--ehr-text);
   padding: 2px 4px;

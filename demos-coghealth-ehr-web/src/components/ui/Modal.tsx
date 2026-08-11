@@ -131,7 +131,7 @@ const alertTones = {
   info: 'info',
   success: 'success',
   warning: 'warning',
-  error: 'danger',
+  error: 'error',
 } as const;
 
 export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: AlertDialogProps) {

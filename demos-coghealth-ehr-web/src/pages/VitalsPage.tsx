@@ -169,7 +169,7 @@ export default function VitalsPage() {
         <div className="flex-1 overflow-auto bg-white border border-gray-400">
           <table className="w-full text-[11px]">
             <thead className="sticky top-0">
-              <tr className="bg-gradient-to-b from-[#f0f0f0] to-[#e0e0e0]">
+              <tr className="bg-gradient-to-b from-[var(--ehr-subheader-top)] to-[var(--ehr-subheader-bottom)]">
                 <th className="text-left px-2 py-1 border border-gray-400 bg-gradient-to-b from-[var(--ehr-raised-top)] to-[var(--ehr-sunken)] sticky left-0 z-10 min-w-[100px]">Vital Sign</th>
                 <th className="text-center px-2 py-1 border border-gray-400 bg-gradient-to-b from-[var(--ehr-raised-top)] to-[var(--ehr-sunken)] min-w-[50px]">Trend</th>
                 {vitals.map((reading) => (

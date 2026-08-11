@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 
-export type Tone = 'neutral' | 'success' | 'warning' | 'danger' | 'info';
+export type Tone = 'neutral' | 'success' | 'warning' | 'danger' | 'error' | 'info';
 
 /**
  * Inline styles backed by the themed `--tone-*` custom properties, so status

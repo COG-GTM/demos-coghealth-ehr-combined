@@ -265,7 +265,7 @@ export default function LabResultsPage() {
                 {expandedPanels.includes(panel.id) && (
                   <table className="w-full text-[11px]">
                     <thead>
-                      <tr className="bg-gradient-to-b from-[#f0f0f0] to-[#e0e0e0]">
+                      <tr className="bg-gradient-to-b from-[var(--ehr-subheader-top)] to-[var(--ehr-subheader-bottom)]">
                         <th className="text-left px-2 py-1 border-b border-gray-400 w-1/4">Test</th>
                         <th className="text-left px-2 py-1 border-b border-gray-400 w-1/6">Result</th>
                         <th className="text-left px-2 py-1 border-b border-gray-400 w-1/6">Units</th>
@@ -277,7 +277,7 @@ export default function LabResultsPage() {
                       {panel.results.map((result, idx) => (
                         <tr
                           key={result.id}
-                          className={`cursor-pointer hover:bg-[var(--ehr-accent-soft)] ${idx % 2 === 0 ? 'bg-white' : 'bg-[var(--ehr-panel)]'}`}
+                          className={`cursor-pointer hover:bg-[var(--ehr-accent-soft)] ${idx % 2 === 0 ? 'bg-[var(--ehr-surface)]' : 'bg-[var(--ehr-panel)]'}`}
                           style={getStatusStyle(result.status)}
                           onClick={() => setSelectedResult(result)}
                         >
