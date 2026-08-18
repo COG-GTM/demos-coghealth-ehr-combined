@@ -236,3 +236,131 @@ td {
 .ehr-splitter:hover {
   background: #b0b0b0;
 }
+
+.dark body {
+  background-color: #1c2733;
+  color: #e6edf3;
+}
+
+.dark .ehr-app-shell,
+.dark [style*="#d4d0c8"] {
+  background: #1c2733 !important;
+}
+
+.dark [style*="#ece9d8"] {
+  background: #263746 !important;
+}
+
+.dark [style*="#f5f5f5"],
+.dark [style*="#fafafa"] {
+  background: #24313d !important;
+}
+
+.dark [style*="#e8e8e8"] {
+  background: #304250 !important;
+}
+
+.dark .bg-white,
+.dark .ehr-tab.active,
+.dark .ehr-tab-content {
+  background: #202d39 !important;
+  color: #e6edf3;
+}
+
+.dark .bg-gray-50 {
+  background-color: #263746 !important;
+}
+
+.dark .bg-gray-100 {
+  background-color: #304250 !important;
+}
+
+.dark .hover\:bg-gray-100:hover,
+.dark .hover\:bg-gray-200:hover,
+.dark .hover\:bg-gray-50:hover {
+  background-color: #385064 !important;
+}
+
+.dark .text-gray-700,
+.dark .text-gray-600,
+.dark .text-gray-500,
+.dark .text-gray-400,
+.dark .ehr-label,
+.dark .ehr-fieldset legend {
+  color: #c0ccd6 !important;
+}
+
+.dark .border-gray-200,
+.dark .border-gray-300,
+.dark .border-gray-400,
+.dark .border-gray-500 {
+  border-color: #506273 !important;
+}
+
+.dark th {
+  background: linear-gradient(to bottom, #344957 0%, #263746 100%);
+  color: #e6edf3;
+  border-color: #506273;
+}
+
+.dark td {
+  border-color: #405361;
+}
+
+.dark .ehr-panel,
+.dark .ehr-fieldset {
+  background: #24313d;
+  border-color: #506273;
+  box-shadow: inset 1px 1px 0 #344957, 1px 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.dark .ehr-button,
+.dark .ehr-tab,
+.dark .ehr-toolbar-button-active {
+  background: linear-gradient(to bottom, #3a4c5b 0%, #2c3c49 100%);
+  border-color: #6d7d8b;
+  color: #e6edf3;
+  box-shadow: 1px 1px 0 #526572 inset, -1px -1px 0 #1a242c inset;
+}
+
+.dark .ehr-button:hover,
+.dark .ehr-toolbar-button:hover {
+  background: #486176;
+}
+
+.dark .ehr-input,
+.dark select,
+.dark textarea {
+  background: #17232d;
+  color: #e6edf3;
+  border-color: #6d879b;
+}
+
+.dark .ehr-toolbar {
+  background: linear-gradient(to bottom, #344957 0%, #263746 100%);
+  border-color: #506273;
+}
+
+.dark .ehr-toolbar-button {
+  color: #d7e1e8;
+}
+
+.dark .ehr-status-bar {
+  background: #263746;
+  color: #c0ccd6;
+  border-color: #506273;
+}
+
+.dark .ehr-tree-item:hover,
+.dark .ehr-grid-row:hover {
+  background: #385064;
+}
+
+.dark .ehr-grid-row:nth-child(even) {
+  background: #263746;
+}
+
+.dark option {
+  background: #202d39;
+  color: #e6edf3;
+}

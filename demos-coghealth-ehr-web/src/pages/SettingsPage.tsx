@@ -14,6 +14,7 @@ import {
   Check
 } from 'lucide-react';
 import { AlertDialog } from '../components/ui/Modal';
+import { useTheme, type Theme } from '../context/ThemeProvider';
 
 type SettingsTab = 'profile' | 'notifications' | 'security' | 'appearance' | 'practice';
 
@@ -49,12 +50,13 @@ const defaultNotifications = {
 };
 
 const defaultAppearance = {
-  theme: 'light',
+  theme: 'system' as Theme,
   compactMode: false,
   fontSize: 'medium',
 };
 
 export default function SettingsPage() {
+  const { theme, setTheme } = useTheme();
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
   const [saved, setSaved] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['channels', 'alerts', 'security', 'hours']));
@@ -385,18 +387,21 @@ export default function SettingsPage() {
               <fieldset className="ehr-fieldset">
                 <legend>Theme</legend>
                 <div className="grid grid-cols-3 gap-2">
-                  {['light', 'dark', 'system'].map((theme) => (
+                  {(['light', 'dark', 'system'] as Theme[]).map((option) => (
                     <button
-                      key={theme}
-                      onClick={() => setAppearance({ ...appearance, theme })}
+                      key={option}
+                      onClick={() => {
+                        setAppearance({ ...appearance, theme: option });
+                        setTheme(option);
+                      }}
                       className={`p-2 border text-center text-[11px] ${
-                        appearance.theme === theme
+                        theme === option
                           ? 'border-gray-600 bg-white'
                           : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
                       }`}
                     >
                       <Monitor className="w-4 h-4 mx-auto mb-1 text-gray-600" />
-                      <span className="capitalize">{theme}</span>
+                      <span className="capitalize">{option}</span>
                     </button>
                   ))}
                 </div>

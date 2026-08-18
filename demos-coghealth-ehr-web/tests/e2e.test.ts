@@ -80,6 +80,18 @@ describe('CogHealth EHR E2E Tests', () => {
       const statusText = await page.$eval('.ehr-status-bar span', el => el.textContent);
       expect(statusText).toContain('Settings');
     });
+
+    test('should toggle and persist dark mode', async () => {
+      await page.goto(BASE_URL);
+      const toggle = await page.$('button[aria-label="Switch to dark mode"]');
+      expect(toggle).not.toBeNull();
+      await toggle?.click();
+      await page.waitForFunction(() => document.documentElement.classList.contains('dark'));
+      expect(await page.$eval('body', el => getComputedStyle(el).backgroundColor)).toBe('rgb(28, 39, 51)');
+      await page.reload();
+      await page.waitForFunction(() => document.documentElement.classList.contains('dark'));
+      expect(await page.$('button[aria-label="Switch to light mode"]')).not.toBeNull();
+    });
   });
 
   describe('Global Patient Search', () => {
