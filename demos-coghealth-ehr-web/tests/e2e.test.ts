@@ -97,7 +97,9 @@ describe('CogHealth EHR E2E Tests', () => {
       await page.waitForFunction(() => window.location.pathname === '/patients');
       expect(await page.$('.ehr-page-shell')).not.toBeNull();
       expect(await page.$eval('html', el => el.classList.contains('dark'))).toBe(true);
-      await page.click('button[aria-label="Switch to light mode"]');
+      await page.evaluate(() => localStorage.setItem('coghealth-theme', 'light'));
+      await page.reload();
+      await page.waitForFunction(() => !document.documentElement.classList.contains('dark'));
     });
   });
 
