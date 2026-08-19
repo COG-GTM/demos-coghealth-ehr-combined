@@ -411,8 +411,4 @@ td {
   .dark .bg-white {
     background-color: var(--ehr-surface);
   }
-
-  .dark .hover\:bg-white:hover {
-    background-color: var(--ehr-hover);
-  }
 }
