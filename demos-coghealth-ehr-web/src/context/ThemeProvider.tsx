@@ -14,6 +14,16 @@ const STORAGE_KEY = 'coghealth-theme';
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
+function subscribeToSystemTheme(onStoreChange: () => void) {
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  mediaQuery.addEventListener('change', onStoreChange);
+  return () => mediaQuery.removeEventListener('change', onStoreChange);
+}
+
+function getSystemTheme(): ResolvedTheme {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
 function getInitialTheme(): Theme {
   if (typeof window === 'undefined') return 'system';
   const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
@@ -23,15 +33,7 @@ function getInitialTheme(): Theme {
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(getInitialTheme);
-  const systemTheme = useSyncExternalStore<ResolvedTheme>(
-    (onStoreChange) => {
-      const mq = window.matchMedia('(prefers-color-scheme: dark)');
-      mq.addEventListener('change', onStoreChange);
-      return () => mq.removeEventListener('change', onStoreChange);
-    },
-    () => (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
-    () => 'light',
-  );
+  const systemTheme = useSyncExternalStore<ResolvedTheme>(subscribeToSystemTheme, getSystemTheme, () => 'light');
   const resolvedTheme: ResolvedTheme = theme === 'system' ? systemTheme : theme;
 
   useEffect(() => {

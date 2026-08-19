@@ -251,8 +251,7 @@ td {
   background: #263746 !important;
 }
 
-.dark .ehr-page-panel,
-.dark .ehr-page-subpanel {
+.dark .ehr-page-panel {
   background: #24313d !important;
 }
 
@@ -285,6 +284,8 @@ td {
 .dark .text-gray-600,
 .dark .text-gray-500,
 .dark .text-gray-400,
+.dark .text-gray-800,
+.dark .text-gray-900,
 .dark .ehr-label,
 .dark .ehr-fieldset legend {
   color: #c0ccd6 !important;
@@ -347,17 +348,23 @@ td {
 
 .dark .ehr-status-bar {
   background: #263746;
+  background-image: none !important;
   color: #c0ccd6;
   border-color: #506273;
 }
 
 .dark .ehr-tree-item:hover,
-.dark .ehr-grid-row:hover {
+.dark .ehr-grid-row:not(.selected):hover {
   background: #385064;
 }
 
-.dark .ehr-grid-row:nth-child(even) {
-  background: #263746;
+.dark .ehr-grid-row:not(.selected) {
+  background: #202d39 !important;
+  color: #e6edf3;
+}
+
+.dark .ehr-grid-row:nth-child(even):not(.selected) {
+  background: #263746 !important;
 }
 
 .dark option {

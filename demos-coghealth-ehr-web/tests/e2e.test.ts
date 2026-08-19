@@ -83,6 +83,8 @@ describe('CogHealth EHR E2E Tests', () => {
 
     test('should toggle and persist dark mode', async () => {
       await page.goto(BASE_URL);
+      await page.evaluate(() => localStorage.setItem('coghealth-theme', 'light'));
+      await page.reload();
       const toggle = await page.$('button[aria-label="Switch to dark mode"]');
       expect(toggle).not.toBeNull();
       await toggle?.click();
@@ -95,6 +97,7 @@ describe('CogHealth EHR E2E Tests', () => {
       await page.waitForFunction(() => window.location.pathname === '/patients');
       expect(await page.$eval('.ehr-page-shell', el => getComputedStyle(el).backgroundColor))
         .toBe('rgb(28, 39, 51)');
+      await page.click('button[aria-label="Switch to light mode"]');
     });
   });
 

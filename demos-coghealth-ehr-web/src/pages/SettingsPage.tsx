@@ -83,7 +83,12 @@ export default function SettingsPage() {
         const data = JSON.parse(stored);
         if (data.profile) Object.assign(profile, data.profile);
         if (data.notifications) Object.assign(notifications, data.notifications);
-        if (data.appearance) Object.assign(appearance, data.appearance);
+        if (data.appearance) {
+          Object.assign(appearance, {
+            compactMode: data.appearance.compactMode ?? defaultAppearance.compactMode,
+            fontSize: data.appearance.fontSize ?? defaultAppearance.fontSize,
+          });
+        }
       } catch (e) {
         console.error('Failed to load settings:', e);
       }
