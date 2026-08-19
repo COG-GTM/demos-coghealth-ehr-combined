@@ -14,7 +14,10 @@ import {
   Lock,
   Shield,
   FlaskConical,
-  Activity
+  Activity,
+  Sun,
+  Moon,
+  Monitor
 } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import PatientSearchPage from './pages/PatientSearchPage';
@@ -27,6 +30,8 @@ import SettingsPage from './pages/SettingsPage';
 import LabResultsPage from './pages/LabResultsPage';
 import VitalsPage from './pages/VitalsPage';
 import { AlertDialog, ConfirmDialog } from './components/ui/Modal';
+import { useTheme } from './context/theme';
+import type { Theme } from './context/theme';
 import { logLogout } from './services/auditService';
 
 const SESSION_TIMEOUT_MS = 15 * 60 * 1000;
@@ -40,6 +45,26 @@ const defaultPatientSearch = [
   { id: 5, name: 'Davis, Robert', mrn: 'MRN001238', dob: '08/20/1945' },
   { id: 6, name: 'Martinez, Maria', mrn: 'MRN001240', dob: '12/05/1970' },
 ];
+
+const themeCycle: Theme[] = ['light', 'dark', 'system'];
+const themeIcons = { light: Sun, dark: Moon, system: Monitor };
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const Icon = themeIcons[theme];
+
+  return (
+    <button
+      onClick={() => setTheme(themeCycle[(themeCycle.indexOf(theme) + 1) % themeCycle.length])}
+      title={`Theme: ${theme} (click to change)`}
+      aria-label={`Theme: ${theme}`}
+      className="flex items-center space-x-1 hover:text-white text-blue-200"
+    >
+      <Icon className="w-3 h-3" />
+      <span className="capitalize">{theme}</span>
+    </button>
+  );
+}
 
 interface NavigationProps {
   onSessionWarning: () => void;
@@ -172,7 +197,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
           </div>
         </div>
         <div className="flex items-center space-x-3 text-[10px]">
-          <span className="text-blue-100">Springfield Medical Center</span>
+          <span className="text-blue-200">Springfield Medical Center</span>
           <span className="text-blue-300">|</span>
           <div className="flex items-center space-x-1">
             <Lock className="w-3 h-3" />
@@ -180,6 +205,8 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
               Session: {formatSessionTime()}
             </span>
           </div>
+          <span className="text-blue-300">|</span>
+          <ThemeToggle />
           <span className="text-blue-300">|</span>
           <div className="flex items-center space-x-1">
             <User className="w-3 h-3" />
@@ -280,7 +307,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="h-screen flex flex-col" style={{ background: '#d4d0c8', fontFamily: 'Tahoma, sans-serif' }}>
+      <div className="h-screen flex flex-col" style={{ background: 'var(--ehr-chrome)', fontFamily: 'Tahoma, sans-serif' }}>
         <Navigation 
           onSessionWarning={handleSessionWarning}
           onSessionExpired={handleSessionExpired}
@@ -301,7 +328,7 @@ function App() {
         </main>
 
         {/* Status Bar - Windows XP style */}
-        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
+        <div className="h-5 bg-gradient-to-b from-[var(--ehr-panel-alt)] to-[var(--ehr-chrome)] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
               <Shield className="w-3 h-3 text-green-600" />
