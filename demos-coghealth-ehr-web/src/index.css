@@ -412,4 +412,11 @@ td {
   :where(.dark) .bg-white {
     background-color: var(--ehr-surface);
   }
+
+  /* gray-400 stays a dark value for the many `border-gray-400` dividers, so the
+     foreground uses (toolbar separators, `-` placeholders, flat trend icons)
+     need a lighter, still-subdued tone in dark mode. */
+  :where(.dark) .text-gray-400 {
+    color: #7c8592;
+  }
 }
