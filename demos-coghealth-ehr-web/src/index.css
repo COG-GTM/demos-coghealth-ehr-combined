@@ -274,6 +274,14 @@ td {
   background-color: #304250 !important;
 }
 
+.dark .bg-gray-200 {
+  background-color: #405361 !important;
+}
+
+.dark .bg-gray-300 {
+  background-color: #506273 !important;
+}
+
 .dark .hover\:bg-gray-100:hover,
 .dark .hover\:bg-gray-200:hover,
 .dark .hover\:bg-gray-50:hover {
@@ -351,6 +359,22 @@ td {
   background-image: none !important;
   color: #c0ccd6;
   border-color: #506273;
+}
+
+.dark .ehr-badge,
+.dark .ehr-alert-message,
+.dark .ehr-status-surface {
+  background: #304250 !important;
+  background-image: none !important;
+  border-color: #6d7d8b !important;
+  color: #e6edf3 !important;
+}
+
+.dark .ehr-report-category-header,
+.dark .ehr-lab-panel-header {
+  background: #304250 !important;
+  background-image: none !important;
+  color: #e6edf3 !important;
 }
 
 .dark .ehr-tree-item:hover,

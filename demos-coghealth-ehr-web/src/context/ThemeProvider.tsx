@@ -26,8 +26,19 @@ function getSystemTheme(): ResolvedTheme {
 
 function getInitialTheme(): Theme {
   if (typeof window === 'undefined') return 'system';
-  const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-  if (stored && ['light', 'dark', 'system'].includes(stored)) return stored;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
+    if (stored && ['light', 'dark', 'system'].includes(stored)) return stored;
+
+    const settings = localStorage.getItem('coghealth_settings');
+    const legacyTheme = settings ? (JSON.parse(settings).appearance?.theme as Theme | undefined) : undefined;
+    if (legacyTheme && ['light', 'dark', 'system'].includes(legacyTheme)) {
+      localStorage.setItem(STORAGE_KEY, legacyTheme);
+      return legacyTheme;
+    }
+  } catch {
+    return 'system';
+  }
   return 'system';
 }
 
@@ -46,7 +57,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [resolvedTheme]);
 
   const setTheme = (next: Theme) => {
-    localStorage.setItem(STORAGE_KEY, next);
+    try {
+      localStorage.setItem(STORAGE_KEY, next);
+    } catch {
+      setThemeState(next);
+      return;
+    }
     setThemeState(next);
   };
 

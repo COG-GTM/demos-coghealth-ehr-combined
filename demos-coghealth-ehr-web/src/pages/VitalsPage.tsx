@@ -200,7 +200,7 @@ export default function VitalsPage() {
                     return (
                       <td
                         key={reading.id}
-                        className="px-2 py-1 border border-gray-300 text-center cursor-pointer hover:bg-[#e0e8f0]"
+                        className="ehr-status-surface px-2 py-1 border border-gray-300 text-center cursor-pointer hover:bg-[#e0e8f0]"
                         style={getStatusStyle(status)}
                         onClick={() => setSelectedReading(reading)}
                       >
@@ -274,7 +274,7 @@ export default function VitalsPage() {
                   const value = selectedReading[vital.key] as number | undefined;
                   const status = getValueStatus(vital.key, value);
                   return (
-                    <div key={vital.key} className="flex justify-between" style={getStatusStyle(status)}>
+                    <div key={vital.key} className="ehr-status-surface flex justify-between" style={getStatusStyle(status)}>
                       <span className="text-gray-600">{vital.name}:</span>
                       <span className="font-mono font-semibold">
                         {value !== undefined ? (vital.key === 'temperature' ? value.toFixed(1) : value) : '-'} {vital.unit}

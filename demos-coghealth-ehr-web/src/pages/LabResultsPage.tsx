@@ -231,7 +231,7 @@ export default function LabResultsPage() {
             filteredPanels.map(panel => (
               <div key={panel.id} className="border-b border-gray-300">
                 <div
-                  className="flex items-center justify-between px-2 py-1.5 bg-gradient-to-b from-[#f8f8f8] to-[#e8e8e8] cursor-pointer hover:from-[#fff] hover:to-[#f0f0f0]"
+                  className="ehr-lab-panel-header flex items-center justify-between px-2 py-1.5 bg-gradient-to-b from-[#f8f8f8] to-[#e8e8e8] cursor-pointer hover:from-[#fff] hover:to-[#f0f0f0]"
                   onClick={() => togglePanel(panel.id)}
                 >
                   <div className="flex items-center space-x-2">
@@ -330,7 +330,7 @@ export default function LabResultsPage() {
                 </div>
                 <div>
                   <span className="text-gray-500">Status:</span>
-                  <span className="ml-2" style={getStatusStyle(selectedResult.status)}>
+                  <span className="ehr-status-surface ml-2" style={getStatusStyle(selectedResult.status)}>
                     {selectedResult.status.toUpperCase()}
                   </span>
                 </div>
