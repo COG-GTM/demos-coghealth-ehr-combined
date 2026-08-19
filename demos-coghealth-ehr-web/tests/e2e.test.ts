@@ -91,6 +91,10 @@ describe('CogHealth EHR E2E Tests', () => {
       await page.reload();
       await page.waitForFunction(() => document.documentElement.classList.contains('dark'));
       expect(await page.$('button[aria-label="Switch to light mode"]')).not.toBeNull();
+      await page.click('a[href="/patients"]');
+      await page.waitForFunction(() => window.location.pathname === '/patients');
+      expect(await page.$eval('.ehr-page-shell', el => getComputedStyle(el).backgroundColor))
+        .toBe('rgb(28, 39, 51)');
     });
   });
 

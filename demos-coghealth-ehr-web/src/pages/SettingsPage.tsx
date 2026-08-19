@@ -50,7 +50,6 @@ const defaultNotifications = {
 };
 
 const defaultAppearance = {
-  theme: 'system' as Theme,
   compactMode: false,
   fontSize: 'medium',
 };
@@ -107,7 +106,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="ehr-page-shell h-full flex flex-col" style={{ background: '#d4d0c8' }}>
       {/* Header */}
       <div className="ehr-header flex items-center justify-between">
         <span>System Settings</span>
@@ -123,7 +122,7 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Navigation */}
-        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: '#ece9d8' }}>
+        <div className="ehr-page-sidebar w-48 overflow-auto p-2 space-y-1" style={{ background: '#ece9d8' }}>
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -391,7 +390,6 @@ export default function SettingsPage() {
                     <button
                       key={option}
                       onClick={() => {
-                        setAppearance({ ...appearance, theme: option });
                         setTheme(option);
                       }}
                       className={`p-2 border text-center text-[11px] ${
