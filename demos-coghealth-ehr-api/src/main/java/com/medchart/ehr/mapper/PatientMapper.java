@@ -15,12 +15,14 @@ public interface PatientMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "version", ignore = true)
+    @Mapping(target = "primaryProviderId", ignore = true)
     Patient toEntity(PatientDTO dto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "version", ignore = true)
+    @Mapping(target = "primaryProviderId", ignore = true)
     void updateEntityFromDto(PatientDTO dto, @MappingTarget Patient entity);
 
     AddressDTO toAddressDto(Address address);
