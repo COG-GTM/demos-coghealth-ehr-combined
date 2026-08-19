@@ -185,7 +185,7 @@ export default function VitalsPage() {
             </thead>
             <tbody>
               {vitalSigns.map((vital, vitalIdx) => (
-                <tr key={vital.key} className={vitalIdx % 2 === 0 ? 'bg-white' : 'bg-[#f8f8f8]'}>
+                <tr key={vital.key} className={`ehr-vitals-row ${vitalIdx % 2 === 0 ? 'bg-white' : 'bg-[#f8f8f8]'}`}>
                   <td className="px-2 py-1 border border-gray-300 font-semibold sticky left-0 bg-inherit z-10">
                     <div>{vital.name}</div>
                     <div className="text-[9px] text-gray-500 font-normal">{vital.unit} ({vital.normalRange.min}-{vital.normalRange.max})</div>

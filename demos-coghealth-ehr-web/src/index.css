@@ -374,6 +374,20 @@ td {
   color: #e6edf3 !important;
 }
 
+.dark .ehr-loading-overlay {
+  background: #304250 !important;
+  border-color: #6d7d8b !important;
+}
+
+.dark .ehr-vitals-row {
+  background: #202d39 !important;
+  color: #e6edf3;
+}
+
+.dark .ehr-vitals-row:nth-child(even) {
+  background: #263746 !important;
+}
+
 .dark .ehr-badge-default {
   background: #304250 !important;
   background-image: none !important;

@@ -41,7 +41,6 @@ function getInitialTheme(): Theme {
     const settings = localStorage.getItem('coghealth_settings');
     const legacyTheme = settings ? (JSON.parse(settings).appearance?.theme as Theme | undefined) : undefined;
     if (legacyTheme && ['light', 'dark', 'system'].includes(legacyTheme)) {
-      localStorage.setItem(STORAGE_KEY, legacyTheme);
       return legacyTheme;
     }
   } catch {

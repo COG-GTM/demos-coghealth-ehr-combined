@@ -11,7 +11,11 @@
           let theme = localStorage.getItem('coghealth-theme');
           if (!['light', 'dark', 'system'].includes(theme)) {
             const settings = localStorage.getItem('coghealth_settings');
-            theme = settings ? JSON.parse(settings).appearance?.theme : null;
+            try {
+              theme = settings ? JSON.parse(settings).appearance?.theme : null;
+            } catch {
+              theme = null;
+            }
           }
           if (!['light', 'dark', 'system'].includes(theme)) theme = null;
           if (theme) localStorage.setItem('coghealth-theme', theme);
