@@ -313,7 +313,7 @@ export default function DashboardPage() {
         <div className="flex items-center space-x-2">
           <button className="ehr-toolbar-button relative">
             <Bell className="w-4 h-4" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-gray-600 text-white text-[9px] flex items-center justify-center border border-gray-700">3</span>
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-gray-600 text-white dark:text-[var(--ehr-chrome)] text-[9px] flex items-center justify-center border border-gray-700">3</span>
           </button>
         </div>
       </div>

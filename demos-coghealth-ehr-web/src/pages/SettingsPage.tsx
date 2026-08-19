@@ -402,7 +402,7 @@ export default function SettingsPage() {
                       className={`p-2 border text-center text-[11px] ${
                         theme === value
                           ? 'border-gray-600 bg-white'
-                          : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
+                          : 'border-gray-400 bg-gray-100 hover:bg-gray-50 dark:hover:bg-gray-200'
                       }`}
                     >
                       <Icon className="w-4 h-4 mx-auto mb-1 text-gray-600" />

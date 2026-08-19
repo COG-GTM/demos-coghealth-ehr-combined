@@ -328,7 +328,7 @@ function App() {
         </main>
 
         {/* Status Bar - Windows XP style */}
-        <div className="h-5 bg-gradient-to-b from-[var(--ehr-panel-alt)] to-[var(--ehr-chrome)] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
+        <div className="h-5 bg-gradient-to-b from-[color:var(--ehr-panel-alt)] to-[color:var(--ehr-chrome)] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
               <Shield className="w-3 h-3 text-green-600" />

@@ -44,10 +44,10 @@ export default function PatientBanner({ patient, allergies = [] }: PatientBanner
                 {patient.middleName && ` ${patient.middleName.charAt(0)}.`}
               </span>
               {patient.deceased && (
-                <span className="px-1.5 py-0.5 bg-gray-600 text-white text-[10px] font-bold border border-gray-500">DECEASED</span>
+                <span className="px-1.5 py-0.5 bg-gray-600 text-white dark:text-[var(--ehr-chrome)] text-[10px] font-bold border border-gray-500">DECEASED</span>
               )}
               {!patient.active && !patient.deceased && (
-                <span className="px-1.5 py-0.5 bg-gray-500 text-white text-[10px] font-bold border border-gray-400">INACTIVE</span>
+                <span className="px-1.5 py-0.5 bg-gray-500 text-white dark:text-[var(--ehr-chrome)] text-[10px] font-bold border border-gray-400">INACTIVE</span>
               )}
             </div>
             

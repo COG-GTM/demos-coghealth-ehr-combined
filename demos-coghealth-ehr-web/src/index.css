@@ -156,11 +156,19 @@
 
   --color-blue-50: #16233a;
   --color-blue-100: #1b2f4d;
+  --color-blue-200: #26456b;
+  --color-blue-300: #315a8b;
   --color-red-50: #33191c;
   --color-red-100: #431f23;
+  --color-red-200: #5d2a30;
+  --color-red-300: #7c363e;
   --color-green-50: #17301f;
   --color-green-100: #1d3d28;
+  --color-green-200: #275234;
+  --color-green-300: #326b44;
   --color-yellow-100: #3a3018;
+  --color-yellow-200: #4d3f1e;
+  --color-yellow-300: #6b5726;
   --color-yellow-700: #e2b455;
   --color-yellow-800: #ffdc9b;
   --color-red-700: #ff9c9c;
@@ -400,11 +408,13 @@ td {
 
 /* `bg-white` is opaque-white by design in Tailwind, so it needs an explicit
    dark surface. Translucent `bg-white/x` overlays sit on coloured chrome and
-   stay as-is. */
-.dark .bg-white {
-  background-color: var(--ehr-surface);
-}
+   stay as-is. Layered so hover/focus utilities keep their usual precedence. */
+@layer utilities {
+  .dark .bg-white {
+    background-color: var(--ehr-surface);
+  }
 
-.dark .hover\:bg-white:hover {
-  background-color: var(--ehr-hover);
+  .dark .hover\:bg-white:hover {
+    background-color: var(--ehr-hover);
+  }
 }
