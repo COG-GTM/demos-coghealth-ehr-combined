@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CogHealth EHR</title>
     <script>
-      // Applies the stored theme before first paint so a dark session does not flash light chrome.
+      // Applies the stored theme before first paint so a dark session does not flash light
+      // chrome. Must stay in sync with THEME_STORAGE_KEY in src/context/theme.ts.
       (function () {
-        var stored = localStorage.getItem('coghealth-theme');
+        var stored = null;
+        try { stored = localStorage.getItem('coghealth-theme'); } catch (e) { /* storage blocked */ }
         var dark = stored === 'dark' || (stored !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
         if (dark) document.documentElement.classList.add('dark');
       })();

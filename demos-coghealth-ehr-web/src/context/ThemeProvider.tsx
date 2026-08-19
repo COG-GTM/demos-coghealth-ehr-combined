@@ -9,8 +9,16 @@ function subscribeToSystemTheme(onChange: () => void) {
   return () => mq.removeEventListener('change', onChange);
 }
 
+function readStoredTheme(): string | null {
+  try {
+    return localStorage.getItem(THEME_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
 function getInitialTheme(): Theme {
-  const stored = localStorage.getItem(THEME_STORAGE_KEY);
+  const stored = readStoredTheme();
   return stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
 }
 
@@ -29,7 +37,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [resolvedTheme]);
 
   const setTheme = useCallback((next: Theme) => {
-    localStorage.setItem(THEME_STORAGE_KEY, next);
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, next);
+    } catch {
+      // Storage may be blocked; the theme still applies for this session.
+    }
     setThemeState(next);
   }, []);
 
