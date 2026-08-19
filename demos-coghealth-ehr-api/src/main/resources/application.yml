@@ -57,6 +57,12 @@ medchart:
     jwt:
       secret: ${JWT_SECRET:dev-secret-key-change-in-production}
       expiration: 86400000
+  export:
+    # Private, owner-only directory for generated PHI exports. Never point this at a
+    # world-readable location or a synced/public object-storage mount.
+    storage-dir: ${PHI_EXPORT_DIR:}
+    # Base64 AES key enabling AES-256-GCM encryption at rest for exported PHI.
+    encryption-key: ${PHI_EXPORT_ENCRYPTION_KEY:}
   audit:
     enabled: true
     async: true

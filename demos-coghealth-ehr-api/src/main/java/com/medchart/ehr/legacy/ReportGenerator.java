@@ -1,14 +1,13 @@
 package com.medchart.ehr.legacy;
 
+import com.medchart.ehr.service.PhiExportStorage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,9 +19,16 @@ public class ReportGenerator {
     @Autowired
     private EntityManager entityManager;
 
-    private static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
+    @Autowired
+    private PhiExportStorage exportStorage;
 
     public String generatePatientRoster() {
+        String handle = "patient_roster_"
+            + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".csv";
+        return exportStorage.store(handle, buildPatientRoster());
+    }
+
+    private byte[] buildPatientRoster() {
         String sql = "SELECT p.id, p.mrn, p.ssn, p.first_name, p.last_name, p.date_of_birth, " +
                      "p.phone_home, p.phone_mobile, p.email, " +
                      "p.street1, p.city, p.state, p.zip_code, " +
@@ -34,27 +40,18 @@ public class ReportGenerator {
         Query query = entityManager.createNativeQuery(sql);
         List<Object[]> results = query.getResultList();
         
-        String filename = "patient_roster_" + 
-            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".csv";
-        String filePath = TEMP_DIR + File.separator + filename;
-        
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
-            writer.println("ID,MRN,SSN,FirstName,LastName,DOB,PhoneHome,PhoneMobile,Email,Address,City,State,Zip,Insurance,MemberID");
-            for (Object[] row : results) {
-                StringBuilder line = new StringBuilder();
-                for (int i = 0; i < row.length; i++) {
-                    if (i > 0) line.append(",");
-                    line.append(row[i] != null ? row[i].toString().replace(",", ";") : "");
-                }
-                writer.println(line);
+        StringBuilder csv = new StringBuilder();
+        csv.append("ID,MRN,SSN,FirstName,LastName,DOB,PhoneHome,PhoneMobile,Email,Address,City,State,Zip,Insurance,MemberID\n");
+        for (Object[] row : results) {
+            for (int i = 0; i < row.length; i++) {
+                if (i > 0) csv.append(",");
+                csv.append(row[i] != null ? row[i].toString().replace(",", ";") : "");
             }
-        } catch (IOException e) {
-            log.error("Failed to generate patient roster", e);
-            throw new RuntimeException("Report generation failed", e);
+            csv.append("\n");
         }
-        
-        log.info("Generated patient roster at: {}", filePath);
-        return filePath;
+
+        log.info("Generated patient roster for {} patients", results.size());
+        return csv.toString().getBytes(StandardCharsets.UTF_8);
     }
 
     public String generateEncounterSummary(LocalDateTime startDate, LocalDateTime endDate) {
@@ -71,44 +68,30 @@ public class ReportGenerator {
         query.setParameter(2, endDate);
         List<Object[]> results = query.getResultList();
         
-        String filename = "encounter_summary_" + 
-            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".txt";
-        String filePath = TEMP_DIR + File.separator + filename;
-        
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
-            writer.println("ENCOUNTER SUMMARY REPORT");
-            writer.println("========================");
-            writer.println("Date Range: " + startDate + " to " + endDate);
-            writer.println("Generated: " + LocalDateTime.now());
-            writer.println("Total Encounters: " + results.size());
-            writer.println();
-            
-            for (Object[] row : results) {
-                writer.println("Encounter: " + row[1]);
-                writer.println("  Date: " + row[2]);
-                writer.println("  Type: " + row[3] + " | Status: " + row[4]);
-                writer.println("  Patient: " + row[6] + " " + row[7] + " (MRN: " + row[5] + ")");
-                writer.println("  DOB: " + row[8]);
-                writer.println("  Provider: " + row[9] + " " + row[10]);
-                writer.println();
-            }
-        } catch (IOException e) {
-            log.error("Failed to generate encounter summary", e);
-            throw new RuntimeException("Report generation failed", e);
+        StringBuilder report = new StringBuilder();
+        report.append("ENCOUNTER SUMMARY REPORT\n");
+        report.append("========================\n");
+        report.append("Date Range: ").append(startDate).append(" to ").append(endDate).append("\n");
+        report.append("Generated: ").append(LocalDateTime.now()).append("\n");
+        report.append("Total Encounters: ").append(results.size()).append("\n\n");
+
+        for (Object[] row : results) {
+            report.append("Encounter: ").append(row[1]).append("\n");
+            report.append("  Date: ").append(row[2]).append("\n");
+            report.append("  Type: ").append(row[3]).append(" | Status: ").append(row[4]).append("\n");
+            report.append("  Patient: ").append(row[6]).append(" ").append(row[7])
+                  .append(" (MRN: ").append(row[5]).append(")\n");
+            report.append("  DOB: ").append(row[8]).append("\n");
+            report.append("  Provider: ").append(row[9]).append(" ").append(row[10]).append("\n\n");
         }
-        
-        log.info("Generated encounter summary at: {}", filePath);
-        return filePath;
+
+        String handle = "encounter_summary_"
+            + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".txt";
+        log.info("Generated encounter summary for {} encounters", results.size());
+        return exportStorage.store(handle, report.toString().getBytes(StandardCharsets.UTF_8));
     }
 
     public byte[] generateDailyReport() {
-        String tempFile = generatePatientRoster();
-        try {
-            byte[] content = Files.readAllBytes(Path.of(tempFile));
-            return content;
-        } catch (IOException e) {
-            log.error("Failed to read temp file", e);
-            throw new RuntimeException(e);
-        }
+        return buildPatientRoster();
     }
 }
