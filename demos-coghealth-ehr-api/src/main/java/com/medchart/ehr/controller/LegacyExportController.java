@@ -2,6 +2,7 @@ package com.medchart.ehr.controller;
 
 import com.medchart.ehr.legacy.EncounterExportService;
 import com.medchart.ehr.legacy.ReportGenerator;
+import com.medchart.ehr.service.ExportAuthorizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
@@ -19,12 +20,15 @@ public class LegacyExportController {
 
     private final EncounterExportService encounterExportService;
     private final ReportGenerator reportGenerator;
+    private final ExportAuthorizationService exportAuthorizationService;
 
     @GetMapping("/encounters")
     public ResponseEntity<byte[]> exportEncounters(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         
+        exportAuthorizationService.authorizeBulkExport("EncounterExport");
+
         byte[] data = encounterExportService.exportEncountersForDateRange(startDate, endDate);
         
         return ResponseEntity.ok()
@@ -35,6 +39,8 @@ public class LegacyExportController {
 
     @GetMapping("/patient/{patientId}/encounters")
     public ResponseEntity<byte[]> exportPatientEncounters(@PathVariable Long patientId) {
+        exportAuthorizationService.authorizePatientExport(patientId, "EncounterHistoryExport");
+
         byte[] data = encounterExportService.exportPatientEncounterHistory(patientId);
         
         return ResponseEntity.ok()
@@ -45,6 +51,8 @@ public class LegacyExportController {
 
     @GetMapping("/reports/patient-roster")
     public ResponseEntity<String> generatePatientRoster() {
+        exportAuthorizationService.authorizeBulkExport("PatientRosterReport");
+
         String filePath = reportGenerator.generatePatientRoster();
         return ResponseEntity.ok("Report generated at: " + filePath);
     }
@@ -54,12 +62,16 @@ public class LegacyExportController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
         
+        exportAuthorizationService.authorizeBulkExport("EncounterSummaryReport");
+
         String filePath = reportGenerator.generateEncounterSummary(startDate, endDate);
         return ResponseEntity.ok("Report generated at: " + filePath);
     }
 
     @GetMapping("/reports/daily")
     public ResponseEntity<byte[]> getDailyReport() {
+        exportAuthorizationService.authorizeBulkExport("DailyReport");
+
         byte[] data = reportGenerator.generateDailyReport();
         
         return ResponseEntity.ok()

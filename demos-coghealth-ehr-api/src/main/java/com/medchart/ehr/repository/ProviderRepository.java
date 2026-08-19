@@ -13,6 +13,8 @@ public interface ProviderRepository extends JpaRepository<Provider, Long> {
 
     Optional<Provider> findByNpi(String npi);
 
+    Optional<Provider> findByEmailIgnoreCase(String email);
+
     List<Provider> findByActiveTrue();
 
     List<Provider> findByDepartment(String department);
