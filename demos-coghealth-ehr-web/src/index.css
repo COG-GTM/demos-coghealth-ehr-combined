@@ -425,14 +425,26 @@ td {
   background: #263746 !important;
 }
 
+.dark .ehr-lab-row:hover {
+  background: #385064 !important;
+}
+
 .dark .ehr-lab-row.ehr-status-abnormal {
   background: #5a4520 !important;
   color: #ffe2a8 !important;
 }
 
+.dark .ehr-lab-row.ehr-status-abnormal:hover {
+  background: #6a5428 !important;
+}
+
 .dark .ehr-lab-row.ehr-status-critical {
   background: #5b2529 !important;
   color: #ffd7d9 !important;
+}
+
+.dark .ehr-lab-row.ehr-status-critical:hover {
+  background: #6b3138 !important;
 }
 
 .dark .ehr-alert-critical {
@@ -448,7 +460,6 @@ td {
   color: #e6edf3 !important;
 }
 
-.dark .ehr-tree-item:hover,
 .dark .ehr-grid-row:not(.selected):hover {
   background: #385064;
 }
