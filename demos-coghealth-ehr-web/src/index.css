@@ -368,6 +368,13 @@ td {
   border-color: #506273;
 }
 
+.dark .ehr-header,
+.dark .ehr-modal-titlebar {
+  background: linear-gradient(to bottom, #344957 0%, #263746 100%) !important;
+  border-color: #506273;
+  color: #e6edf3;
+}
+
 .dark .ehr-modal-frame {
   background: #202d39 !important;
   border-color: #506273 !important;

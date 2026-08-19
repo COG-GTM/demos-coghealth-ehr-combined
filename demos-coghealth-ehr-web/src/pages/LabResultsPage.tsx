@@ -155,7 +155,7 @@ export default function LabResultsPage() {
   const abnormalCount = labPanels.reduce((acc, p) => acc + p.results.filter(r => r.status === 'abnormal').length, 0);
 
   return (
-    <div className="h-full flex flex-col overflow-hidden p-2">
+    <div className="ehr-page-shell h-full flex flex-col overflow-hidden p-2">
       <div className="ehr-panel flex-1 flex flex-col overflow-hidden">
         <div className="ehr-header flex items-center justify-between">
           <div className="flex items-center space-x-2">

@@ -29,9 +29,9 @@ describe('CogHealth EHR E2E Tests', () => {
       await page.click('a[href="/patients"]');
       await page.waitForFunction(
         () => window.location.pathname === '/patients' &&
-              document.querySelector('.ehr-status-bar span')?.textContent?.toLowerCase().includes('patient')
+              document.querySelector('.ehr-app-status-bar span')?.textContent?.toLowerCase().includes('patient')
       );
-      const statusText = await page.$eval('.ehr-status-bar span', el => el.textContent);
+      const statusText = await page.$eval('.ehr-app-status-bar span', el => el.textContent);
       expect(statusText?.toLowerCase()).toContain('patient');
     });
 
@@ -45,9 +45,9 @@ describe('CogHealth EHR E2E Tests', () => {
       await page.click('a[href="/schedule"]');
       await page.waitForFunction(
         () => window.location.pathname === '/schedule' &&
-              document.querySelector('.ehr-status-bar span')?.textContent?.includes('Schedule')
+              document.querySelector('.ehr-app-status-bar span')?.textContent?.includes('Schedule')
       );
-      const statusText = await page.$eval('.ehr-status-bar span', el => el.textContent);
+      const statusText = await page.$eval('.ehr-app-status-bar span', el => el.textContent);
       expect(statusText).toContain('Schedule');
     });
 
@@ -55,9 +55,9 @@ describe('CogHealth EHR E2E Tests', () => {
       await page.click('a[href="/medications"]');
       await page.waitForFunction(
         () => window.location.pathname === '/medications' &&
-              document.querySelector('.ehr-status-bar span')?.textContent?.includes('Medications')
+              document.querySelector('.ehr-app-status-bar span')?.textContent?.includes('Medications')
       );
-      const statusText = await page.$eval('.ehr-status-bar span', el => el.textContent);
+      const statusText = await page.$eval('.ehr-app-status-bar span', el => el.textContent);
       expect(statusText).toContain('Medications');
     });
 
@@ -65,9 +65,9 @@ describe('CogHealth EHR E2E Tests', () => {
       await page.click('a[href="/reports"]');
       await page.waitForFunction(
         () => window.location.pathname === '/reports' &&
-              document.querySelector('.ehr-status-bar span')?.textContent?.includes('Reports')
+              document.querySelector('.ehr-app-status-bar span')?.textContent?.includes('Reports')
       );
-      const statusText = await page.$eval('.ehr-status-bar span', el => el.textContent);
+      const statusText = await page.$eval('.ehr-app-status-bar span', el => el.textContent);
       expect(statusText).toContain('Reports');
     });
 
@@ -75,9 +75,9 @@ describe('CogHealth EHR E2E Tests', () => {
       await page.click('a[href="/settings"]');
       await page.waitForFunction(
         () => window.location.pathname === '/settings' &&
-              document.querySelector('.ehr-status-bar span')?.textContent?.includes('Settings')
+              document.querySelector('.ehr-app-status-bar span')?.textContent?.includes('Settings')
       );
-      const statusText = await page.$eval('.ehr-status-bar span', el => el.textContent);
+      const statusText = await page.$eval('.ehr-app-status-bar span', el => el.textContent);
       expect(statusText).toContain('Settings');
     });
 
@@ -236,7 +236,7 @@ describe('CogHealth EHR E2E Tests', () => {
     });
 
     test('should display schedule grid', async () => {
-      await page.waitForSelector('.ehr-status-bar');
+      await page.waitForSelector('.ehr-app-status-bar');
     });
 
     test('should open new appointment dialog', async () => {
@@ -354,7 +354,7 @@ describe('CogHealth EHR E2E Tests', () => {
     beforeEach(async () => {
       await page.goto(`${BASE_URL}/patients/1`);
       try {
-        await page.waitForSelector('.ehr-status-bar', { timeout: 5000 });
+        await page.waitForSelector('.ehr-app-status-bar', { timeout: 5000 });
         patientLoaded = true;
       } catch {
         patientLoaded = false;
@@ -363,7 +363,7 @@ describe('CogHealth EHR E2E Tests', () => {
 
     test('should display patient banner', async () => {
       if (!patientLoaded) { console.warn('Skipping: patient chart requires backend API'); return; }
-      await page.waitForSelector('.ehr-status-bar');
+      await page.waitForSelector('.ehr-app-status-bar');
     });
 
     test('should switch chart tabs', async () => {

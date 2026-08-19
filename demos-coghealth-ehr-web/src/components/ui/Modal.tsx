@@ -42,7 +42,7 @@ export function Modal({ isOpen, onClose, title, children, width = 'md', footer }
         <div className="ehr-modal-frame bg-white border-2 border-gray-400 shadow-lg flex flex-col" style={{ boxShadow: '2px 2px 8px rgba(0,0,0,0.3)' }}>
           {/* Title bar */}
           <div 
-            className="flex items-center justify-between px-2 py-1"
+            className="ehr-modal-titlebar flex items-center justify-between px-2 py-1"
             style={{ background: 'linear-gradient(to bottom, #6699cc 0%, #336699 100%)' }}
           >
             <span className="text-white font-semibold text-[11px]">{title}</span>
