@@ -13,7 +13,8 @@ import java.util.Set;
 @Entity
 @Table(name = "providers", indexes = {
     @Index(name = "idx_provider_npi", columnList = "npi"),
-    @Index(name = "idx_provider_last_name", columnList = "lastName")
+    @Index(name = "idx_provider_last_name", columnList = "lastName"),
+    @Index(name = "idx_provider_organization", columnList = "organization_id")
 })
 @Getter
 @Setter
@@ -25,6 +26,9 @@ public class Provider {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "organization_id", nullable = false)
+    private Long organizationId;
 
     @Column(unique = true, nullable = false, length = 10)
     private String npi;

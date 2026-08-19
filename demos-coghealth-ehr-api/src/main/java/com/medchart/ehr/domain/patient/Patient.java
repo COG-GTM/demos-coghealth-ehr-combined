@@ -16,7 +16,8 @@ import java.util.List;
 @Table(name = "patients", indexes = {
     @Index(name = "idx_patient_mrn", columnList = "mrn"),
     @Index(name = "idx_patient_ssn", columnList = "ssn"),
-    @Index(name = "idx_patient_last_name", columnList = "lastName")
+    @Index(name = "idx_patient_last_name", columnList = "lastName"),
+    @Index(name = "idx_patient_organization", columnList = "organization_id")
 })
 @Getter
 @Setter
@@ -28,6 +29,9 @@ public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "organization_id", nullable = false)
+    private Long organizationId;
 
     @Column(unique = true, nullable = false, length = 20)
     private String mrn;

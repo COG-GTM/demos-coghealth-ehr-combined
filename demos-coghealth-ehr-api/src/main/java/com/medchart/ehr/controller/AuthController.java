@@ -3,6 +3,7 @@ package com.medchart.ehr.controller;
 import com.medchart.ehr.domain.auth.User;
 import com.medchart.ehr.repository.UserRepository;
 import com.medchart.ehr.config.JwtTokenProvider;
+import com.medchart.ehr.config.TenantContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
+    private final TenantContext tenantContext;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -61,7 +63,9 @@ public class AuthController {
         }
 
         // Create user's account
+        // New accounts always belong to the organization of the administrator creating them.
         User user = User.builder()
+            .organizationId(tenantContext.requireOrganizationId())
             .username(signUpRequest.getUsername())
             .email(signUpRequest.getEmail())
             .firstName(signUpRequest.getFirstName())

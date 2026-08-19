@@ -2,6 +2,7 @@ package com.medchart.ehr.service;
 
 import com.medchart.ehr.audit.AuditAccess;
 import com.medchart.ehr.audit.AuditAction;
+import com.medchart.ehr.config.TenantContext;
 import com.medchart.ehr.domain.patient.Patient;
 import com.medchart.ehr.dto.PatientDTO;
 import com.medchart.ehr.mapper.PatientMapper;
@@ -24,38 +25,42 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
+    private final TenantContext tenantContext;
 
     @AuditAccess(action = AuditAction.READ, resourceType = "Patient", description = "View patient record")
     public PatientDTO getPatientById(Long id) {
-        Patient patient = patientRepository.findById(id)
+        Patient patient = patientRepository.findByIdAndOrganizationId(id, tenantContext.requireOrganizationId())
                 .orElseThrow(() -> new EntityNotFoundException("Patient not found with id: " + id));
         return patientMapper.toDto(patient);
     }
 
     @AuditAccess(action = AuditAction.READ, resourceType = "Patient", description = "View patient by MRN")
     public PatientDTO getPatientByMrn(String mrn) {
-        Patient patient = patientRepository.findByMrn(mrn)
+        Patient patient = patientRepository.findByMrnAndOrganizationId(mrn, tenantContext.requireOrganizationId())
                 .orElseThrow(() -> new EntityNotFoundException("Patient not found with MRN: " + mrn));
         return patientMapper.toDto(patient);
     }
 
     @AuditAccess(action = AuditAction.SEARCH, resourceType = "Patient", description = "Search patients")
     public Page<PatientDTO> searchPatients(String searchTerm, Pageable pageable) {
-        return patientRepository.searchPatients(searchTerm, pageable)
+        return patientRepository.searchPatients(tenantContext.requireOrganizationId(), searchTerm, pageable)
                 .map(patientMapper::toDto);
     }
 
     @Transactional
     @AuditAccess(action = AuditAction.CREATE, resourceType = "Patient", description = "Create patient record")
     public PatientDTO createPatient(PatientDTO patientDTO) {
+        Long organizationId = tenantContext.requireOrganizationId();
+
         if (patientDTO.getMrn() != null) {
-            Optional<Patient> existing = patientRepository.findByMrn(patientDTO.getMrn());
+            Optional<Patient> existing = patientRepository.findByMrnAndOrganizationId(patientDTO.getMrn(), organizationId);
             if (existing.isPresent()) {
                 throw new IllegalArgumentException("Patient with MRN " + patientDTO.getMrn() + " already exists");
             }
         }
 
         Patient patient = patientMapper.toEntity(patientDTO);
+        patient.setOrganizationId(organizationId);
         if (patient.getMrn() == null) {
             patient.setMrn(generateMrn());
         }
@@ -68,7 +73,7 @@ public class PatientService {
     @Transactional
     @AuditAccess(action = AuditAction.UPDATE, resourceType = "Patient", description = "Update patient record")
     public PatientDTO updatePatient(Long id, PatientDTO patientDTO) {
-        Patient existing = patientRepository.findById(id)
+        Patient existing = patientRepository.findByIdAndOrganizationId(id, tenantContext.requireOrganizationId())
                 .orElseThrow(() -> new EntityNotFoundException("Patient not found with id: " + id));
 
         patientMapper.updateEntityFromDto(patientDTO, existing);

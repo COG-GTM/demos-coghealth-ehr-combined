@@ -16,7 +16,8 @@ import java.util.List;
     @Index(name = "idx_encounter_patient", columnList = "patient_id"),
     @Index(name = "idx_encounter_provider", columnList = "attending_provider_id"),
     @Index(name = "idx_encounter_date", columnList = "encounterDateTime"),
-    @Index(name = "idx_encounter_status", columnList = "status")
+    @Index(name = "idx_encounter_status", columnList = "status"),
+    @Index(name = "idx_encounter_organization", columnList = "organization_id")
 })
 @Getter
 @Setter
@@ -28,6 +29,9 @@ public class Encounter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "organization_id", nullable = false)
+    private Long organizationId;
 
     @Column(unique = true, nullable = false, length = 30)
     private String encounterNumber;

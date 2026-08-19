@@ -16,25 +16,32 @@ import java.util.Optional;
 @Repository
 public interface EncounterRepository extends JpaRepository<Encounter, Long> {
 
-    Optional<Encounter> findByEncounterNumber(String encounterNumber);
+    Optional<Encounter> findByIdAndOrganizationId(Long id, Long organizationId);
 
-    List<Encounter> findByPatientId(Long patientId);
+    Optional<Encounter> findByEncounterNumberAndOrganizationId(String encounterNumber, Long organizationId);
 
-    Page<Encounter> findByPatientId(Long patientId, Pageable pageable);
+    List<Encounter> findByOrganizationIdAndPatientId(Long organizationId, Long patientId);
 
-    List<Encounter> findByAttendingProviderId(Long providerId);
+    Page<Encounter> findByOrganizationIdAndPatientId(Long organizationId, Long patientId, Pageable pageable);
 
-    List<Encounter> findByStatus(EncounterStatus status);
+    List<Encounter> findByOrganizationIdAndAttendingProviderId(Long organizationId, Long providerId);
 
-    @Query("SELECT e FROM Encounter e WHERE e.encounterDateTime BETWEEN :startDate AND :endDate")
-    List<Encounter> findByDateRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+    List<Encounter> findByOrganizationIdAndStatus(Long organizationId, EncounterStatus status);
 
-    @Query("SELECT e FROM Encounter e WHERE e.attendingProvider.id = :providerId AND e.encounterDateTime >= :startOfDay AND e.encounterDateTime < :endOfDay AND e.status IN ('SCHEDULED', 'CHECKED_IN', 'IN_PROGRESS')")
-    List<Encounter> findTodaysSchedule(@Param("providerId") Long providerId, @Param("startOfDay") LocalDateTime startOfDay, @Param("endOfDay") LocalDateTime endOfDay);
+    @Query("SELECT e FROM Encounter e WHERE e.organizationId = :organizationId AND e.encounterDateTime BETWEEN :startDate AND :endDate")
+    List<Encounter> findByDateRange(@Param("organizationId") Long organizationId,
+                                    @Param("startDate") LocalDateTime startDate,
+                                    @Param("endDate") LocalDateTime endDate);
 
-    @Query("SELECT COUNT(e) FROM Encounter e WHERE e.patient.id = :patientId")
-    long countByPatientId(@Param("patientId") Long patientId);
+    @Query("SELECT e FROM Encounter e WHERE e.organizationId = :organizationId AND e.attendingProvider.id = :providerId AND e.encounterDateTime >= :startOfDay AND e.encounterDateTime < :endOfDay AND e.status IN ('SCHEDULED', 'CHECKED_IN', 'IN_PROGRESS')")
+    List<Encounter> findTodaysSchedule(@Param("organizationId") Long organizationId,
+                                       @Param("providerId") Long providerId,
+                                       @Param("startOfDay") LocalDateTime startOfDay,
+                                       @Param("endOfDay") LocalDateTime endOfDay);
 
-    @Query("SELECT e FROM Encounter e JOIN FETCH e.patient JOIN FETCH e.attendingProvider WHERE e.id = :id")
-    Optional<Encounter> findByIdWithDetails(@Param("id") Long id);
+    @Query("SELECT COUNT(e) FROM Encounter e WHERE e.organizationId = :organizationId AND e.patient.id = :patientId")
+    long countByPatientId(@Param("organizationId") Long organizationId, @Param("patientId") Long patientId);
+
+    @Query("SELECT e FROM Encounter e JOIN FETCH e.patient JOIN FETCH e.attendingProvider WHERE e.id = :id AND e.organizationId = :organizationId")
+    Optional<Encounter> findByIdWithDetails(@Param("id") Long id, @Param("organizationId") Long organizationId);
 }

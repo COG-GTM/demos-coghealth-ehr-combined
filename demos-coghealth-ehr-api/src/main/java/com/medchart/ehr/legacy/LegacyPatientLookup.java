@@ -1,8 +1,9 @@
 package com.medchart.ehr.legacy;
 
+import com.medchart.ehr.config.TenantContext;
 import com.medchart.ehr.domain.patient.Patient;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -13,16 +14,18 @@ import java.util.Map;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class LegacyPatientLookup {
 
-    @Autowired
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
+    private final TenantContext tenantContext;
 
     public Patient findPatientByMrn(String mrn) {
         try {
             Query query = entityManager.createNativeQuery(
-                "SELECT * FROM patients WHERE mrn = ?1", Patient.class);
+                "SELECT * FROM patients WHERE mrn = ?1 AND organization_id = ?2", Patient.class);
             query.setParameter(1, mrn);
+            query.setParameter(2, tenantContext.requireOrganizationId());
             return (Patient) query.getSingleResult();
         } catch (Exception e) {
             log.warn("Patient not found for MRN: " + mrn);
@@ -32,15 +35,17 @@ public class LegacyPatientLookup {
 
     public List<Patient> findPatientsByLastName(String lastName) {
         Query query = entityManager.createNativeQuery(
-            "SELECT * FROM patients WHERE last_name ILIKE ?1", Patient.class);
+            "SELECT * FROM patients WHERE last_name ILIKE ?1 AND organization_id = ?2", Patient.class);
         query.setParameter(1, "%" + lastName + "%");
+        query.setParameter(2, tenantContext.requireOrganizationId());
         return query.getResultList();
     }
 
     public Patient findPatientBySsn(String ssn) {
         Query query = entityManager.createNativeQuery(
-            "SELECT * FROM patients WHERE ssn = ?1", Patient.class);
+            "SELECT * FROM patients WHERE ssn = ?1 AND organization_id = ?2", Patient.class);
         query.setParameter(1, ssn);
+        query.setParameter(2, tenantContext.requireOrganizationId());
         try {
             return (Patient) query.getSingleResult();
         } catch (Exception e) {
@@ -52,8 +57,9 @@ public class LegacyPatientLookup {
         Query query = entityManager.createNativeQuery(
             "SELECT id, mrn, ssn, first_name, last_name, date_of_birth, " +
             "phone_home, phone_mobile, email, street1, city, state, zip_code " +
-            "FROM patients WHERE id = ?1");
+            "FROM patients WHERE id = ?1 AND organization_id = ?2");
         query.setParameter(1, patientId);
+        query.setParameter(2, tenantContext.requireOrganizationId());
         
         Object[] result = (Object[]) query.getSingleResult();
         Map<String, Object> demographics = new HashMap<>();
@@ -76,10 +82,11 @@ public class LegacyPatientLookup {
 
     public List<Object[]> searchPatientsRaw(String searchTerm) {
         String sql = "SELECT id, mrn, first_name, last_name, date_of_birth " +
-                     "FROM patients WHERE " +
-                     "first_name ILIKE ?1 OR last_name ILIKE ?1 OR mrn ILIKE ?1";
+                     "FROM patients WHERE organization_id = ?2 AND (" +
+                     "first_name ILIKE ?1 OR last_name ILIKE ?1 OR mrn ILIKE ?1)";
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter(1, "%" + searchTerm + "%");
+        query.setParameter(2, tenantContext.requireOrganizationId());
         return query.getResultList();
     }
 }

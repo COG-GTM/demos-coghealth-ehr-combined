@@ -66,17 +66,12 @@ public class ProviderController {
 
     @PostMapping
     public Provider create(@RequestBody Provider provider) {
-        return providerService.save(provider);
+        return providerService.create(provider);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Provider> update(@PathVariable Long id, @RequestBody Provider provider) {
-        return providerService.findById(id)
-                .map(existing -> {
-                    provider.setId(id);
-                    return ResponseEntity.ok(providerService.save(provider));
-                })
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(providerService.update(id, provider));
     }
 
     @DeleteMapping("/{id}")

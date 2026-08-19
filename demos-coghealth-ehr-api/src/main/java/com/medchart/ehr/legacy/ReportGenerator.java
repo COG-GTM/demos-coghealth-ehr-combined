@@ -1,7 +1,8 @@
 package com.medchart.ehr.legacy;
 
+import com.medchart.ehr.config.TenantContext;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -15,10 +16,11 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ReportGenerator {
 
-    @Autowired
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
+    private final TenantContext tenantContext;
 
     private static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
 
@@ -29,9 +31,10 @@ public class ReportGenerator {
                      "ic.payer_name, ic.member_id " +
                      "FROM patients p " +
                      "LEFT JOIN insurance_coverages ic ON p.id = ic.patient_id AND ic.active = true " +
-                     "WHERE p.active = true";
+                     "WHERE p.active = true AND p.organization_id = ?1";
         
         Query query = entityManager.createNativeQuery(sql);
+        query.setParameter(1, tenantContext.requireOrganizationId());
         List<Object[]> results = query.getResultList();
         
         String filename = "patient_roster_" + 
@@ -64,11 +67,12 @@ public class ReportGenerator {
                      "FROM encounters e " +
                      "JOIN patients p ON e.patient_id = p.id " +
                      "LEFT JOIN providers pr ON e.attending_provider_id = pr.id " +
-                     "WHERE e.encounter_date_time BETWEEN ?1 AND ?2";
+                     "WHERE e.organization_id = ?3 AND e.encounter_date_time BETWEEN ?1 AND ?2";
         
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter(1, startDate);
         query.setParameter(2, endDate);
+        query.setParameter(3, tenantContext.requireOrganizationId());
         List<Object[]> results = query.getResultList();
         
         String filename = "encounter_summary_" + 

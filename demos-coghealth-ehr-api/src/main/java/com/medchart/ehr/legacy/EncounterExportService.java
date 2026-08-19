@@ -1,9 +1,10 @@
 package com.medchart.ehr.legacy;
 
+import com.medchart.ehr.config.TenantContext;
 import com.medchart.ehr.domain.encounter.Encounter;
 import com.medchart.ehr.domain.patient.Patient;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -16,21 +17,23 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class EncounterExportService {
 
-    @Autowired
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
+    private final TenantContext tenantContext;
 
     public byte[] exportEncountersForDateRange(LocalDate startDate, LocalDate endDate) {
         String sql = "SELECT e.id, e.encounter_number, e.encounter_type, e.status, e.encounter_date_time, " +
                      "p.mrn, p.first_name, p.last_name, p.date_of_birth " +
                      "FROM encounters e " +
                      "JOIN patients p ON e.patient_id = p.id " +
-                     "WHERE e.encounter_date_time BETWEEN ?1 AND ?2";
+                     "WHERE e.organization_id = ?3 AND e.encounter_date_time BETWEEN ?1 AND ?2";
         
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter(1, startDate.atStartOfDay());
         query.setParameter(2, endDate.plusDays(1).atStartOfDay());
+        query.setParameter(3, tenantContext.requireOrganizationId());
         
         List<Object[]> results = query.getResultList();
         
@@ -53,14 +56,18 @@ public class EncounterExportService {
     }
 
     public byte[] exportPatientEncounterHistory(Long patientId) {
+        Long organizationId = tenantContext.requireOrganizationId();
+
         Query patientQuery = entityManager.createNativeQuery(
-            "SELECT mrn, first_name, last_name, ssn, date_of_birth FROM patients WHERE id = ?1");
+            "SELECT mrn, first_name, last_name, ssn, date_of_birth FROM patients WHERE id = ?1 AND organization_id = ?2");
         patientQuery.setParameter(1, patientId);
+        patientQuery.setParameter(2, organizationId);
         Object[] patientData = (Object[]) patientQuery.getSingleResult();
         
         Query encounterQuery = entityManager.createNativeQuery(
-            "SELECT * FROM encounters WHERE patient_id = ?1 ORDER BY encounter_date_time DESC");
+            "SELECT * FROM encounters WHERE patient_id = ?1 AND organization_id = ?2 ORDER BY encounter_date_time DESC");
         encounterQuery.setParameter(1, patientId);
+        encounterQuery.setParameter(2, organizationId);
         List<Object[]> encounters = encounterQuery.getResultList();
         
         StringBuilder export = new StringBuilder();
@@ -88,7 +95,8 @@ public class EncounterExportService {
         Query query = entityManager.createNativeQuery(
             "SELECT id, mrn, first_name, last_name, date_of_birth, " +
             "email, phone_home, phone_mobile, street1, city, state, zip_code " +
-            "FROM patients WHERE active = true");
+            "FROM patients WHERE active = true AND organization_id = ?1");
+        query.setParameter(1, tenantContext.requireOrganizationId());
         
         List<Object[]> patients = query.getResultList();
         
