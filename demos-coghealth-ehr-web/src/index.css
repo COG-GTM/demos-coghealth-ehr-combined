@@ -374,8 +374,7 @@ td {
   color: #e6edf3 !important;
 }
 
-.dark .ehr-badge-default,
-.dark .ehr-status-normal {
+.dark .ehr-badge-default {
   background: #304250 !important;
   background-image: none !important;
   border-color: #6d7d8b !important;
@@ -417,9 +416,13 @@ td {
   color: #c8f3dc !important;
 }
 
-.dark .ehr-lab-row.ehr-status-normal {
+.dark .ehr-lab-row {
   background: #202d39 !important;
   color: #e6edf3;
+}
+
+.dark .ehr-lab-row:nth-child(even) {
+  background: #263746 !important;
 }
 
 .dark .ehr-report-category-header,

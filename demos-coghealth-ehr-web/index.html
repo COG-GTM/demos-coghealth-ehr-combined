@@ -13,6 +13,8 @@
             const settings = localStorage.getItem('coghealth_settings');
             theme = settings ? JSON.parse(settings).appearance?.theme : null;
           }
+          if (!['light', 'dark', 'system'].includes(theme)) theme = null;
+          if (theme) localStorage.setItem('coghealth-theme', theme);
           const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
           document.documentElement.classList.toggle('dark', theme === 'dark' || (theme !== 'light' && prefersDark));
         } catch {}
