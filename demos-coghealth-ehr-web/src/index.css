@@ -291,7 +291,11 @@ td {
 
 .dark .hover\:bg-gray-100:hover,
 .dark .hover\:bg-gray-200:hover,
-.dark .hover\:bg-gray-50:hover {
+.dark .hover\:bg-gray-50:hover,
+.dark .hover\:bg-blue-50:hover,
+.dark .hover\:bg-blue-100:hover,
+.dark .bg-blue-50,
+.dark .bg-blue-100 {
   background-color: #385064 !important;
 }
 
@@ -483,6 +487,18 @@ td {
   background: #214b39 !important;
   border-color: #4d9b76 !important;
   color: #c8f3dc !important;
+}
+
+.dark .ehr-alert-warning {
+  background: #5a4520 !important;
+  border-color: #b9944a !important;
+  color: #ffe2a8 !important;
+}
+
+.dark .ehr-alert-info {
+  background: #214766 !important;
+  border-color: #5c9ac4 !important;
+  color: #cbe8ff !important;
 }
 
 .dark .ehr-lab-row {
