@@ -408,7 +408,8 @@ td {
    dark surface. Translucent `bg-white/x` overlays sit on coloured chrome and
    stay as-is. Layered so hover/focus utilities keep their usual precedence. */
 @layer utilities {
-  .dark .bg-white {
+  /* `:where()` keeps this at single-class specificity so hover/focus variants still win. */
+  :where(.dark) .bg-white {
     background-color: var(--ehr-surface);
   }
 }
