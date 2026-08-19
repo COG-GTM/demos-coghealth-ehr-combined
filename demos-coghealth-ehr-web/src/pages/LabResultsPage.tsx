@@ -306,7 +306,7 @@ export default function LabResultsPage() {
           )}
         </div>
 
-        <div className="ehr-status-bar flex items-center justify-between">
+        <div className="ehr-app-status-bar flex items-center justify-between">
           <span>{filteredPanels.length} panel(s) displayed</span>
           <span>Last updated: {new Date().toLocaleTimeString()}</span>
         </div>

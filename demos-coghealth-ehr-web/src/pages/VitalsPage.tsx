@@ -204,7 +204,7 @@ export default function VitalsPage() {
                     return (
                       <td
                         key={reading.id}
-                        className={`${getStatusClass(status)} px-2 py-1 border border-gray-300 text-center cursor-pointer hover:bg-[#e0e8f0]`}
+                        className={`ehr-vitals-cell ${getStatusClass(status)} px-2 py-1 border border-gray-300 text-center cursor-pointer hover:bg-[#e0e8f0]`}
                         style={getStatusStyle(status)}
                         onClick={() => setSelectedReading(reading)}
                       >
@@ -244,7 +244,7 @@ export default function VitalsPage() {
           </table>
         </div>
 
-        <div className="ehr-status-bar flex items-center justify-between">
+        <div className="ehr-app-status-bar flex items-center justify-between">
           <span>{vitals.length} readings displayed</span>
           <span>Last updated: {new Date().toLocaleTimeString()}</span>
         </div>

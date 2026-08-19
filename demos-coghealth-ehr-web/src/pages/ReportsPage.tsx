@@ -223,7 +223,7 @@ export default function ReportsPage() {
                     </thead>
                     <tbody>
                       {reports.map((report, idx) => (
-                        <tr key={report.id} className={`hover:bg-blue-50 ${idx % 2 === 1 ? 'bg-gray-50' : ''}`}>
+                        <tr key={report.id} className={`ehr-report-row hover:bg-blue-50 ${idx % 2 === 1 ? 'bg-gray-50' : ''}`}>
                           <td className="px-2 py-1.5 font-medium">{report.name}</td>
                           <td className="px-2 py-1.5 text-gray-600">{report.description}</td>
                           <td className="px-2 py-1.5 capitalize">{report.frequency}</td>
@@ -261,7 +261,7 @@ export default function ReportsPage() {
       </div>
 
       {/* Status Bar */}
-      <div className="ehr-status-bar flex items-center justify-between">
+      <div className="ehr-app-status-bar flex items-center justify-between">
         <span>Reports | {filteredReports.length} report(s) available</span>
         <span>Last refreshed: {new Date().toLocaleTimeString()}</span>
       </div>

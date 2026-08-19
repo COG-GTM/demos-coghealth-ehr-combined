@@ -441,7 +441,7 @@ export default function MedicationsPage() {
                     <tr
                       key={order.id}
                       onClick={() => setSelectedOrder(order)}
-                      className={`cursor-pointer ${
+                      className={`ehr-medication-row cursor-pointer ${
                         isSelected ? 'ehr-grid-row selected' : 
                         order.status === 'DISCONTINUED' || order.status === 'COMPLETED' ? 'opacity-50' : 
                         idx % 2 === 1 ? 'bg-gray-50' : ''
@@ -766,7 +766,7 @@ export default function MedicationsPage() {
       </div>
 
       {/* Status Bar */}
-      <div className="ehr-status-bar flex items-center justify-between">
+      <div className="ehr-app-status-bar flex items-center justify-between">
         <span>Medications | {filteredOrders.length} order(s) displayed</span>
         <span>Prescriber: Dr. Anderson</span>
       </div>

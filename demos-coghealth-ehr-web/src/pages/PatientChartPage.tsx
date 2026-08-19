@@ -431,7 +431,7 @@ export default function PatientChartPage() {
       </div>
 
       {/* Status Bar */}
-      <div className="ehr-status-bar flex items-center justify-between">
+      <div className="ehr-app-status-bar flex items-center justify-between">
         <span>Patient Chart | {patient.lastName}, {patient.firstName} | {patient.mrn}</span>
         <span>Last updated: {new Date().toLocaleString()}</span>
       </div>

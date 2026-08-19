@@ -753,7 +753,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Status Bar */}
-      <div className="ehr-status-bar flex items-center justify-between">
+      <div className="ehr-app-status-bar flex items-center justify-between">
         <span>Dr. Sarah Anderson, MD | Internal Medicine | Logged in 2h 34m</span>
         <span>Last refreshed: {new Date().toLocaleTimeString()}</span>
       </div>

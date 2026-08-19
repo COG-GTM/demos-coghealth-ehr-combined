@@ -519,7 +519,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Status Bar */}
-      <div className="ehr-status-bar flex items-center justify-between">
+      <div className="ehr-app-status-bar flex items-center justify-between">
         <span>Settings | {tabs.find(t => t.id === activeTab)?.label}</span>
         <span>User: Dr. Sarah Anderson, MD</span>
       </div>

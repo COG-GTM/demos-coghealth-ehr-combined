@@ -773,7 +773,7 @@ export default function PatientSearchPage() {
       </div>
 
       {/* Status Bar */}
-      <div className="ehr-status-bar flex items-center justify-between">
+      <div className="ehr-app-status-bar flex items-center justify-between">
         <span>Ready | {searchResults.length} patient(s) | {activeFilterCount > 0 ? `${activeFilterCount} filter(s) active` : 'No filters'}</span>
         <span>Last refreshed: {new Date().toLocaleTimeString()}</span>
       </div>

@@ -140,12 +140,12 @@ td {
   color: white;
 }
 
-.ehr-status-bar {
-  background: #ece9d8;
-  border-top: 1px solid #fff;
+.ehr-app-status-bar {
+  background: linear-gradient(to bottom, #ece9d8 0%, #d4d0c8 100%);
+  border-top: 1px solid #9ca3af;
   padding: 2px 8px;
   font-size: 10px;
-  color: #333;
+  color: #4b5563;
 }
 
 .ehr-tab {
@@ -266,6 +266,13 @@ td {
   color: #e6edf3;
 }
 
+.dark .bg-white.w-4.h-4,
+.dark .bg-white.w-5.h-5 {
+  background: #f8fafc !important;
+  color: #0a3a5a !important;
+  border-color: #8ea4b5 !important;
+}
+
 .dark .bg-gray-50 {
   background-color: #263746 !important;
 }
@@ -354,7 +361,7 @@ td {
   color: #d7e1e8;
 }
 
-.dark .ehr-status-bar {
+.dark .ehr-app-status-bar {
   background: #263746;
   background-image: none !important;
   color: #c0ccd6;
@@ -386,6 +393,47 @@ td {
 
 .dark .ehr-vitals-row:nth-child(even) {
   background: #263746 !important;
+}
+
+.dark .ehr-vitals-cell:hover {
+  background: #385064 !important;
+  color: #e6edf3 !important;
+}
+
+.dark .ehr-vitals-cell.ehr-status-abnormal:hover {
+  background: #6a5428 !important;
+  color: #fff0c2 !important;
+}
+
+.dark .ehr-vitals-cell.ehr-status-critical:hover {
+  background: #6b3138 !important;
+  color: #ffe8e9 !important;
+}
+
+.dark .ehr-report-row {
+  background: #202d39 !important;
+  color: #e6edf3;
+}
+
+.dark .ehr-report-row:nth-child(even) {
+  background: #263746 !important;
+}
+
+.dark .ehr-report-row:hover {
+  background: #385064 !important;
+}
+
+.dark .ehr-medication-row:not(.selected) {
+  background: #202d39 !important;
+  color: #e6edf3;
+}
+
+.dark .ehr-medication-row:nth-child(even):not(.selected) {
+  background: #263746 !important;
+}
+
+.dark .ehr-medication-row:not(.selected):hover {
+  background: #385064 !important;
 }
 
 .dark .ehr-badge-default {

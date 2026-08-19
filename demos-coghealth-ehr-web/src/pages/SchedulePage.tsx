@@ -701,7 +701,7 @@ export default function SchedulePage() {
       </div>
 
       {/* Status Bar */}
-      <div className="ehr-status-bar flex items-center justify-between">
+      <div className="ehr-app-status-bar flex items-center justify-between">
         <span>Schedule for {formatDate(selectedDate)} | {filteredAppointments.length} appointment(s)</span>
         <span>Last refreshed: {new Date().toLocaleTimeString()}</span>
       </div>
