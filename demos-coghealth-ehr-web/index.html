@@ -8,7 +8,11 @@
     <script>
       (() => {
         try {
-          const theme = localStorage.getItem('coghealth-theme');
+          let theme = localStorage.getItem('coghealth-theme');
+          if (!theme) {
+            const settings = localStorage.getItem('coghealth_settings');
+            theme = settings ? JSON.parse(settings).appearance?.theme : null;
+          }
           const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
           document.documentElement.classList.toggle('dark', theme === 'dark' || (theme !== 'light' && prefersDark));
         } catch {}

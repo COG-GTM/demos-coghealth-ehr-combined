@@ -14,6 +14,14 @@ const STORAGE_KEY = 'coghealth-theme';
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
+function persistTheme(theme: Theme) {
+  try {
+    localStorage.setItem(STORAGE_KEY, theme);
+  } catch {
+    return;
+  }
+}
+
 function subscribeToSystemTheme(onStoreChange: () => void) {
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
   mediaQuery.addEventListener('change', onStoreChange);
@@ -57,12 +65,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [resolvedTheme]);
 
   const setTheme = (next: Theme) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, next);
-    } catch {
-      setThemeState(next);
-      return;
-    }
+    persistTheme(next);
     setThemeState(next);
   };
 

@@ -53,6 +53,10 @@ export default function VitalsPage() {
     }
   };
 
+  const getStatusClass = (status: string) => (
+    status === 'critical' ? 'ehr-status-critical' : status === 'abnormal' ? 'ehr-status-abnormal' : 'ehr-status-normal'
+  );
+
   const getTrend = (key: string, currentIdx: number) => {
     if (currentIdx >= vitals.length - 1) return null;
     const current = vitals[currentIdx][key as keyof VitalReading] as number | undefined;
@@ -200,7 +204,7 @@ export default function VitalsPage() {
                     return (
                       <td
                         key={reading.id}
-                        className="ehr-status-surface px-2 py-1 border border-gray-300 text-center cursor-pointer hover:bg-[#e0e8f0]"
+                        className={`${getStatusClass(status)} px-2 py-1 border border-gray-300 text-center cursor-pointer hover:bg-[#e0e8f0]`}
                         style={getStatusStyle(status)}
                         onClick={() => setSelectedReading(reading)}
                       >
@@ -274,7 +278,7 @@ export default function VitalsPage() {
                   const value = selectedReading[vital.key] as number | undefined;
                   const status = getValueStatus(vital.key, value);
                   return (
-                    <div key={vital.key} className="ehr-status-surface flex justify-between" style={getStatusStyle(status)}>
+                    <div key={vital.key} className={`${getStatusClass(status)} flex justify-between`} style={getStatusStyle(status)}>
                       <span className="text-gray-600">{vital.name}:</span>
                       <span className="font-mono font-semibold">
                         {value !== undefined ? (vital.key === 'temperature' ? value.toFixed(1) : value) : '-'} {vital.unit}

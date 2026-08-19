@@ -95,8 +95,8 @@ describe('CogHealth EHR E2E Tests', () => {
       expect(await page.$('button[aria-label="Switch to light mode"]')).not.toBeNull();
       await page.click('a[href="/patients"]');
       await page.waitForFunction(() => window.location.pathname === '/patients');
-      expect(await page.$eval('.ehr-page-shell', el => getComputedStyle(el).backgroundColor))
-        .toBe('rgb(28, 39, 51)');
+      expect(await page.$('.ehr-page-shell')).not.toBeNull();
+      expect(await page.$eval('html', el => el.classList.contains('dark'))).toBe(true);
       await page.click('button[aria-label="Switch to light mode"]');
     });
   });

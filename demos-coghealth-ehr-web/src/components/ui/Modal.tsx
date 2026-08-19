@@ -39,7 +39,7 @@ export function Modal({ isOpen, onClose, title, children, width = 'md', footer }
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
       <div className={`relative ${widthClasses[width]} max-h-[90vh] flex flex-col`} style={{ fontFamily: 'Tahoma, sans-serif' }}>
         {/* Window frame */}
-        <div className="bg-white border-2 border-gray-400 shadow-lg flex flex-col" style={{ boxShadow: '2px 2px 8px rgba(0,0,0,0.3)' }}>
+        <div className="ehr-modal-frame bg-white border-2 border-gray-400 shadow-lg flex flex-col" style={{ boxShadow: '2px 2px 8px rgba(0,0,0,0.3)' }}>
           {/* Title bar */}
           <div 
             className="flex items-center justify-between px-2 py-1"
@@ -55,13 +55,13 @@ export function Modal({ isOpen, onClose, title, children, width = 'md', footer }
           </div>
           
           {/* Content */}
-          <div className="flex-1 overflow-auto p-3 bg-[#ece9d8]">
+          <div className="ehr-modal-content flex-1 overflow-auto p-3 bg-[#ece9d8]">
             {children}
           </div>
           
           {/* Footer */}
           {footer && (
-            <div className="px-3 py-2 bg-[#ece9d8] border-t border-gray-400 flex justify-end space-x-2">
+            <div className="ehr-modal-footer px-3 py-2 bg-[#ece9d8] border-t border-gray-400 flex justify-end space-x-2">
               {footer}
             </div>
           )}
@@ -146,7 +146,7 @@ export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: 
         </button>
       }
     >
-      <div className="ehr-alert-message p-2 border border-gray-400" style={{ background: bgColors[type] }}>
+      <div className={`ehr-alert-message ehr-alert-${type} p-2 border border-gray-400`} style={{ background: bgColors[type] }}>
         <p className="text-[11px]">{message}</p>
       </div>
     </Modal>

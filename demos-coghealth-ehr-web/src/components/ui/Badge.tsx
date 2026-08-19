@@ -22,7 +22,7 @@ export default function Badge({
 
   return (
     <span 
-      className={`ehr-badge inline-flex items-center text-[10px] px-1.5 py-0.5 font-medium ${className}`}
+      className={`ehr-badge ehr-badge-${variant} inline-flex items-center text-[10px] px-1.5 py-0.5 font-medium ${className}`}
       style={variants[variant]}
     >
       {children}

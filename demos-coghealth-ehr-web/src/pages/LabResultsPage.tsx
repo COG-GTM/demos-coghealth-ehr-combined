@@ -123,6 +123,10 @@ export default function LabResultsPage() {
     }
   };
 
+  const getStatusClass = (status: LabResult['status']) => (
+    status === 'critical' ? 'ehr-status-critical' : status === 'abnormal' ? 'ehr-status-abnormal' : 'ehr-status-normal'
+  );
+
   const getStatusBadge = (status: LabPanel['status']) => {
     switch (status) {
       case 'final':
@@ -276,7 +280,7 @@ export default function LabResultsPage() {
                       {panel.results.map((result, idx) => (
                         <tr
                           key={result.id}
-                          className={`cursor-pointer hover:bg-[#e0e8f0] ${idx % 2 === 0 ? 'bg-white' : 'bg-[#f8f8f8]'}`}
+                          className={`ehr-lab-row ${getStatusClass(result.status)} cursor-pointer hover:bg-[#e0e8f0] ${idx % 2 === 0 ? 'bg-white' : 'bg-[#f8f8f8]'}`}
                           style={getStatusStyle(result.status)}
                           onClick={() => setSelectedResult(result)}
                         >
@@ -330,7 +334,7 @@ export default function LabResultsPage() {
                 </div>
                 <div>
                   <span className="text-gray-500">Status:</span>
-                  <span className="ehr-status-surface ml-2" style={getStatusStyle(selectedResult.status)}>
+                  <span className={`${getStatusClass(selectedResult.status)} ml-2`} style={getStatusStyle(selectedResult.status)}>
                     {selectedResult.status.toUpperCase()}
                   </span>
                 </div>
