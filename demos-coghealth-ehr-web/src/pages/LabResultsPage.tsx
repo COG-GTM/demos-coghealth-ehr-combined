@@ -130,11 +130,11 @@ export default function LabResultsPage() {
   const getStatusBadge = (status: LabPanel['status']) => {
     switch (status) {
       case 'final':
-        return <span className="px-1.5 py-0.5 text-[9px] bg-green-100 text-green-800 border border-green-300">FINAL</span>;
+        return <span className="ehr-badge-success px-1.5 py-0.5 text-[9px] bg-green-100 text-green-800 border border-green-300">FINAL</span>;
       case 'preliminary':
-        return <span className="px-1.5 py-0.5 text-[9px] bg-yellow-100 text-yellow-800 border border-yellow-300">PRELIM</span>;
+        return <span className="ehr-badge-warning px-1.5 py-0.5 text-[9px] bg-yellow-100 text-yellow-800 border border-yellow-300">PRELIM</span>;
       case 'pending':
-        return <span className="px-1.5 py-0.5 text-[9px] bg-gray-100 text-gray-600 border border-gray-300">PENDING</span>;
+        return <span className="ehr-badge-default px-1.5 py-0.5 text-[9px] bg-gray-100 text-gray-600 border border-gray-300">PENDING</span>;
     }
   };
 

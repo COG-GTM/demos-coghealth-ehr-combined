@@ -641,7 +641,7 @@ export default function PatientSearchPage() {
             </div>
             <div className="flex-1 overflow-auto">
               {/* Patient Header */}
-            <div className="ehr-page-subpanel p-2 border-b border-gray-400" style={{ background: '#e8e8e8' }}>
+              <div className="ehr-page-subpanel p-2 border-b border-gray-400" style={{ background: '#e8e8e8' }}>
                 <div className="flex items-center space-x-2">
                   <div className="w-10 h-10 flex items-center justify-center border border-gray-500" style={{ background: '#6699cc' }}>
                     <User className="w-5 h-5 text-white" />

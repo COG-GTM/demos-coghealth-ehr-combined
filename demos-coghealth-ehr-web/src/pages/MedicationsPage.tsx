@@ -814,7 +814,9 @@ function OrderRow({ order, selected, onSelect, idx }: { order: MedicationOrderEx
   return (
     <div
       onClick={onSelect}
-      className={`px-3 py-1 cursor-pointer flex items-center justify-between text-[11px] ${
+      className={`ehr-medication-row px-3 py-1 cursor-pointer flex items-center justify-between text-[11px] ${
+        selected ? 'selected' : ''
+      } ${
         selected ? '' : idx % 2 === 1 ? 'bg-gray-50' : ''
       }`}
       style={selected ? { background: '#316ac5', color: 'white' } : undefined}
