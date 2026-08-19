@@ -388,7 +388,7 @@ td {
 }
 
 .dark .ehr-badge-warning,
-.dark .ehr-alert-warning,
+.dark .ehr-alert-message-warning,
 .dark .ehr-status-abnormal {
   background: #5a4520 !important;
   border-color: #b9944a !important;
@@ -396,7 +396,7 @@ td {
 }
 
 .dark .ehr-badge-danger,
-.dark .ehr-alert-error,
+.dark .ehr-alert-message-error,
 .dark .ehr-status-critical {
   background: #5b2529 !important;
   border-color: #b85b63 !important;
@@ -404,13 +404,13 @@ td {
 }
 
 .dark .ehr-badge-info,
-.dark .ehr-alert-info {
+.dark .ehr-alert-message-info {
   background: #214766 !important;
   border-color: #5c9ac4 !important;
   color: #cbe8ff !important;
 }
 
-.dark .ehr-alert-success {
+.dark .ehr-alert-message-success {
   background: #214b39 !important;
   border-color: #4d9b76 !important;
   color: #c8f3dc !important;
@@ -423,6 +423,22 @@ td {
 
 .dark .ehr-lab-row:nth-child(even) {
   background: #263746 !important;
+}
+
+.dark .ehr-lab-row.ehr-status-abnormal {
+  background: #5a4520 !important;
+  color: #ffe2a8 !important;
+}
+
+.dark .ehr-lab-row.ehr-status-critical {
+  background: #5b2529 !important;
+  color: #ffd7d9 !important;
+}
+
+.dark .ehr-alert-critical {
+  background: #5b2529 !important;
+  border-color: #b85b63 !important;
+  color: #ffd7d9 !important;
 }
 
 .dark .ehr-report-category-header,

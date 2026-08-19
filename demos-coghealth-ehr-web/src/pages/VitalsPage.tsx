@@ -54,7 +54,7 @@ export default function VitalsPage() {
   };
 
   const getStatusClass = (status: string) => (
-    status === 'critical' ? 'ehr-status-critical' : status === 'abnormal' ? 'ehr-status-abnormal' : 'ehr-status-normal'
+    status === 'critical' ? 'ehr-status-critical' : status === 'abnormal' ? 'ehr-status-abnormal' : ''
   );
 
   const getTrend = (key: string, currentIdx: number) => {

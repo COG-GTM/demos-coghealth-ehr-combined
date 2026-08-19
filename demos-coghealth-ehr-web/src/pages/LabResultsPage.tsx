@@ -124,7 +124,7 @@ export default function LabResultsPage() {
   };
 
   const getStatusClass = (status: LabResult['status']) => (
-    status === 'critical' ? 'ehr-status-critical' : status === 'abnormal' ? 'ehr-status-abnormal' : 'ehr-status-normal'
+    status === 'critical' ? 'ehr-status-critical' : status === 'abnormal' ? 'ehr-status-abnormal' : ''
   );
 
   const getStatusBadge = (status: LabPanel['status']) => {
