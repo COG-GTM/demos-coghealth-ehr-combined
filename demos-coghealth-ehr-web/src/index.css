@@ -30,6 +30,10 @@
   --ehr-bar-hover-to: #f0f0f0;
   --ehr-row-alt: #f0f4f8;
   --ehr-row-hover: #e0e8f0;
+  --ehr-status-critical-bg: #ffcccc;
+  --ehr-status-critical-fg: #990000;
+  --ehr-status-abnormal-bg: #fff3cd;
+  --ehr-status-abnormal-fg: #664d00;
 }
 
 body {
@@ -271,6 +275,10 @@ td {
   --ehr-bar-hover-to: #343940;
   --ehr-row-alt: #262b31;
   --ehr-row-hover: #313943;
+  --ehr-status-critical-bg: #4a2020;
+  --ehr-status-critical-fg: #ff9b9b;
+  --ehr-status-abnormal-bg: #453a1c;
+  --ehr-status-abnormal-fg: #f5d98a;
   --ehr-bg: #1b1d21;
   --ehr-surface: #24272c;
   --ehr-surface-alt: #2b2f35;
