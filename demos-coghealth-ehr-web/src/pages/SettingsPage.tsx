@@ -52,7 +52,6 @@ const defaultNotifications = {
 };
 
 const defaultAppearance = {
-  theme: 'light',
   compactMode: false,
   fontSize: 'medium',
 };
@@ -396,13 +395,10 @@ export default function SettingsPage() {
                   ]).map(({ id, icon: Icon }) => (
                     <button
                       key={id}
-                      onClick={() => {
-                        setTheme(id);
-                        setAppearance({ ...appearance, theme: id });
-                      }}
+                      onClick={() => setTheme(id)}
                       className={`p-2 border text-center text-[11px] ${
                         theme === id
-                          ? 'border-gray-600 bg-white'
+                          ? 'ehr-theme-option-selected bg-white'
                           : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
                       }`}
                     >
