@@ -7,6 +7,8 @@ import {
   Building2,
   Key,
   Monitor,
+  Sun,
+  Moon,
   Mail,
   Smartphone,
   Globe,
@@ -14,6 +16,7 @@ import {
   Check
 } from 'lucide-react';
 import { AlertDialog } from '../components/ui/Modal';
+import { useTheme, type Theme } from '../context/ThemeProvider';
 
 type SettingsTab = 'profile' | 'notifications' | 'security' | 'appearance' | 'practice';
 
@@ -73,6 +76,7 @@ export default function SettingsPage() {
   const [profile, setProfile] = useState<UserProfile>(defaultProfile);
   const [notifications, setNotifications] = useState(defaultNotifications);
   const [appearance, setAppearance] = useState(defaultAppearance);
+  const { theme, setTheme } = useTheme();
 
   const [initialized, setInitialized] = useState(false);
   if (!initialized) {
@@ -105,7 +109,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col" style={{ background: 'var(--ehr-chrome)' }}>
       {/* Header */}
       <div className="ehr-header flex items-center justify-between">
         <span>System Settings</span>
@@ -121,7 +125,7 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Navigation */}
-        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: '#ece9d8' }}>
+        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: 'var(--ehr-sidebar)' }}>
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -385,18 +389,25 @@ export default function SettingsPage() {
               <fieldset className="ehr-fieldset">
                 <legend>Theme</legend>
                 <div className="grid grid-cols-3 gap-2">
-                  {['light', 'dark', 'system'].map((theme) => (
+                  {([
+                    { id: 'light' as Theme, icon: Sun },
+                    { id: 'dark' as Theme, icon: Moon },
+                    { id: 'system' as Theme, icon: Monitor },
+                  ]).map(({ id, icon: Icon }) => (
                     <button
-                      key={theme}
-                      onClick={() => setAppearance({ ...appearance, theme })}
+                      key={id}
+                      onClick={() => {
+                        setTheme(id);
+                        setAppearance({ ...appearance, theme: id });
+                      }}
                       className={`p-2 border text-center text-[11px] ${
-                        appearance.theme === theme
+                        theme === id
                           ? 'border-gray-600 bg-white'
                           : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
                       }`}
                     >
-                      <Monitor className="w-4 h-4 mx-auto mb-1 text-gray-600" />
-                      <span className="capitalize">{theme}</span>
+                      <Icon className="w-4 h-4 mx-auto mb-1 text-gray-600" />
+                      <span className="capitalize">{id}</span>
                     </button>
                   ))}
                 </div>
