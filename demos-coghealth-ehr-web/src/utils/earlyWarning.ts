@@ -43,7 +43,7 @@ const scoreSystolic = (value: number | undefined): number | null => {
 const scoreHeartRate = (value: number | undefined): number | null => {
   if (value === undefined) return null;
   if (value <= 40 || value >= 131) return 3;
-  if (value <= 50 || value >= 91 && value <= 110) return 1;
+  if (value <= 50 || (value >= 91 && value <= 110)) return 1;
   if (value <= 90) return 0;
   return 2;
 };
