@@ -231,7 +231,7 @@ export default function LabResultsPage() {
             filteredPanels.map(panel => (
               <div key={panel.id} className="border-b border-gray-300">
                 <div
-                  className="flex items-center justify-between px-2 py-1.5 bg-gradient-to-b from-[var(--ehr-subheader-from)] to-[var(--ehr-subheader-to)] cursor-pointer hover:from-[#fff] hover:to-[#f0f0f0]"
+                  className="flex items-center justify-between px-2 py-1.5 bg-gradient-to-b from-[var(--ehr-subheader-from)] to-[var(--ehr-subheader-to)] cursor-pointer hover:from-[var(--ehr-control-hover-from)] hover:to-[var(--ehr-control-hover-to)]"
                   onClick={() => togglePanel(panel.id)}
                 >
                   <div className="flex items-center space-x-2">
