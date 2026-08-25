@@ -168,9 +168,9 @@ export default function VitalsPage() {
         <div className="flex-1 overflow-auto bg-white border border-gray-400">
           <table className="w-full text-[11px]">
             <thead className="sticky top-0">
-              <tr className="bg-gradient-to-b from-[var(--ehr-subheader-from)] to-[var(--ehr-subheader-to)]">
-                <th className="text-left px-2 py-1 border border-gray-400 bg-gradient-to-b from-[var(--ehr-subheader-from)] to-[var(--ehr-subheader-to)] sticky left-0 z-10 min-w-[100px]">Vital Sign</th>
-                <th className="text-center px-2 py-1 border border-gray-400 bg-gradient-to-b from-[var(--ehr-subheader-from)] to-[var(--ehr-subheader-to)] min-w-[50px]">Trend</th>
+              <tr className="bg-gradient-to-b from-[var(--ehr-table-header-alt-from)] to-[var(--ehr-table-header-alt-to)]">
+                <th className="text-left px-2 py-1 border border-gray-400 bg-gradient-to-b from-[var(--ehr-table-header-from)] to-[var(--ehr-table-header-to)] sticky left-0 z-10 min-w-[100px]">Vital Sign</th>
+                <th className="text-center px-2 py-1 border border-gray-400 bg-gradient-to-b from-[var(--ehr-table-header-from)] to-[var(--ehr-table-header-to)] min-w-[50px]">Trend</th>
                 {vitals.map((reading) => (
                   <th key={reading.id} className="text-center px-2 py-1 border border-gray-400 min-w-[80px]">
                     <div className="text-[10px] font-normal text-gray-600">{reading.timestamp.split(' ')[0]}</div>

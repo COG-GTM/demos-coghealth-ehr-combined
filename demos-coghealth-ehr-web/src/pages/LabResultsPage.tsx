@@ -231,7 +231,7 @@ export default function LabResultsPage() {
             filteredPanels.map(panel => (
               <div key={panel.id} className="border-b border-gray-300">
                 <div
-                  className="flex items-center justify-between px-2 py-1.5 bg-gradient-to-b from-[var(--ehr-subheader-from)] to-[var(--ehr-subheader-to)] cursor-pointer hover:from-[var(--ehr-control-hover-from)] hover:to-[var(--ehr-control-hover-to)]"
+                  className="flex items-center justify-between px-2 py-1.5 bg-gradient-to-b from-[var(--ehr-table-header-from)] to-[var(--ehr-table-header-to)] cursor-pointer hover:from-[var(--ehr-control-hover-from)] hover:to-[var(--ehr-control-hover-to)]"
                   onClick={() => togglePanel(panel.id)}
                 >
                   <div className="flex items-center space-x-2">
@@ -264,7 +264,7 @@ export default function LabResultsPage() {
                 {expandedPanels.includes(panel.id) && (
                   <table className="w-full text-[11px]">
                     <thead>
-                      <tr className="bg-gradient-to-b from-[var(--ehr-subheader-from)] to-[var(--ehr-subheader-to)]">
+                      <tr className="bg-gradient-to-b from-[var(--ehr-table-header-alt-from)] to-[var(--ehr-table-header-alt-to)]">
                         <th className="text-left px-2 py-1 border-b border-gray-400 w-1/4">Test</th>
                         <th className="text-left px-2 py-1 border-b border-gray-400 w-1/6">Result</th>
                         <th className="text-left px-2 py-1 border-b border-gray-400 w-1/6">Units</th>
