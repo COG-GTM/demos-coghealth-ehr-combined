@@ -44,6 +44,7 @@
   --ehr-accent: #316ac5;
   --ehr-hover: #e0e8f0;
   --ehr-row-even: #f0f4f8;
+  --ehr-row-alt: #f8f8f8;
   --ehr-row-hover: #d0e0f0;
   --ehr-shadow: rgba(0, 0, 0, 0.1);
 
@@ -88,6 +89,7 @@
   --ehr-accent: #2f6ab0;
   --ehr-hover: #263344;
   --ehr-row-even: #1e242c;
+  --ehr-row-alt: #1e242c;
   --ehr-row-hover: #26313f;
   --ehr-shadow: rgba(0, 0, 0, 0.5);
 
