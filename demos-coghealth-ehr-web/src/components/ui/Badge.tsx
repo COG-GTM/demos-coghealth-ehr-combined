@@ -14,10 +14,10 @@ export default function Badge({
 }: BadgeProps) {
   const variants = {
     default: { background: 'var(--ehr-raised-bottom)', border: '1px solid var(--ehr-border)', color: 'var(--ehr-text)' },
-    success: { background: '#d4edda', border: '1px solid #28a745', color: '#155724' },
-    warning: { background: '#fff3cd', border: '1px solid #cc9900', color: '#664d00' },
-    danger: { background: '#ffcccc', border: '1px solid #cc0000', color: '#990000' },
-    info: { background: '#cce5ff', border: '1px solid #0066cc', color: '#004085' },
+    success: { background: 'var(--ehr-ok-bg)', border: '1px solid var(--ehr-ok-border)', color: 'var(--ehr-ok-fg)' },
+    warning: { background: 'var(--ehr-abnormal-bg)', border: '1px solid var(--ehr-abnormal-border)', color: 'var(--ehr-abnormal-fg)' },
+    danger: { background: 'var(--ehr-critical-bg)', border: '1px solid var(--ehr-critical-border)', color: 'var(--ehr-critical-fg)' },
+    info: { background: 'var(--ehr-info-bg)', border: '1px solid var(--ehr-info-border)', color: 'var(--ehr-info-fg)' },
   };
 
   return (

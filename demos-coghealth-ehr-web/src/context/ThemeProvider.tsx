@@ -1,9 +1,9 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import {
-  THEME_STORAGE_KEY,
   ThemeContext,
   getStoredTheme,
   resolveTheme,
+  storeTheme,
   type ResolvedTheme,
   type Theme,
 } from './theme';
@@ -26,7 +26,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [theme]);
 
   const setTheme = (next: Theme) => {
-    localStorage.setItem(THEME_STORAGE_KEY, next);
+    storeTheme(next);
     setThemeState(next);
     setResolvedTheme(resolveTheme(next));
   };

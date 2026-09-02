@@ -127,11 +127,11 @@ interface AlertDialogProps {
 }
 
 export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: AlertDialogProps) {
-  const bgColors = {
-    info: '#cce5ff',
-    success: '#d4edda',
-    warning: '#fff3cd',
-    error: '#f8d7da',
+  const styles = {
+    info: { background: 'var(--ehr-info-bg)', color: 'var(--ehr-info-fg)' },
+    success: { background: 'var(--ehr-ok-bg)', color: 'var(--ehr-ok-fg)' },
+    warning: { background: 'var(--ehr-abnormal-bg)', color: 'var(--ehr-abnormal-fg)' },
+    error: { background: 'var(--ehr-critical-bg)', color: 'var(--ehr-critical-fg)' },
   };
   
   return (
@@ -146,7 +146,7 @@ export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: 
         </button>
       }
     >
-      <div className="p-2 border border-gray-400" style={{ background: bgColors[type] }}>
+      <div className="p-2 border border-gray-400" style={styles[type]}>
         <p className="text-[11px]">{message}</p>
       </div>
     </Modal>

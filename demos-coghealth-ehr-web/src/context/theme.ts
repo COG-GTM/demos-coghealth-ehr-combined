@@ -15,9 +15,21 @@ export const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function getStoredTheme(): Theme {
   if (typeof window === 'undefined') return 'system';
-  const stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-  if (stored && ['light', 'dark', 'system'].includes(stored)) return stored;
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
+    if (stored && ['light', 'dark', 'system'].includes(stored)) return stored;
+  } catch {
+    // storage disabled or denied; fall back to the system preference
+  }
   return 'system';
+}
+
+export function storeTheme(theme: Theme) {
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+  } catch {
+    // storage disabled or denied; the theme still applies for this session
+  }
 }
 
 export function resolveTheme(theme: Theme): ResolvedTheme {

@@ -46,6 +46,19 @@
   --ehr-row-even: #f0f4f8;
   --ehr-row-hover: #d0e0f0;
   --ehr-shadow: rgba(0, 0, 0, 0.1);
+
+  --ehr-critical-bg: #ffcccc;
+  --ehr-critical-fg: #990000;
+  --ehr-critical-border: #cc0000;
+  --ehr-abnormal-bg: #fff3cd;
+  --ehr-abnormal-fg: #664d00;
+  --ehr-abnormal-border: #cc9900;
+  --ehr-ok-bg: #d4edda;
+  --ehr-ok-fg: #155724;
+  --ehr-ok-border: #28a745;
+  --ehr-info-bg: #cce5ff;
+  --ehr-info-fg: #004085;
+  --ehr-info-border: #0066cc;
 }
 
 .dark {
@@ -92,9 +105,46 @@
   --color-gray-900: #eef2f6;
   --color-blue-50: #14243a;
   --color-blue-100: #17304d;
+  --color-blue-500: #7fb2f0;
+  --color-blue-600: #8cbcf5;
+  --color-blue-800: #a8cdf5;
   --color-green-50: #12241a;
+  --color-green-100: #16301f;
+  --color-green-600: #7fd6a2;
+  --color-green-700: #8fdfae;
+  --color-green-800: #a6e8c0;
   --color-red-50: #2a1618;
+  --color-red-100: #3a1c1f;
+  --color-red-500: #f08a8a;
+  --color-red-600: #ff9b9b;
+  --color-red-700: #ffaaaa;
+  --color-red-800: #ffbdbd;
+  --color-red-900: #ffcfcf;
   --color-yellow-50: #2a2413;
+  --color-yellow-100: #33280f;
+  --color-yellow-700: #ffd98a;
+  --color-yellow-800: #ffe4a6;
+  --color-amber-600: #f0c070;
+  --color-amber-700: #f5cf8d;
+  --color-orange-500: #f5a06a;
+  --color-orange-600: #f7b184;
+  --color-orange-800: #f9c8a8;
+  --color-purple-500: #b795e8;
+  --color-purple-600: #c2a5ee;
+  --color-purple-800: #d3bdf3;
+
+  --ehr-critical-bg: #3a1518;
+  --ehr-critical-fg: #ffb3b8;
+  --ehr-critical-border: #b03a42;
+  --ehr-abnormal-bg: #33280f;
+  --ehr-abnormal-fg: #ffd98a;
+  --ehr-abnormal-border: #b58a20;
+  --ehr-ok-bg: #16301f;
+  --ehr-ok-fg: #9ce8bd;
+  --ehr-ok-border: #2f8a55;
+  --ehr-info-bg: #13273d;
+  --ehr-info-fg: #a8cdf5;
+  --ehr-info-border: #2f6ab0;
 }
 
 .dark .bg-white,
@@ -279,39 +329,21 @@ td {
 }
 
 .ehr-alert-critical {
-  background: #ffcccc;
-  border: 1px solid #cc0000;
-  color: #990000;
+  background: var(--ehr-critical-bg);
+  border: 1px solid var(--ehr-critical-border);
+  color: var(--ehr-critical-fg);
 }
 
 .ehr-alert-warning {
-  background: #fff3cd;
-  border: 1px solid #cc9900;
-  color: #664d00;
+  background: var(--ehr-abnormal-bg);
+  border: 1px solid var(--ehr-abnormal-border);
+  color: var(--ehr-abnormal-fg);
 }
 
 .ehr-alert-info {
-  background: #cce5ff;
-  border: 1px solid #0066cc;
-  color: #004085;
-}
-
-.dark .ehr-alert-critical {
-  background: #3a1518;
-  border-color: #b03a42;
-  color: #ffb3b8;
-}
-
-.dark .ehr-alert-warning {
-  background: #33280f;
-  border-color: #b58a20;
-  color: #ffd98a;
-}
-
-.dark .ehr-alert-info {
-  background: #13273d;
-  border-color: #2f6ab0;
-  color: #a8cdf5;
+  background: var(--ehr-info-bg);
+  border: 1px solid var(--ehr-info-border);
+  color: var(--ehr-info-fg);
 }
 
 .ehr-toolbar {
