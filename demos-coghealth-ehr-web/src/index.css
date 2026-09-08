@@ -354,6 +354,41 @@ td {
   background: var(--ehr-border);
 }
 
+/* Gradient bars used for collapsible section headers and table heads */
+.ehr-bar {
+  background: linear-gradient(to bottom, var(--ehr-control-from) 0%, var(--ehr-surface-raised) 100%);
+  color: var(--ehr-text);
+}
+
+.ehr-bar-hover:hover {
+  background: linear-gradient(to bottom, var(--ehr-control-highlight) 0%, var(--ehr-surface-alt) 100%);
+}
+
+.ehr-thead-row {
+  background: linear-gradient(to bottom, var(--ehr-surface-raised) 0%, var(--ehr-control-to) 100%);
+  color: var(--ehr-text);
+}
+
+.ehr-row-alt {
+  background: var(--ehr-surface-alt);
+}
+
+.ehr-row-hover:hover {
+  background: var(--ehr-row-hover);
+}
+
+.ehr-alert-success {
+  background: #d4edda;
+  border: 1px solid #339933;
+  color: #1c5c2c;
+}
+
+.dark .ehr-alert-success {
+  background: #16301f;
+  border-color: #2f7d4a;
+  color: #a5e6bb;
+}
+
 /*
  * Dark remapping of the light Tailwind utilities used throughout the screens.
  * Keeps the dense EHR markup untouched while still theming every page.
@@ -382,5 +417,30 @@ td {
 
 .dark .border-gray-200 { border-color: var(--ehr-border-soft); }
 .dark .border-gray-300 { border-color: var(--ehr-border-soft); }
+
+/* Tinted status surfaces and their paired text colors */
+.dark .bg-red-50 { background-color: #331a1c; }
+.dark .bg-red-100 { background-color: #40201f; }
+.dark .bg-green-50 { background-color: #16301f; }
+.dark .bg-green-100 { background-color: #1b3b26; }
+.dark .bg-yellow-100 { background-color: #3a3113; }
+
+.dark .text-red-600 { color: #ff8b8b; }
+.dark .text-red-700 { color: #ff9d9d; }
+.dark .text-red-800 { color: #ffb0b0; }
+.dark .text-red-900 { color: #ffc3c3; }
+.dark .text-green-600 { color: #6cd68c; }
+.dark .text-green-700 { color: #7fdd9c; }
+.dark .text-green-800 { color: #97e5af; }
+.dark .text-yellow-700 { color: #ecc95f; }
+.dark .text-yellow-800 { color: #f2d77e; }
+.dark .text-amber-600 { color: #eabb62; }
+.dark .text-amber-700 { color: #f0c87f; }
+.dark .text-orange-600 { color: #f0a463; }
+.dark .text-orange-800 { color: #f5bd8b; }
+.dark .text-blue-600 { color: #7fb4f0; }
+.dark .text-blue-800 { color: #a5cbf5; }
+.dark .text-purple-600 { color: #b494ea; }
+.dark .text-purple-800 { color: #c9b1f1; }
 .dark .border-gray-400 { border-color: var(--ehr-border); }
 .dark .border-gray-500 { border-color: var(--ehr-border); }
