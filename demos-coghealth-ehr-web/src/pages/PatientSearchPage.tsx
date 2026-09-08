@@ -559,8 +559,8 @@ export default function PatientSearchPage() {
                       key={patient.id}
                       onClick={() => handleSelectPatient(patient)}
                       onDoubleClick={() => handleOpenChart(patient.id)}
-                      className={`cursor-pointer ${isSelected ? 'ehr-grid-row selected' : `ehr-grid-row ${idx % 2 === 0 ? '' : ''}`}`}
-                      style={isSelected ? { background: '#316ac5', color: 'white' } : idx % 2 === 1 ? { background: '#f0f4f8' } : {}}
+                      className={`cursor-pointer ehr-grid-row ${isSelected ? 'selected' : idx % 2 === 1 ? 'ehr-row-alt' : ''}`}
+                      style={isSelected ? { background: '#316ac5', color: 'white' } : {}}
                     >
                       <td className="px-1 py-0.5">
                         <div className="flex items-center space-x-0.5">

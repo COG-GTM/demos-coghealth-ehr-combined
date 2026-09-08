@@ -377,6 +377,12 @@ td {
   background: var(--ehr-row-hover);
 }
 
+/* Hovering a row must not wash out its severity highlighting */
+.ehr-row-hover.ehr-alert-critical:hover { background: #ffb3b3; }
+.ehr-row-hover.ehr-alert-warning:hover { background: #ffe9a8; }
+.dark .ehr-row-hover.ehr-alert-critical:hover { background: #4d2222; }
+.dark .ehr-row-hover.ehr-alert-warning:hover { background: #4a4015; }
+
 .ehr-alert-success {
   background: #d4edda;
   border: 1px solid #339933;
