@@ -6,4 +6,4 @@ Ensure docker is running. Then run:
 `bash ./start.sh`
 
 To stop locally:
-`bash ./stop.sh
+`bash ./stop.sh`
