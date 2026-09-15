@@ -373,19 +373,7 @@ td {
   color: #004085;
 }
 
-.dark .ehr-alert-success {
-  background: #d4edda;
-  border: 1px solid #28a745;
-  color: #155724;
-}
-
-.dark .ehr-alert-success {
-  background: #1f3d29;
-  border-color: #4caf6a;
-  color: #b9f0c8;
-}
-
-.ehr-alert-info {
+.dark .ehr-alert-info {
   background: #1c3350;
   border-color: #4f8fd9;
   color: #bcd9ff;
