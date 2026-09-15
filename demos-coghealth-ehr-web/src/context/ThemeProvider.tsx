@@ -15,9 +15,25 @@ const DARK_QUERY = '(prefers-color-scheme: dark)';
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
+function readStoredTheme(): Theme | null {
+  try {
+    return localStorage.getItem(STORAGE_KEY) as Theme | null;
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredTheme(theme: Theme) {
+  try {
+    localStorage.setItem(STORAGE_KEY, theme);
+  } catch {
+    // storage unavailable; theme still applies for this session
+  }
+}
+
 function getInitialTheme(): Theme {
   if (typeof window === 'undefined') return 'system';
-  const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
+  const stored = readStoredTheme();
   if (stored && ['light', 'dark', 'system'].includes(stored)) return stored;
   return 'system';
 }
@@ -46,7 +62,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setTheme = (next: Theme) => {
-    localStorage.setItem(STORAGE_KEY, next);
+    writeStoredTheme(next);
     setThemeState(next);
   };
 

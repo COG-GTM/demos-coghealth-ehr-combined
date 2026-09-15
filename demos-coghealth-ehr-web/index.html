@@ -7,7 +7,8 @@
     <title>CogHealth EHR</title>
     <script>
       (function () {
-        var t = localStorage.getItem('coghealth-theme');
+        var t = null;
+        try { t = localStorage.getItem('coghealth-theme'); } catch (e) { /* storage blocked */ }
         var dark = t === 'dark' || ((!t || t === 'system') && window.matchMedia('(prefers-color-scheme: dark)').matches);
         if (dark) document.documentElement.classList.add('dark');
       })();

@@ -32,6 +32,7 @@
   --ehr-border: #999;
   --ehr-border-soft: #ccc;
   --ehr-text: #333;
+  --ehr-white: #fff;
   color-scheme: light;
 }
 
@@ -50,10 +51,10 @@
   --ehr-border: #4a5260;
   --ehr-border-soft: #3a414c;
   --ehr-text: #d7dbe1;
+  --ehr-white: #1f232a;
 
-  /* Remap Tailwind palette so existing utilities flip without per-class edits */
-  --color-white: #1f232a;
-  --color-black: #f3f4f6;
+  /* Remap Tailwind palette so existing utilities flip without per-class edits.
+     white/black are left alone (used for text and overlays); only bg-white is overridden below. */
   --color-gray-50: #23272e;
   --color-gray-100: #2a2f37;
   --color-gray-200: #343a44;
@@ -98,6 +99,18 @@
   --color-orange-800: #fdba74;
   --color-purple-600: #c084fc;
   --color-purple-800: #d8b4fe;
+}
+
+.dark .bg-white {
+  background-color: var(--ehr-white);
+}
+
+.dark :is(.bg-gray-500, .bg-gray-600) {
+  background-color: #6b7280;
+}
+
+.dark .text-gray-200 {
+  color: #d1d5db;
 }
 
 body {
@@ -280,8 +293,8 @@ td {
 }
 
 .ehr-tab.active {
-  background: var(--color-white);
-  border-bottom: 1px solid var(--color-white);
+  background: var(--ehr-white);
+  border-bottom: 1px solid var(--ehr-white);
   margin-bottom: -1px;
   position: relative;
   z-index: 1;
@@ -289,7 +302,7 @@ td {
 
 .ehr-tab-content {
   border: 1px solid #888;
-  background: var(--color-white);
+  background: var(--ehr-white);
   padding: 8px;
 }
 
@@ -342,13 +355,37 @@ td {
   color: #ffe9a8;
 }
 
+.ehr-alert-success {
+  background: #d4edda;
+  border: 1px solid #28a745;
+  color: #155724;
+}
+
+.dark .ehr-alert-success {
+  background: #1f3d29;
+  border-color: #4caf6a;
+  color: #b9f0c8;
+}
+
 .ehr-alert-info {
   background: #cce5ff;
   border: 1px solid #0066cc;
   color: #004085;
 }
 
-.dark .ehr-alert-info {
+.dark .ehr-alert-success {
+  background: #d4edda;
+  border: 1px solid #28a745;
+  color: #155724;
+}
+
+.dark .ehr-alert-success {
+  background: #1f3d29;
+  border-color: #4caf6a;
+  color: #b9f0c8;
+}
+
+.ehr-alert-info {
   background: #1c3350;
   border-color: #4f8fd9;
   color: #bcd9ff;
