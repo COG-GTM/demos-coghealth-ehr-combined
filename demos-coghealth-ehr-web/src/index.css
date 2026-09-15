@@ -33,6 +33,14 @@
   --ehr-border-soft: #ccc;
   --ehr-text: #333;
   --ehr-white: #fff;
+  --ehr-critical-bg: #ffcccc;
+  --ehr-critical-fg: #990000;
+  --ehr-warning-bg: #fff3cd;
+  --ehr-warning-fg: #664d00;
+  --ehr-success-bg: #d4edda;
+  --ehr-success-fg: #155724;
+  --ehr-info-bg: #cce5ff;
+  --ehr-info-fg: #004085;
   color-scheme: light;
 }
 
@@ -52,6 +60,14 @@
   --ehr-border-soft: #3a414c;
   --ehr-text: #d7dbe1;
   --ehr-white: #1f232a;
+  --ehr-critical-bg: #4a1f1f;
+  --ehr-critical-fg: #ffb4b4;
+  --ehr-warning-bg: #43391a;
+  --ehr-warning-fg: #ffe9a8;
+  --ehr-success-bg: #1f3d29;
+  --ehr-success-fg: #b9f0c8;
+  --ehr-info-bg: #1c3350;
+  --ehr-info-fg: #bcd9ff;
 
   /* Remap Tailwind palette so existing utilities flip without per-class edits.
      white/black are left alone (used for text and overlays); only bg-white is overridden below. */
