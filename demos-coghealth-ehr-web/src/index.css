@@ -32,6 +32,7 @@
   --ehr-border: #999;
   --ehr-border-soft: #ccc;
   --ehr-text: #333;
+  --ehr-text-muted: #666;
   --ehr-white: #fff;
   --ehr-critical-bg: #ffcccc;
   --ehr-critical-fg: #990000;
@@ -59,6 +60,7 @@
   --ehr-border: #4a5260;
   --ehr-border-soft: #3a414c;
   --ehr-text: #d7dbe1;
+  --ehr-text-muted: #9aa3b0;
   --ehr-white: #1f232a;
   --ehr-critical-bg: #4a1f1f;
   --ehr-critical-fg: #ffb4b4;
