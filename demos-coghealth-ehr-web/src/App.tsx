@@ -14,9 +14,12 @@ import {
   Lock,
   Shield,
   FlaskConical,
-  Activity
+  Activity,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
+import { useTheme } from './context/ThemeProvider';
 import PatientSearchPage from './pages/PatientSearchPage';
 import PatientChartPage from './pages/PatientChartPage';
 import DashboardPage from './pages/DashboardPage';
@@ -50,6 +53,7 @@ interface NavigationProps {
 function Navigation({ onSessionWarning, onSessionExpired, onLogout }: NavigationProps) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { resolvedTheme, setTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [globalSearch, setGlobalSearch] = useState('');
   const [searchResults, setSearchResults] = useState<typeof defaultPatientSearch>([]);
@@ -174,6 +178,16 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
         <div className="flex items-center space-x-3 text-[10px]">
           <span className="text-blue-100">Springfield Medical Center</span>
           <span className="text-blue-300">|</span>
+          <button
+            className="ehr-theme-toggle"
+            title="Switch to light/dark mode"
+            aria-label="Switch to light/dark mode"
+            onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+          >
+            {resolvedTheme === 'dark' ? <Sun className="w-3 h-3" /> : <Moon className="w-3 h-3" />}
+            {resolvedTheme === 'dark' ? 'Light' : 'Dark'}
+          </button>
+          <span className="text-blue-300">|</span>
           <div className="flex items-center space-x-1">
             <Lock className="w-3 h-3" />
             <span className={sessionTime < SESSION_WARNING_MS ? 'text-yellow-300' : 'text-blue-200'}>
@@ -280,7 +294,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="h-screen flex flex-col" style={{ background: '#d4d0c8', fontFamily: 'Tahoma, sans-serif' }}>
+      <div className="h-screen flex flex-col" style={{ background: 'var(--ehr-desktop)', fontFamily: 'Tahoma, sans-serif' }}>
         <Navigation 
           onSessionWarning={handleSessionWarning}
           onSessionExpired={handleSessionExpired}

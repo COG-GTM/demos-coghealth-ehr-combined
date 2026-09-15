@@ -19,7 +19,6 @@
 
 body {
   font-size: 11px;
-  background-color: #d4d0c8;
 }
 
 input, select, textarea, button {
@@ -235,4 +234,284 @@ td {
 
 .ehr-splitter:hover {
   background: #b0b0b0;
+}
+
+/* ------------------------------------------------------------------
+   Dark mode — "Night Shift" chrome.
+   Same XP-era bevels and gradients, re-cut in graphite and steel blue:
+   deep desktop, slate panels, cool highlights, amber for caution.
+   Activated by `.dark` on <html> (see context/ThemeProvider).
+   ------------------------------------------------------------------ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --ehr-desktop: #d4d0c8;
+  --ehr-chrome: #ece9d8;
+  --ehr-panel: #f5f5f5;
+  --ehr-panel-raised: #e8e8e8;
+  --ehr-surface: #ffffff;
+  --ehr-text: #000000;
+}
+
+.dark {
+  color-scheme: dark;
+  --ehr-desktop: #1b1e24;
+  --ehr-chrome: #23272f;
+  --ehr-panel: #262a32;
+  --ehr-panel-raised: #2e333c;
+  --ehr-surface: #1e2229;
+  --ehr-text: #d9dde3;
+}
+
+body {
+  background-color: var(--ehr-desktop);
+  color: var(--ehr-text);
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.dark th {
+  background: linear-gradient(to bottom, #343943 0%, #292d35 100%);
+  border-color: #4a5059;
+  color: #c9ced6;
+}
+
+.dark td {
+  border-color: #353a43;
+}
+
+.dark .ehr-panel {
+  background: var(--ehr-panel);
+  border-color: #454b55;
+  box-shadow: inset 1px 1px 0 #3a4049, 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.dark .ehr-button {
+  background: linear-gradient(to bottom, #3a3f49 0%, #2b2f37 100%);
+  border-color: #555c66;
+  color: #dfe3e9;
+  box-shadow: 1px 1px 0 #4b515b inset, -1px -1px 0 #1a1d22 inset;
+}
+
+.dark .ehr-button:hover {
+  background: linear-gradient(to bottom, #454b56 0%, #333842 100%);
+}
+
+.dark .ehr-button:active {
+  background: linear-gradient(to bottom, #252931 0%, #2e333c 100%);
+  box-shadow: -1px -1px 0 #4b515b inset, 1px 1px 0 #1a1d22 inset;
+}
+
+.dark .ehr-button-primary {
+  background: linear-gradient(to bottom, #3b7bc8 0%, #24528f 100%);
+  border-color: #17365e;
+  color: #fff;
+}
+
+.dark .ehr-button-primary:hover {
+  background: linear-gradient(to bottom, #4a8ad8 0%, #2c62a8 100%);
+}
+
+.dark .ehr-input {
+  border-color: #4f5a6a;
+  background: #15181d;
+  color: #e3e7ec;
+}
+
+.dark .ehr-input::placeholder {
+  color: #6b7480;
+}
+
+.dark .ehr-input:focus {
+  border-color: #5b9be0;
+  box-shadow: 0 0 3px rgba(91, 155, 224, 0.6);
+}
+
+.dark .ehr-fieldset {
+  border-color: #454b55;
+  background: #22262d;
+}
+
+.dark .ehr-fieldset legend,
+.dark .ehr-label {
+  color: #c4c9d1;
+}
+
+.dark .ehr-header {
+  background: linear-gradient(to bottom, #2f4f78 0%, #1e3552 100%);
+  border-bottom-color: #0f1c2e;
+}
+
+.dark .ehr-subheader {
+  background: linear-gradient(to bottom, #333842 0%, #272b33 100%);
+  color: #c4c9d1;
+  border-bottom-color: #4a5059;
+}
+
+.dark .ehr-tree-item:hover {
+  background: #2c3644;
+}
+
+.dark .ehr-tree-item.selected {
+  background: #2d62b0;
+}
+
+.dark .ehr-status-bar {
+  background: var(--ehr-chrome);
+  border-top-color: #3a4049;
+  color: #aab1bb;
+}
+
+.dark .ehr-tab {
+  background: linear-gradient(to bottom, #343943 0%, #272b33 100%);
+  border-color: #4a5059;
+  color: #b5bcc6;
+}
+
+.dark .ehr-tab.active {
+  background: var(--ehr-surface);
+  border-bottom-color: var(--ehr-surface);
+  color: #e6e9ee;
+}
+
+.dark .ehr-tab-content {
+  border-color: #4a5059;
+  background: var(--ehr-surface);
+}
+
+.dark .ehr-grid-row:nth-child(even) {
+  background: #222730;
+}
+
+.dark .ehr-grid-row:hover {
+  background: #2c3a4d;
+}
+
+.dark .ehr-grid-row.selected {
+  background: #2d62b0;
+}
+
+.dark .ehr-alert-critical {
+  background: #3d1a1a;
+  border-color: #c0392b;
+  color: #ffb3ad;
+}
+
+.dark .ehr-alert-warning {
+  background: #3b2f12;
+  border-color: #d69e2e;
+  color: #ffd98a;
+}
+
+.dark .ehr-alert-info {
+  background: #172a42;
+  border-color: #3b82f6;
+  color: #a9cdfd;
+}
+
+.dark .ehr-toolbar {
+  background: linear-gradient(to bottom, #2c3038 0%, #22262d 100%);
+  border-bottom-color: #43494f;
+  color: #d4d9e0;
+}
+
+.dark .ehr-toolbar-button:hover {
+  background: #2c3644;
+  border-color: #4a5059;
+}
+
+.dark .ehr-toolbar-button-active {
+  background: linear-gradient(to bottom, #3a3f49 0%, #2b2f37 100%);
+  border-color: #555c66;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.dark .ehr-splitter {
+  background: var(--ehr-desktop);
+}
+
+.dark .ehr-splitter:hover {
+  background: #4a5059;
+}
+
+/* Utility remaps: the pages lean on a fixed set of light-mode Tailwind
+   utilities. Rather than rewriting every page, re-target the neutral
+   palette under `.dark` so content surfaces follow the chrome. */
+.dark .bg-white { background-color: var(--ehr-surface); }
+.dark .bg-gray-50 { background-color: #232830; }
+.dark .bg-gray-100 { background-color: #2a2f38; }
+.dark .bg-gray-200 { background-color: #323841; }
+.dark .bg-gray-300 { background-color: #3c434d; }
+.dark .bg-blue-50 { background-color: #182538; }
+.dark .bg-blue-100 { background-color: #1d3050; }
+.dark .bg-red-50 { background-color: #3a1c1c; }
+.dark .bg-red-100 { background-color: #4a2323; }
+.dark .bg-green-100 { background-color: #1c3a26; }
+.dark .bg-yellow-100 { background-color: #3d3316; }
+.dark .bg-\[\#ece9d8\] { background-color: var(--ehr-chrome); }
+.dark .bg-\[\#e0e8f0\] { background-color: #2c3644; }
+.dark .bg-\[\#f8f8f8\] { background-color: var(--ehr-panel-raised); }
+
+.dark .hover\:bg-gray-50:hover { background-color: #2a2f38; }
+.dark .hover\:bg-gray-100:hover { background-color: #323841; }
+.dark .hover\:bg-gray-200:hover { background-color: #3c434d; }
+.dark .hover\:bg-blue-50:hover { background-color: #1d3050; }
+.dark .hover\:bg-blue-100:hover { background-color: #234070; }
+
+.dark .text-gray-900,
+.dark .text-gray-800 { color: #e6e9ee; }
+.dark .text-gray-700 { color: #cfd4db; }
+.dark .text-gray-600 { color: #aab1bb; }
+.dark .text-gray-500 { color: #8b939f; }
+.dark .text-gray-400 { color: #6b7480; }
+.dark .text-blue-800 { color: #7db3f0; }
+.dark .text-blue-700 { color: #8ec0f7; }
+.dark .text-red-700,
+.dark .text-red-800 { color: #ff9a94; }
+.dark .text-green-700,
+.dark .text-green-800 { color: #7ed49a; }
+.dark .text-yellow-800 { color: #f5c96a; }
+
+.dark .border-gray-200 { border-color: #33383f; }
+.dark .border-gray-300 { border-color: #3e444c; }
+.dark .border-gray-400 { border-color: #4a5059; }
+.dark .border-gray-500 { border-color: #565d67; }
+.dark .border-gray-600 { border-color: #6b7480; }
+.dark .border-blue-300 { border-color: #3b6ea8; }
+
+.dark .from-\[\#ece9d8\] { --tw-gradient-from: var(--ehr-chrome); }
+.dark .to-\[\#d4d0c8\] { --tw-gradient-to: var(--ehr-desktop); }
+
+.dark .shadow-lg { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6); }
+
+.dark ::selection {
+  background: #2d62b0;
+  color: #fff;
+}
+
+/* Theme toggle in the app header */
+.ehr-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.18);
+  color: #dbe8f7;
+  font-size: 10px;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.ehr-theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.ehr-theme-toggle svg {
+  transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ehr-theme-toggle:hover svg {
+  transform: rotate(20deg);
 }
