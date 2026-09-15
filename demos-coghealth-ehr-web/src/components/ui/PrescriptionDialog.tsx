@@ -180,7 +180,7 @@ export function PrescriptionDialog({ isOpen, onClose, patientName, patientMrn, p
                     key={med.name}
                     onClick={() => selectMedication(med)}
                     className={`px-2 py-1 text-[11px] cursor-pointer border-b border-gray-200 ${
-                      selectedMed?.name === med.name ? 'bg-blue-100' : 'hover:bg-blue-50'
+                      selectedMed?.name === med.name ? 'bg-blue-100 dark:bg-[#1e3a5f]' : 'hover:bg-blue-50'
                     }`}
                   >
                     <div className="font-medium">{med.name}</div>
