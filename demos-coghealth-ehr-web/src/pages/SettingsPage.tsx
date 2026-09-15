@@ -52,7 +52,6 @@ const defaultNotifications = {
 };
 
 const defaultAppearance = {
-  theme: 'light',
   compactMode: false,
   fontSize: 'medium',
 };
@@ -396,7 +395,6 @@ export default function SettingsPage() {
                         key={option}
                         onClick={() => {
                           setTheme(option);
-                          setAppearance({ ...appearance, theme: option });
                         }}
                         className={`p-2 border text-center text-[11px] ${
                           theme === option

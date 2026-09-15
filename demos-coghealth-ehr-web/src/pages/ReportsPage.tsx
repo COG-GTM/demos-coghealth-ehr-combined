@@ -199,8 +199,7 @@ export default function ReportsPage() {
               <div key={category} className="border-b border-gray-300">
                 <div
                   onClick={() => toggleCategory(category)}
-                  className="px-2 py-1 bg-gray-100 hover:bg-gray-200 cursor-pointer flex items-center justify-between text-[11px] border-b border-gray-400"
-                  style={{ background: 'linear-gradient(to bottom, #f8f8f8 0%, #e0e0e0 100%)' }}
+                  className="px-2 py-1 bg-gradient-to-b from-[#f8f8f8] to-[#e0e0e0] hover:from-[#fff] hover:to-[#e8e8e8] dark:from-[#333a45] dark:to-[#2a3038] dark:hover:from-[#3a414c] dark:hover:to-[#333a45] cursor-pointer flex items-center justify-between text-[11px] border-b border-gray-400"
                 >
                   <div className="flex items-center space-x-2">
                     <span className="w-4 h-4 border border-gray-500 bg-white flex items-center justify-center text-[10px] font-bold">
