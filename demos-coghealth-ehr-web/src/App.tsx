@@ -14,7 +14,9 @@ import {
   Lock,
   Shield,
   FlaskConical,
-  Activity
+  Activity,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import PatientSearchPage from './pages/PatientSearchPage';
@@ -28,6 +30,8 @@ import LabResultsPage from './pages/LabResultsPage';
 import VitalsPage from './pages/VitalsPage';
 import { AlertDialog, ConfirmDialog } from './components/ui/Modal';
 import { logLogout } from './services/auditService';
+import { ThemeProvider } from './context/ThemeProvider';
+import { useTheme } from './context/theme';
 
 const SESSION_TIMEOUT_MS = 15 * 60 * 1000;
 const SESSION_WARNING_MS = 2 * 60 * 1000;
@@ -55,6 +59,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
   const [searchResults, setSearchResults] = useState<typeof defaultPatientSearch>([]);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [sessionTime, setSessionTime] = useState(SESSION_TIMEOUT_MS);
+  const { resolvedTheme, setTheme } = useTheme();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -185,6 +190,15 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
             <User className="w-3 h-3" />
             <span>Dr. Sarah Anderson</span>
           </div>
+          <button
+            onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+            className="flex items-center hover:text-white text-blue-200"
+            title={resolvedTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            aria-label="Toggle dark mode"
+          >
+            {resolvedTheme === 'dark' ? <Sun className="w-3 h-3" /> : <Moon className="w-3 h-3" />}
+          </button>
+          <span className="text-blue-300">|</span>
           <button onClick={onLogout} className="flex items-center space-x-1 hover:text-white text-blue-200">
             <LogOut className="w-3 h-3" />
             <span>Logout</span>
@@ -240,7 +254,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center px-2 py-1.5 text-[11px] ${
                     isActive
-                      ? 'bg-blue-100 border border-blue-300'
+                      ? 'bg-blue-100 dark:bg-[#1e3a5f] border border-blue-300'
                       : 'hover:bg-gray-100'
                   }`}
                 >
@@ -279,8 +293,9 @@ function App() {
   };
 
   return (
+    <ThemeProvider>
     <BrowserRouter>
-      <div className="h-screen flex flex-col" style={{ background: '#d4d0c8', fontFamily: 'Tahoma, sans-serif' }}>
+      <div className="h-screen flex flex-col bg-[#d4d0c8] dark:bg-[#15181d] text-gray-900" style={{ fontFamily: 'Tahoma, sans-serif' }}>
         <Navigation 
           onSessionWarning={handleSessionWarning}
           onSessionExpired={handleSessionExpired}
@@ -301,7 +316,7 @@ function App() {
         </main>
 
         {/* Status Bar - Windows XP style */}
-        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
+        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] dark:from-[#22272f] dark:to-[#1a1e24] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
               <Shield className="w-3 h-3 text-green-600" />
@@ -355,6 +370,7 @@ function App() {
         />
       </div>
     </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
