@@ -17,6 +17,7 @@ import {
   Activity
 } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
+import { ThemeProvider } from './contexts/ThemeContext';
 import PatientSearchPage from './pages/PatientSearchPage';
 import PatientChartPage from './pages/PatientChartPage';
 import DashboardPage from './pages/DashboardPage';
@@ -279,8 +280,9 @@ function App() {
   };
 
   return (
+    <ThemeProvider>
     <BrowserRouter>
-      <div className="h-screen flex flex-col" style={{ background: '#d4d0c8', fontFamily: 'Tahoma, sans-serif' }}>
+      <div className="h-screen flex flex-col bg-[#d4d0c8] dark:bg-[#1a1a2e]" style={{ fontFamily: 'Tahoma, sans-serif' }}>
         <Navigation 
           onSessionWarning={handleSessionWarning}
           onSessionExpired={handleSessionExpired}
@@ -301,7 +303,7 @@ function App() {
         </main>
 
         {/* Status Bar - Windows XP style */}
-        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
+        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] dark:from-[#22223a] dark:to-[#1a1a2e] border-t border-gray-400 dark:border-gray-600 flex items-center justify-between px-2 text-[10px] text-gray-600 dark:text-gray-400">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
               <Shield className="w-3 h-3 text-green-600" />
@@ -355,6 +357,7 @@ function App() {
         />
       </div>
     </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

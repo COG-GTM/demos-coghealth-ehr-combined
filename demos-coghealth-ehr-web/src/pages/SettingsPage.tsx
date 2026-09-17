@@ -11,9 +11,12 @@ import {
   Smartphone,
   Globe,
   Save,
-  Check
+  Check,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { AlertDialog } from '../components/ui/Modal';
+import { useTheme } from '../contexts/ThemeContext';
 
 type SettingsTab = 'profile' | 'notifications' | 'security' | 'appearance' | 'practice';
 
@@ -73,6 +76,7 @@ export default function SettingsPage() {
   const [profile, setProfile] = useState<UserProfile>(defaultProfile);
   const [notifications, setNotifications] = useState(defaultNotifications);
   const [appearance, setAppearance] = useState(defaultAppearance);
+  const { theme: activeTheme, setTheme: applyTheme } = useTheme();
 
   const [initialized, setInitialized] = useState(false);
   if (!initialized) {
@@ -105,7 +109,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col bg-[#d4d0c8] dark:bg-[#1a1a2e]">
       {/* Header */}
       <div className="ehr-header flex items-center justify-between">
         <span>System Settings</span>
@@ -121,7 +125,7 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Navigation */}
-        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: '#ece9d8' }}>
+        <div className="w-48 overflow-auto p-2 space-y-1 bg-[#ece9d8] dark:bg-[#22223a]">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -130,8 +134,8 @@ export default function SettingsPage() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`w-full flex items-center px-2 py-1.5 text-[11px] ${
                   activeTab === tab.id
-                    ? 'bg-white border border-gray-400 font-semibold'
-                    : 'hover:bg-white/50'
+                    ? 'bg-white dark:bg-[#1e1e32] border border-gray-400 dark:border-gray-600 font-semibold dark:text-gray-200'
+                    : 'hover:bg-white/50 dark:hover:bg-white/10 dark:text-gray-300'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5 mr-2" />
@@ -142,7 +146,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Right Content */}
-        <div className="flex-1 overflow-auto bg-white border-l border-gray-500 p-3">
+        <div className="flex-1 overflow-auto bg-white dark:bg-[#1e1e32] border-l border-gray-500 dark:border-gray-600 p-3 dark:text-gray-200">
           {activeTab === 'profile' && (
             <div className="space-y-3">
               <fieldset className="ehr-fieldset">
@@ -385,20 +389,28 @@ export default function SettingsPage() {
               <fieldset className="ehr-fieldset">
                 <legend>Theme</legend>
                 <div className="grid grid-cols-3 gap-2">
-                  {['light', 'dark', 'system'].map((theme) => (
-                    <button
-                      key={theme}
-                      onClick={() => setAppearance({ ...appearance, theme })}
-                      className={`p-2 border text-center text-[11px] ${
-                        appearance.theme === theme
-                          ? 'border-gray-600 bg-white'
-                          : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
-                      }`}
-                    >
-                      <Monitor className="w-4 h-4 mx-auto mb-1 text-gray-600" />
-                      <span className="capitalize">{theme}</span>
-                    </button>
-                  ))}
+                  {(['light', 'dark', 'system'] as const).map((t) => {
+                    const Icon = t === 'light' ? Sun : t === 'dark' ? Moon : Monitor;
+                    return (
+                      <button
+                        key={t}
+                        onClick={() => {
+                          setAppearance({ ...appearance, theme: t });
+                          applyTheme(t);
+                        }}
+                        className={`p-2 border text-center text-[11px] ${
+                          activeTheme === t
+                            ? 'border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30 ring-1 ring-blue-400'
+                            : 'border-gray-400 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700'
+                        }`}
+                      >
+                        <Icon className={`w-4 h-4 mx-auto mb-1 ${
+                          activeTheme === t ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'
+                        }`} />
+                        <span className="capitalize dark:text-gray-200">{t}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </fieldset>
 
