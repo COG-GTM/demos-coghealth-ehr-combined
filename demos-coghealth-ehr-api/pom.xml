@@ -23,8 +23,21 @@
         <maven.compiler.target>11</maven.compiler.target>
         <lombok.version>1.18.36</lombok.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <springdoc.version>1.7.0</springdoc.version>
-        <hapi.version>2.3</hapi.version>
+        <springdoc.version>1.8.0</springdoc.version>
+        <hapi.version>2.5.1</hapi.version>
+
+        <!-- Security overrides: patched versions of transitive deps managed by the
+             spring-boot-starter-parent 2.7.18 BOM (kept on the Spring Boot 2.7 / Java 11 line). -->
+        <spring-framework.version>5.3.39</spring-framework.version>
+        <spring-security.version>5.8.16</spring-security.version>
+        <tomcat.version>9.0.109</tomcat.version>
+        <hibernate.version>5.6.15.Final</hibernate.version>
+        <jackson-bom.version>2.15.4</jackson-bom.version>
+        <snakeyaml.version>2.2</snakeyaml.version>
+        <logback.version>1.2.13</logback.version>
+        <netty.version>4.1.118.Final</netty.version>
+        <postgresql.version>42.7.7</postgresql.version>
+        <json-path.version>2.9.0</json-path.version>
     </properties>
 
     <dependencies>
