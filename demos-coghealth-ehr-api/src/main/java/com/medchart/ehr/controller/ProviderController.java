@@ -1,10 +1,12 @@
 package com.medchart.ehr.controller;
 
 import com.medchart.ehr.domain.provider.Provider;
+import com.medchart.ehr.dto.ProviderSearchRequestDTO;
 import com.medchart.ehr.service.ProviderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -59,9 +61,9 @@ public class ProviderController {
         return providerService.getAllSpecialties();
     }
 
-    @GetMapping("/search")
-    public List<Provider> search(@RequestParam String lastName) {
-        return providerService.search(lastName);
+    @PostMapping("/search")
+    public List<Provider> search(@Valid @RequestBody ProviderSearchRequestDTO searchRequest) {
+        return providerService.search(searchRequest.getLastName());
     }
 
     @PostMapping

@@ -17,7 +17,7 @@ export const patientService = {
     api.get<Patient>(`/v1/patients/mrn/${mrn}`),
 
   search: (query: string, page = 0, size = 20) => 
-    api.get<Page<Patient>>('/v1/patients/search', { q: query, page, size }),
+    api.post<Page<Patient>>('/v1/patients/search', { query, page, size }),
 
   create: (patient: Partial<Patient>) => 
     api.post<Patient>('/v1/patients', patient),

@@ -1,12 +1,13 @@
 package com.medchart.ehr.controller;
 
 import com.medchart.ehr.dto.PatientDTO;
+import com.medchart.ehr.dto.PatientSearchRequestDTO;
 import com.medchart.ehr.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,12 +34,13 @@ public class PatientController {
         return ResponseEntity.ok(patientService.getPatientByMrn(mrn));
     }
 
-    @GetMapping("/search")
-    @Operation(summary = "Search patients")
+    @PostMapping("/search")
+    @Operation(summary = "Search patients", description = "Search terms are sent in the request body so patient identifiers never appear in URLs, access logs or browser history")
     public ResponseEntity<Page<PatientDTO>> searchPatients(
-            @RequestParam String q,
-            Pageable pageable) {
-        return ResponseEntity.ok(patientService.searchPatients(q, pageable));
+            @Valid @RequestBody PatientSearchRequestDTO searchRequest) {
+        return ResponseEntity.ok(patientService.searchPatients(
+                searchRequest.getQueryOrEmpty(),
+                PageRequest.of(searchRequest.getPageOrDefault(), searchRequest.getSizeOrDefault())));
     }
 
     @PostMapping
