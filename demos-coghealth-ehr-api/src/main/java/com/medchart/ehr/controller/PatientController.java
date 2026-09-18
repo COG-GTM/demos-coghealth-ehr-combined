@@ -40,7 +40,8 @@ public class PatientController {
             @Valid @RequestBody PatientSearchRequestDTO searchRequest) {
         return ResponseEntity.ok(patientService.searchPatients(
                 searchRequest.getQueryOrEmpty(),
-                PageRequest.of(searchRequest.getPageOrDefault(), searchRequest.getSizeOrDefault())));
+                PageRequest.of(searchRequest.getPageOrDefault(), searchRequest.getSizeOrDefault(),
+                        searchRequest.getSortOrDefault())));
     }
 
     @PostMapping
