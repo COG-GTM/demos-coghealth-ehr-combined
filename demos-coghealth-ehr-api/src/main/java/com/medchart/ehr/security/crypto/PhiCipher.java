@@ -76,7 +76,7 @@ public class PhiCipher {
             // Legacy plaintext that happens to start with the envelope prefix.
             return stored;
         }
-        if (payload.length <= IV_LENGTH) {
+        if (payload.length < IV_LENGTH + TAG_LENGTH_BITS / Byte.SIZE) {
             return stored;
         }
         try {
