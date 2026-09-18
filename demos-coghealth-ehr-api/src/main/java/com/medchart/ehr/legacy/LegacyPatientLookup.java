@@ -25,7 +25,7 @@ public class LegacyPatientLookup {
             query.setParameter(1, mrn);
             return (Patient) query.getSingleResult();
         } catch (Exception e) {
-            log.warn("Patient not found for MRN: " + mrn);
+            log.warn("Patient not found for the requested MRN");
             return null;
         }
     }
