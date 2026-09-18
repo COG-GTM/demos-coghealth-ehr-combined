@@ -1,5 +1,6 @@
 package com.medchart.ehr.domain.order;
 
+import com.medchart.ehr.security.crypto.PhiStringConverter;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -33,7 +34,8 @@ public class LabResult {
     @Column(nullable = false, length = 200)
     private String resultName;
 
-    @Column(length = 100)
+    @Convert(converter = PhiStringConverter.class)
+    @Column(length = 512)
     private String value;
 
     @Column(precision = 10, scale = 4)
@@ -55,10 +57,12 @@ public class LabResult {
 
     private LocalDateTime resultDateTime;
 
-    @Column(length = 500)
+    @Convert(converter = PhiStringConverter.class)
+    @Column(length = 2048)
     private String interpretation;
 
-    @Column(length = 500)
+    @Convert(converter = PhiStringConverter.class)
+    @Column(length = 2048)
     private String comments;
 
     @Column(length = 100)
