@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -37,7 +38,8 @@ public class FhirPatientMapper {
     private static final Pattern MRN_PATTERN = Pattern.compile("[A-Za-z0-9-]{1,20}");
     private static final Pattern SSN_PATTERN = Pattern.compile("\\d{3}-\\d{2}-\\d{4}");
     private static final int MAX_NAME_LENGTH = 100;
-    private static final DateTimeFormatter FHIR_DATE_PARSER = DateTimeFormatter.ofPattern(FHIR_DATE_FORMAT);
+    private static final DateTimeFormatter FHIR_DATE_PARSER =
+        DateTimeFormatter.ofPattern("uuuu-MM-dd").withResolverStyle(ResolverStyle.STRICT);
 
     /**
      * PATTERN: Convert internal Patient to FHIR Patient resource
@@ -96,6 +98,11 @@ public class FhirPatientMapper {
 
     /**
      * PATTERN: Convert FHIR Patient resource to internal Patient
+     *
+     * Inbound resources must satisfy this application's Patient profile, which is stricter than
+     * base FHIR R4: resourceType 'Patient', an identifier with the MRN system, name.family,
+     * name.given[0], and a birthDate in the past. Anything else is rejected with
+     * {@link IllegalArgumentException}.
      */
     public Patient fromFhirResource(Map<String, Object> fhirPatient) {
         if (fhirPatient == null) {
@@ -114,7 +121,7 @@ public class FhirPatientMapper {
             
             if (MRN_SYSTEM.equals(system)) {
                 patient.setMrn(matching(value, MRN_PATTERN, "MRN identifier value"));
-            } else if (SSN_SYSTEM.equals(system)) {
+            } else if (SSN_SYSTEM.equals(system) && value != null) {
                 patient.setSsn(matching(value, SSN_PATTERN, "SSN identifier value"));
             }
         }
@@ -226,7 +233,7 @@ public class FhirPatientMapper {
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("FHIR Patient birthDate must use the " + FHIR_DATE_FORMAT + " format");
         }
-        if (parsed.isAfter(LocalDate.now())) {
+        if (!parsed.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("FHIR Patient birthDate must be in the past");
         }
         return parsed;
