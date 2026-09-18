@@ -1,5 +1,6 @@
 package com.medchart.ehr.domain.provider;
 
+import com.medchart.ehr.audit.AuditableResource;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -20,7 +21,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Provider {
+public class Provider implements AuditableResource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,6 +100,18 @@ public class Provider {
 
     @Version
     private Long version;
+
+    @Override
+    @Transient
+    public Long getAuditResourceId() {
+        return id;
+    }
+
+    @Override
+    @Transient
+    public Long getAuditPatientId() {
+        return null;
+    }
 
     public String getFullName() {
         StringBuilder sb = new StringBuilder();

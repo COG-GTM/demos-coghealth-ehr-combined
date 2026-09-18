@@ -1,5 +1,6 @@
 package com.medchart.ehr.domain.encounter;
 
+import com.medchart.ehr.audit.AuditableResource;
 import com.medchart.ehr.domain.patient.Patient;
 import com.medchart.ehr.domain.provider.Provider;
 import lombok.*;
@@ -23,7 +24,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Encounter {
+public class Encounter implements AuditableResource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -94,6 +95,18 @@ public class Encounter {
 
     @Version
     private Long version;
+
+    @Override
+    @Transient
+    public Long getAuditResourceId() {
+        return id;
+    }
+
+    @Override
+    @Transient
+    public Long getAuditPatientId() {
+        return patient != null ? patient.getId() : null;
+    }
 
     public void addDiagnosis(EncounterDiagnosis diagnosis) {
         diagnoses.add(diagnosis);

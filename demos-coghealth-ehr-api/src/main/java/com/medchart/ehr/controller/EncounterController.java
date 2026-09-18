@@ -87,31 +87,30 @@ public class EncounterController {
 
     @PostMapping("/{id}/check-in")
     public ResponseEntity<Void> checkIn(@PathVariable Long id) {
-        encounterService.checkIn(id);
-        return ResponseEntity.ok().build();
+        return toResponse(encounterService.checkIn(id));
     }
 
     @PostMapping("/{id}/start")
     public ResponseEntity<Void> start(@PathVariable Long id) {
-        encounterService.startEncounter(id);
-        return ResponseEntity.ok().build();
+        return toResponse(encounterService.startEncounter(id));
     }
 
     @PostMapping("/{id}/complete")
     public ResponseEntity<Void> complete(@PathVariable Long id, @RequestBody(required = false) String notes) {
-        encounterService.completeEncounter(id, notes);
-        return ResponseEntity.ok().build();
+        return toResponse(encounterService.completeEncounter(id, notes));
     }
 
     @PostMapping("/{id}/cancel")
     public ResponseEntity<Void> cancel(@PathVariable Long id) {
-        encounterService.cancelEncounter(id);
-        return ResponseEntity.ok().build();
+        return toResponse(encounterService.cancelEncounter(id));
     }
 
     @PostMapping("/{id}/no-show")
     public ResponseEntity<Void> noShow(@PathVariable Long id) {
-        encounterService.markNoShow(id);
-        return ResponseEntity.ok().build();
+        return toResponse(encounterService.markNoShow(id));
+    }
+
+    private ResponseEntity<Void> toResponse(Encounter encounter) {
+        return encounter != null ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 }

@@ -77,12 +77,13 @@ public class ProviderService {
     }
 
     @AuditAccess(action = AuditAction.UPDATE, resourceType = "Provider", description = "Deactivate provider record")
-    public void deactivate(Long id) {
-        providerRepository.findById(id).ifPresent(provider -> {
+    public boolean deactivate(Long id) {
+        return providerRepository.findById(id).map(provider -> {
             provider.setActive(false);
             providerRepository.save(provider);
             log.info("Deactivated provider: {}", provider.getNpi());
-        });
+            return true;
+        }).orElse(false);
     }
 
     @Transactional(readOnly = true)

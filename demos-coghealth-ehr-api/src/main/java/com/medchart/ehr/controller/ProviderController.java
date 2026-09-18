@@ -81,7 +81,8 @@ public class ProviderController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deactivate(@PathVariable Long id) {
-        providerService.deactivate(id);
-        return ResponseEntity.noContent().build();
+        return providerService.deactivate(id)
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 }

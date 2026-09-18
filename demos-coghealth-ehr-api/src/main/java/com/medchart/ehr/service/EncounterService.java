@@ -98,51 +98,56 @@ public class EncounterService {
     }
 
     @AuditAccess(action = AuditAction.UPDATE, resourceType = "Encounter", description = "Check in encounter")
-    public void checkIn(Long encounterId) {
-        encounterRepository.findById(encounterId).ifPresent(enc -> {
+    public Encounter checkIn(Long encounterId) {
+        return encounterRepository.findById(encounterId).map(enc -> {
             enc.setStatus(EncounterStatus.CHECKED_IN);
-            encounterRepository.save(enc);
+            Encounter saved = encounterRepository.save(enc);
             log.info("Patient checked in for encounter {}", enc.getEncounterNumber());
-        });
+            return saved;
+        }).orElse(null);
     }
 
     @AuditAccess(action = AuditAction.UPDATE, resourceType = "Encounter", description = "Start encounter")
-    public void startEncounter(Long encounterId) {
-        encounterRepository.findById(encounterId).ifPresent(enc -> {
+    public Encounter startEncounter(Long encounterId) {
+        return encounterRepository.findById(encounterId).map(enc -> {
             enc.setStatus(EncounterStatus.IN_PROGRESS);
-            encounterRepository.save(enc);
+            Encounter saved = encounterRepository.save(enc);
             log.info("Encounter {} started", enc.getEncounterNumber());
-        });
+            return saved;
+        }).orElse(null);
     }
 
     @AuditAccess(action = AuditAction.UPDATE, resourceType = "Encounter", description = "Complete encounter")
-    public void completeEncounter(Long encounterId, String notes) {
-        encounterRepository.findById(encounterId).ifPresent(enc -> {
+    public Encounter completeEncounter(Long encounterId, String notes) {
+        return encounterRepository.findById(encounterId).map(enc -> {
             enc.setStatus(EncounterStatus.COMPLETED);
             if (notes != null) {
                 enc.setNotes(notes);
             }
-            encounterRepository.save(enc);
+            Encounter saved = encounterRepository.save(enc);
             log.info("Encounter {} completed", enc.getEncounterNumber());
-        });
+            return saved;
+        }).orElse(null);
     }
 
     @AuditAccess(action = AuditAction.UPDATE, resourceType = "Encounter", description = "Cancel encounter")
-    public void cancelEncounter(Long encounterId) {
-        encounterRepository.findById(encounterId).ifPresent(enc -> {
+    public Encounter cancelEncounter(Long encounterId) {
+        return encounterRepository.findById(encounterId).map(enc -> {
             enc.setStatus(EncounterStatus.CANCELLED);
-            encounterRepository.save(enc);
+            Encounter saved = encounterRepository.save(enc);
             log.info("Encounter {} cancelled", enc.getEncounterNumber());
-        });
+            return saved;
+        }).orElse(null);
     }
 
     @AuditAccess(action = AuditAction.UPDATE, resourceType = "Encounter", description = "Mark encounter as no-show")
-    public void markNoShow(Long encounterId) {
-        encounterRepository.findById(encounterId).ifPresent(enc -> {
+    public Encounter markNoShow(Long encounterId) {
+        return encounterRepository.findById(encounterId).map(enc -> {
             enc.setStatus(EncounterStatus.NO_SHOW);
-            encounterRepository.save(enc);
+            Encounter saved = encounterRepository.save(enc);
             log.info("Encounter {} marked as no-show", enc.getEncounterNumber());
-        });
+            return saved;
+        }).orElse(null);
     }
 
     @Transactional(readOnly = true)

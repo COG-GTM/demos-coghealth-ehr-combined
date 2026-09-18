@@ -30,13 +30,12 @@ public class AuditAspect {
         Object[] args = joinPoint.getArgs();
         String[] parameterNames = signature.getParameterNames();
         Long patientId = extractPatientId(auditAccess, parameterNames, args);
+        Long resourceId = extractResourceId(args);
         String userId = getCurrentUserId();
 
         AuditEvent.AuditEventBuilder eventBuilder = AuditEvent.builder()
                 .userId(userId)
                 .userName(getCurrentUserName())
-                .patientId(patientId)
-                .resourceId(extractResourceId(args))
                 .action(auditAccess.action())
                 .resourceType(auditAccess.resourceType())
                 .description(auditAccess.description())
@@ -45,20 +44,30 @@ public class AuditAspect {
 
         try {
             Object result = joinPoint.proceed();
+            if (result instanceof AuditableResource) {
+                AuditableResource resource = (AuditableResource) result;
+                patientId = patientId != null ? patientId : resource.getAuditPatientId();
+                resourceId = resourceId != null ? resourceId : resource.getAuditResourceId();
+            }
             eventBuilder.success(true);
-            auditService.saveAuditEventAsync(eventBuilder.build());
+            auditService.saveAuditEventAsync(eventBuilder.patientId(patientId).resourceId(resourceId).build());
             return result;
         } catch (Exception e) {
             eventBuilder.success(false);
             eventBuilder.errorMessage(e.getMessage());
-            auditService.saveAuditEventAsync(eventBuilder.build());
+            auditService.saveAuditEventAsync(eventBuilder.patientId(patientId).resourceId(resourceId).build());
             throw e;
         }
     }
 
     private Long extractPatientId(AuditAccess auditAccess, String[] parameterNames, Object[] args) {
+        for (Object arg : args) {
+            if (arg instanceof AuditableResource && ((AuditableResource) arg).getAuditPatientId() != null) {
+                return ((AuditableResource) arg).getAuditPatientId();
+            }
+        }
         if (parameterNames == null || parameterNames.length != args.length) {
-            return extractResourceId(args);
+            return null;
         }
         for (int i = 0; i < parameterNames.length; i++) {
             if ("patientId".equals(parameterNames[i]) && args[i] instanceof Long) {
@@ -76,6 +85,11 @@ public class AuditAspect {
     }
 
     private Long extractResourceId(Object[] args) {
+        for (Object arg : args) {
+            if (arg instanceof AuditableResource && ((AuditableResource) arg).getAuditResourceId() != null) {
+                return ((AuditableResource) arg).getAuditResourceId();
+            }
+        }
         for (Object arg : args) {
             if (arg instanceof Long) {
                 return (Long) arg;
