@@ -1,5 +1,7 @@
 package com.medchart.ehr.service;
 
+import com.medchart.ehr.audit.AuditAccess;
+import com.medchart.ehr.audit.AuditAction;
 import com.medchart.ehr.domain.provider.Provider;
 import com.medchart.ehr.repository.ProviderRepository;
 import org.slf4j.Logger;
@@ -62,11 +64,19 @@ public class ProviderService {
         return providerRepository.findAllSpecialties();
     }
 
-    public Provider save(Provider provider) {
-        log.info("Saving provider: {} {}", provider.getFirstName(), provider.getLastName());
+    @AuditAccess(action = AuditAction.CREATE, resourceType = "Provider", description = "Create provider record")
+    public Provider create(Provider provider) {
+        log.info("Creating provider: {} {}", provider.getFirstName(), provider.getLastName());
         return providerRepository.save(provider);
     }
 
+    @AuditAccess(action = AuditAction.UPDATE, resourceType = "Provider", description = "Update provider record")
+    public Provider update(Provider provider) {
+        log.info("Updating provider: {} {}", provider.getFirstName(), provider.getLastName());
+        return providerRepository.save(provider);
+    }
+
+    @AuditAccess(action = AuditAction.UPDATE, resourceType = "Provider", description = "Deactivate provider record")
     public void deactivate(Long id) {
         providerRepository.findById(id).ifPresent(provider -> {
             provider.setActive(false);

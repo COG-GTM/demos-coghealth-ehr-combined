@@ -1,5 +1,7 @@
 package com.medchart.ehr.service;
 
+import com.medchart.ehr.audit.AuditAccess;
+import com.medchart.ehr.audit.AuditAction;
 import com.medchart.ehr.domain.encounter.Encounter;
 import com.medchart.ehr.domain.encounter.EncounterStatus;
 import com.medchart.ehr.repository.EncounterRepository;
@@ -78,6 +80,7 @@ public class EncounterService {
         return encounterRepository.findByStatus(status);
     }
 
+    @AuditAccess(action = AuditAction.CREATE, resourceType = "Encounter", description = "Create encounter")
     public Encounter create(Encounter encounter) {
         String encNumber = generateEncounterNumber();
         encounter.setEncounterNumber(encNumber);
@@ -88,11 +91,13 @@ public class EncounterService {
         return saved;
     }
 
+    @AuditAccess(action = AuditAction.UPDATE, resourceType = "Encounter", description = "Update encounter")
     public Encounter update(Encounter encounter) {
         log.info("Updating encounter {}", encounter.getEncounterNumber());
         return encounterRepository.save(encounter);
     }
 
+    @AuditAccess(action = AuditAction.UPDATE, resourceType = "Encounter", description = "Check in encounter")
     public void checkIn(Long encounterId) {
         encounterRepository.findById(encounterId).ifPresent(enc -> {
             enc.setStatus(EncounterStatus.CHECKED_IN);
@@ -101,6 +106,7 @@ public class EncounterService {
         });
     }
 
+    @AuditAccess(action = AuditAction.UPDATE, resourceType = "Encounter", description = "Start encounter")
     public void startEncounter(Long encounterId) {
         encounterRepository.findById(encounterId).ifPresent(enc -> {
             enc.setStatus(EncounterStatus.IN_PROGRESS);
@@ -109,6 +115,7 @@ public class EncounterService {
         });
     }
 
+    @AuditAccess(action = AuditAction.UPDATE, resourceType = "Encounter", description = "Complete encounter")
     public void completeEncounter(Long encounterId, String notes) {
         encounterRepository.findById(encounterId).ifPresent(enc -> {
             enc.setStatus(EncounterStatus.COMPLETED);
@@ -120,6 +127,7 @@ public class EncounterService {
         });
     }
 
+    @AuditAccess(action = AuditAction.UPDATE, resourceType = "Encounter", description = "Cancel encounter")
     public void cancelEncounter(Long encounterId) {
         encounterRepository.findById(encounterId).ifPresent(enc -> {
             enc.setStatus(EncounterStatus.CANCELLED);
@@ -128,6 +136,7 @@ public class EncounterService {
         });
     }
 
+    @AuditAccess(action = AuditAction.UPDATE, resourceType = "Encounter", description = "Mark encounter as no-show")
     public void markNoShow(Long encounterId) {
         encounterRepository.findById(encounterId).ifPresent(enc -> {
             enc.setStatus(EncounterStatus.NO_SHOW);

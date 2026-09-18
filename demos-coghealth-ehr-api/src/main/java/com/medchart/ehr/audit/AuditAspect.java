@@ -27,13 +27,16 @@ public class AuditAspect {
         Method method = signature.getMethod();
         AuditAccess auditAccess = method.getAnnotation(AuditAccess.class);
 
-        Long patientId = extractPatientId(joinPoint.getArgs());
+        Object[] args = joinPoint.getArgs();
+        String[] parameterNames = signature.getParameterNames();
+        Long patientId = extractPatientId(auditAccess, parameterNames, args);
         String userId = getCurrentUserId();
 
         AuditEvent.AuditEventBuilder eventBuilder = AuditEvent.builder()
                 .userId(userId)
                 .userName(getCurrentUserName())
                 .patientId(patientId)
+                .resourceId(extractResourceId(args))
                 .action(auditAccess.action())
                 .resourceType(auditAccess.resourceType())
                 .description(auditAccess.description())
@@ -53,7 +56,26 @@ public class AuditAspect {
         }
     }
 
-    private Long extractPatientId(Object[] args) {
+    private Long extractPatientId(AuditAccess auditAccess, String[] parameterNames, Object[] args) {
+        if (parameterNames == null || parameterNames.length != args.length) {
+            return extractResourceId(args);
+        }
+        for (int i = 0; i < parameterNames.length; i++) {
+            if ("patientId".equals(parameterNames[i]) && args[i] instanceof Long) {
+                return (Long) args[i];
+            }
+        }
+        if ("Patient".equals(auditAccess.resourceType())) {
+            for (int i = 0; i < parameterNames.length; i++) {
+                if ("id".equals(parameterNames[i]) && args[i] instanceof Long) {
+                    return (Long) args[i];
+                }
+            }
+        }
+        return null;
+    }
+
+    private Long extractResourceId(Object[] args) {
         for (Object arg : args) {
             if (arg instanceof Long) {
                 return (Long) arg;
