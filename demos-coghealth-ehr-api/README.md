@@ -20,6 +20,11 @@ export NEON_DB_URL="jdbc:postgresql://<neon-host>/neondb?sslmode=require"
 export NEON_DB_USERNAME="<username>"
 export NEON_DB_PASSWORD="<password>"
 
+# Key for column-level PHI encryption (lab result value/interpretation/comments).
+# Generate once with `openssl rand -base64 32` and keep it stable per environment —
+# rows encrypted with an old key cannot be read back with a new one.
+export PHI_ENCRYPTION_KEY="<base64 32-byte key>"
+
 # Run with dev profile
 mvn spring-boot:run -Dspring-boot.run.profiles=dev
 ```
