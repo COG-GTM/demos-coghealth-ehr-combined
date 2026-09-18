@@ -15,9 +15,9 @@ import java.util.Base64;
 /**
  * AES-256-GCM encryption for PHI persisted in database columns.
  *
- * <p>Ciphertext is stored as {@code enc:v1:} + base64(iv || ciphertext || tag). Values without the
- * prefix are treated as not-yet-encrypted and returned unchanged, so existing rows stay readable
- * until they are rewritten.
+ * <p>Ciphertext is stored as {@code enc:v1:} + base64(iv || ciphertext || tag). Values that are not
+ * a well-formed envelope are treated as not-yet-encrypted and returned unchanged, so existing rows
+ * stay readable until they are rewritten.
  */
 @Component
 @Slf4j
@@ -35,7 +35,8 @@ public class PhiCipher {
     public PhiCipher(@Value("${medchart.security.phi-encryption.key:}") String base64Key) {
         if (base64Key == null || base64Key.trim().isEmpty()) {
             throw new IllegalStateException(
-                "medchart.security.phi-encryption.key is required (base64-encoded 256-bit AES key)");
+                "medchart.security.phi-encryption.key is required; set the PHI_ENCRYPTION_KEY "
+                    + "environment variable to a base64-encoded 256-bit AES key");
         }
         byte[] keyBytes = Base64.getDecoder().decode(base64Key.trim());
         if (keyBytes.length != 32) {
@@ -68,8 +69,17 @@ public class PhiCipher {
         if (stored == null || !stored.startsWith(PREFIX)) {
             return stored;
         }
+        byte[] payload;
         try {
-            byte[] payload = Base64.getDecoder().decode(stored.substring(PREFIX.length()));
+            payload = Base64.getDecoder().decode(stored.substring(PREFIX.length()));
+        } catch (IllegalArgumentException e) {
+            // Legacy plaintext that happens to start with the envelope prefix.
+            return stored;
+        }
+        if (payload.length <= IV_LENGTH) {
+            return stored;
+        }
+        try {
             byte[] iv = new byte[IV_LENGTH];
             System.arraycopy(payload, 0, iv, 0, IV_LENGTH);
             Cipher cipher = Cipher.getInstance(TRANSFORMATION);

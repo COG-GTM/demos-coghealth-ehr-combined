@@ -35,7 +35,7 @@ public class LabResult {
     private String resultName;
 
     @Convert(converter = PhiStringConverter.class)
-    @Column(length = 512)
+    @Column(length = 1024)
     private String value;
 
     @Column(precision = 10, scale = 4)
@@ -58,11 +58,11 @@ public class LabResult {
     private LocalDateTime resultDateTime;
 
     @Convert(converter = PhiStringConverter.class)
-    @Column(length = 2048)
+    @Column(length = 4096)
     private String interpretation;
 
     @Convert(converter = PhiStringConverter.class)
-    @Column(length = 2048)
+    @Column(length = 4096)
     private String comments;
 
     @Column(length = 100)

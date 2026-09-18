@@ -58,9 +58,9 @@ medchart:
       secret: ${JWT_SECRET:dev-secret-key-change-in-production}
       expiration: 86400000
     phi-encryption:
-      # Base64-encoded 256-bit AES key for column-level PHI encryption.
-      # The inline value is a local dev key; set PHI_ENCRYPTION_KEY in every deployed environment.
-      key: ${PHI_ENCRYPTION_KEY:spgXZHtzXsI5ktm5HHl4RDbVwo6+jqbAe/QwoNs6J+I=}
+      # Base64-encoded 256-bit AES key for column-level PHI encryption. Required in every
+      # environment: generate with `openssl rand -base64 32` and export as PHI_ENCRYPTION_KEY.
+      key: ${PHI_ENCRYPTION_KEY:}
   audit:
     enabled: true
     async: true
