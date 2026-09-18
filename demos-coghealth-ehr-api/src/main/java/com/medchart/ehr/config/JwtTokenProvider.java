@@ -20,24 +20,32 @@ public class JwtTokenProvider {
     private String jwtSecret;
 
     @Value("${medchart.security.jwt.expiration}")
-    private int jwtExpirationInMs;
+    private long jwtExpirationInMs;
+
+    public static final String SESSION_CLAIM = "sid";
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
-    public String generateToken(Authentication authentication) {
+    public String generateToken(Authentication authentication, String sessionId) {
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
         
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", userPrincipal.getAuthorities());
+        claims.put(SESSION_CLAIM, sessionId);
         
         return createToken(claims, userPrincipal.getUsername());
     }
 
-    public String generateTokenFromUsername(String username) {
+    public String generateTokenFromUsername(String username, String sessionId) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put(SESSION_CLAIM, sessionId);
         return createToken(claims, username);
+    }
+
+    public String getSessionIdFromToken(String token) {
+        return getClaimFromToken(token, claims -> claims.get(SESSION_CLAIM, String.class));
     }
 
     private String createToken(Map<String, Object> claims, String subject) {

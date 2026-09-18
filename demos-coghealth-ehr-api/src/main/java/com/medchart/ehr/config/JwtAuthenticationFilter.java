@@ -1,5 +1,6 @@
 package com.medchart.ehr.config;
 
+import com.medchart.ehr.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,6 +26,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private SessionService sessionService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -34,13 +38,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt, loadUserByUsername(jwt))) {
                 String username = tokenProvider.getUsernameFromToken(jwt);
-                
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken authentication = 
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                String sessionId = tokenProvider.getSessionIdFromToken(jwt);
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                if (StringUtils.hasText(sessionId)
+                        && sessionService.validateAndTouch(sessionId, username).isPresent()) {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);

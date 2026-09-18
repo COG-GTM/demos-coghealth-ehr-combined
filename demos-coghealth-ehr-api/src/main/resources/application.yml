@@ -56,7 +56,13 @@ medchart:
   security:
     jwt:
       secret: ${JWT_SECRET:dev-secret-key-change-in-production}
-      expiration: 86400000
+      # Access-token lifetime: 15 minutes
+      expiration: ${JWT_EXPIRATION_MS:900000}
+    session:
+      # Idle timeout: 15 minutes without activity ends the session
+      idle-timeout: ${SESSION_IDLE_TIMEOUT_MS:900000}
+      # Absolute timeout: 8 hours (one clinical shift) regardless of activity
+      absolute-timeout: ${SESSION_ABSOLUTE_TIMEOUT_MS:28800000}
   audit:
     enabled: true
     async: true

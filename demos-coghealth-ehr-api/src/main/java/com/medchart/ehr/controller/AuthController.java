@@ -3,7 +3,10 @@ package com.medchart.ehr.controller;
 import com.medchart.ehr.domain.auth.User;
 import com.medchart.ehr.repository.UserRepository;
 import com.medchart.ehr.config.JwtTokenProvider;
+import com.medchart.ehr.service.SessionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -28,6 +32,10 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
+    private final SessionService sessionService;
+
+    @Value("${medchart.security.jwt.expiration}")
+    private long accessTokenExpirationMs;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -39,13 +47,49 @@ public class AuthController {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.generateToken(authentication);
 
+        SessionService.IssuedSession session = sessionService.startSession(loginRequest.getUsername());
+        String jwt = tokenProvider.generateToken(authentication, session.getSessionId());
+
+        return ResponseEntity.ok(tokenResponse(jwt, session.getRefreshToken()));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshRequest refreshRequest) {
+        Optional<SessionService.IssuedSession> rotated = sessionService.rotate(refreshRequest.getRefreshToken());
+
+        if (!rotated.isPresent()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Session expired or revoked");
+        }
+
+        SessionService.IssuedSession session = rotated.get();
+        String username = sessionService.findActive(session.getSessionId())
+            .map(s -> s.getUsername())
+            .orElseThrow(() -> new IllegalStateException("Rotated session is not active"));
+        String jwt = tokenProvider.generateTokenFromUsername(username, session.getSessionId());
+
+        return ResponseEntity.ok(tokenResponse(jwt, session.getRefreshToken()));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String sessionId = tokenProvider.getSessionIdFromToken(authorizationHeader.substring(7));
+            if (sessionId != null) {
+                sessionService.revoke(sessionId);
+            }
+        }
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.noContent().build();
+    }
+
+    private Map<String, String> tokenResponse(String jwt, String refreshToken) {
         Map<String, String> response = new HashMap<>();
         response.put("token", jwt);
         response.put("type", "Bearer");
-        
-        return ResponseEntity.ok(response);
+        response.put("refreshToken", refreshToken);
+        response.put("expiresIn", String.valueOf(accessTokenExpirationMs / 1000));
+        return response;
     }
 
     @PostMapping("/register")
@@ -90,6 +134,13 @@ public class AuthController {
         public void setUsername(String username) { this.username = username; }
         public String getPassword() { return password; }
         public void setPassword(String password) { this.password = password; }
+    }
+
+    public static class RefreshRequest {
+        private String refreshToken;
+
+        public String getRefreshToken() { return refreshToken; }
+        public void setRefreshToken(String refreshToken) { this.refreshToken = refreshToken; }
     }
 
     public static class SignUpRequest {
