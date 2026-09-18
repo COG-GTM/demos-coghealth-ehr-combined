@@ -89,7 +89,7 @@ JWT-based authentication. CORS allows `localhost:5173`, `localhost:5178`, `local
 lsof -i :8080 | grep LISTEN | awk '{print $2}' | xargs kill -9
 
 # Test API response time
-curl -w "Time: %{time_total}s\n" -s -o /dev/null "http://localhost:8080/api/v1/patients/search?q=a&page=0&size=20"
+curl -w "Time: %{time_total}s\n" -s -o /dev/null -X POST -H "Content-Type: application/json" -d '{"query":"a","page":0,"size":20}' "http://localhost:8080/api/v1/patients/search"
 
 # Connect to Neon directly
 PGPASSWORD=$NEON_DB_PASSWORD psql "postgresql://$NEON_DB_USERNAME@<neon-host>/neondb?sslmode=require"

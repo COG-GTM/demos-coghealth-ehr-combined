@@ -3,12 +3,12 @@ import type { Patient, Problem, Allergy, Medication, Vital, Immunization, Search
 
 export const patientsApi = {
   search: async (query: string): Promise<Patient[]> => {
-    const { data } = await apiClient.get('/v1/patients/search', { params: { q: query } });
+    const { data } = await apiClient.post('/v1/patients/search', { query });
     return data;
   },
 
   searchByLastName: async (lastName: string): Promise<Patient[]> => {
-    const { data } = await apiClient.get('/v1/patients/search', { params: { lastName } });
+    const { data } = await apiClient.post('/v1/patients/search', { query: lastName });
     return data;
   },
 

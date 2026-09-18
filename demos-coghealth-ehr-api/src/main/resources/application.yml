@@ -36,6 +36,11 @@ server:
   port: 8080
   servlet:
     context-path: /api
+  tomcat:
+    accesslog:
+      # %U logs the request path without the query string, keeping any
+      # identifiers out of access logs.
+      pattern: '%h %l %u %t "%m %U %H" %s %b %D'
 
 management:
   endpoints:

@@ -26,5 +26,5 @@ description: How to build and verify both frontend and backend
 5. Smoke-test the running API latency/health.
    // turbo
    ```bash
-   curl -w "Time: %{time_total}s\n" -s -o /dev/null "http://localhost:8080/api/v1/patients/search?q=a&page=0&size=20"
+   curl -w "Time: %{time_total}s\n" -s -o /dev/null -X POST -H "Content-Type: application/json" -d '{"query":"a","page":0,"size":20}' "http://localhost:8080/api/v1/patients/search"
    ```
