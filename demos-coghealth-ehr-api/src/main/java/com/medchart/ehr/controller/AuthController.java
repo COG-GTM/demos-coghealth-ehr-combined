@@ -16,7 +16,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import io.jsonwebtoken.JwtException;
+
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -55,7 +59,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refreshToken(@RequestBody RefreshRequest refreshRequest) {
+    public ResponseEntity<?> refreshToken(@Valid @RequestBody RefreshRequest refreshRequest) {
         Optional<SessionService.IssuedSession> rotated = sessionService.rotate(refreshRequest.getRefreshToken());
 
         if (!rotated.isPresent()) {
@@ -74,9 +78,15 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String sessionId = tokenProvider.getSessionIdFromToken(authorizationHeader.substring(7));
-            if (sessionId != null) {
-                sessionService.revoke(sessionId);
+            String token = authorizationHeader.substring(7);
+            try {
+                String sessionId = tokenProvider.getSessionIdFromToken(token);
+                String username = tokenProvider.getUsernameFromToken(token);
+                if (sessionId != null && username != null) {
+                    sessionService.revoke(sessionId, username);
+                }
+            } catch (JwtException | IllegalArgumentException ex) {
+                log.debug("Ignoring logout with unparseable bearer token");
             }
         }
         SecurityContextHolder.clearContext();
@@ -137,6 +147,8 @@ public class AuthController {
     }
 
     public static class RefreshRequest {
+        @NotBlank
+        @Size(max = 256)
         private String refreshToken;
 
         public String getRefreshToken() { return refreshToken; }

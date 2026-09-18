@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ import java.util.UUID;
 public class SessionService {
 
     private static final SecureRandom RANDOM = new SecureRandom();
+    private static final int MAX_REFRESH_TOKEN_LENGTH = 256;
     private static final Base64.Encoder ENCODER = Base64.getUrlEncoder().withoutPadding();
 
     private final UserSessionRepository userSessionRepository;
@@ -92,7 +94,7 @@ public class SessionService {
      */
     @Transactional
     public Optional<IssuedSession> rotate(String refreshToken) {
-        if (refreshToken == null || !refreshToken.contains(".")) {
+        if (refreshToken == null || refreshToken.length() > MAX_REFRESH_TOKEN_LENGTH || !refreshToken.contains(".")) {
             return Optional.empty();
         }
         int separator = refreshToken.indexOf('.');
@@ -100,7 +102,7 @@ public class SessionService {
         String secret = refreshToken.substring(separator + 1);
         Instant now = Instant.now();
 
-        Optional<UserSession> session = userSessionRepository.findBySessionId(sessionId)
+        Optional<UserSession> session = userSessionRepository.findBySessionIdForUpdate(sessionId)
                 .filter(s -> s.isActiveAt(now, idleTimeoutMs))
                 .filter(s -> constantTimeEquals(s.getRefreshTokenHash(), hash(secret)));
 
@@ -123,13 +125,19 @@ public class SessionService {
                 .filter(s -> s.isActiveAt(Instant.now(), idleTimeoutMs));
     }
 
+    /**
+     * Revokes a session only when it belongs to the given user, so a caller can never
+     * terminate another clinician's session.
+     */
     @Transactional
-    public void revoke(String sessionId) {
-        userSessionRepository.findBySessionId(sessionId).ifPresent(s -> {
-            s.setRevoked(true);
-            userSessionRepository.save(s);
-            log.info("Revoked session {}", sessionId);
-        });
+    public void revoke(String sessionId, String username) {
+        userSessionRepository.findBySessionId(sessionId)
+                .filter(s -> s.getUsername().equals(username))
+                .ifPresent(s -> {
+                    s.setRevoked(true);
+                    userSessionRepository.save(s);
+                    log.info("Revoked session {}", sessionId);
+                });
     }
 
     @Transactional
@@ -138,6 +146,7 @@ public class SessionService {
         log.info("Revoked {} session(s) for user {}", revoked, username);
     }
 
+    @Scheduled(fixedDelayString = "${medchart.security.session.purge-interval:3600000}")
     @Transactional
     public void purgeExpired() {
         userSessionRepository.deleteExpiredBefore(Instant.now());
