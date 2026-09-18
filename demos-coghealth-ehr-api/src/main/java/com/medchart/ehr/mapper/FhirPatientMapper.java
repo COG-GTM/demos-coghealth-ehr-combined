@@ -7,9 +7,14 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * FHIR R4 Patient resource mapper.
@@ -29,6 +34,13 @@ public class FhirPatientMapper {
     private static final String FHIR_DATE_FORMAT = "yyyy-MM-dd";
     private static final String MRN_SYSTEM = "http://hospital.example.org/mrn";
     private static final String SSN_SYSTEM = "http://hl7.org/fhir/sid/us-ssn";
+
+    private static final Pattern MRN_PATTERN = Pattern.compile("[A-Za-z0-9-]{1,20}");
+    private static final Pattern SSN_PATTERN = Pattern.compile("\\d{3}-\\d{2}-\\d{4}");
+    private static final int MAX_NAME_LENGTH = 100;
+    private static final Pattern FHIR_DATE_PATTERN = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
+    private static final DateTimeFormatter FHIR_DATE_PARSER =
+        DateTimeFormatter.ofPattern("uuuu-MM-dd").withResolverStyle(ResolverStyle.STRICT);
 
     /**
      * PATTERN: Convert internal Patient to FHIR Patient resource
@@ -87,57 +99,148 @@ public class FhirPatientMapper {
 
     /**
      * PATTERN: Convert FHIR Patient resource to internal Patient
+     *
+     * Inbound resources must satisfy this application's Patient profile, which is stricter than
+     * base FHIR R4: resourceType 'Patient', an identifier with the MRN system, name.family,
+     * name.given[0], and a birthDate in the past. Anything else is rejected with
+     * {@link IllegalArgumentException}.
      */
     public Patient fromFhirResource(Map<String, Object> fhirPatient) {
+        if (fhirPatient == null) {
+            throw new IllegalArgumentException("FHIR Patient resource is required");
+        }
+        if (!"Patient".equals(asString(fhirPatient.get("resourceType"), "resourceType"))) {
+            throw new IllegalArgumentException("Unsupported FHIR resourceType: expected 'Patient'");
+        }
+
         Patient patient = new Patient();
         
         // Extract identifiers
-        List<Map<String, Object>> identifiers = (List<Map<String, Object>>) fhirPatient.get("identifier");
-        if (identifiers != null) {
-            for (Map<String, Object> identifier : identifiers) {
-                String system = (String) identifier.get("system");
-                String value = (String) identifier.get("value");
-                
-                if (MRN_SYSTEM.equals(system)) {
-                    patient.setMrn(value);
-                } else if (SSN_SYSTEM.equals(system)) {
-                    patient.setSsn(value);
-                }
+        for (Map<?, ?> identifier : asMapList(fhirPatient.get("identifier"), "identifier")) {
+            String system = asString(identifier.get("system"), "identifier.system");
+            String value = asString(identifier.get("value"), "identifier.value");
+            
+            if (MRN_SYSTEM.equals(system)) {
+                patient.setMrn(matching(value, MRN_PATTERN, "MRN identifier value"));
+            } else if (SSN_SYSTEM.equals(system) && value != null) {
+                patient.setSsn(matching(value, SSN_PATTERN, "SSN identifier value"));
             }
+        }
+        if (patient.getMrn() == null) {
+            throw new IllegalArgumentException("FHIR Patient requires an identifier with system " + MRN_SYSTEM);
         }
         
         // Extract name
-        List<Map<String, Object>> names = (List<Map<String, Object>>) fhirPatient.get("name");
-        if (names != null && !names.isEmpty()) {
-            Map<String, Object> name = names.get(0);
-            patient.setLastName((String) name.get("family"));
-            List<String> given = (List<String>) name.get("given");
-            if (given != null && !given.isEmpty()) {
-                patient.setFirstName(given.get(0));
-                if (given.size() > 1) {
-                    patient.setMiddleName(given.get(1));
-                }
-            }
+        List<Map<?, ?>> names = asMapList(fhirPatient.get("name"), "name");
+        if (names.isEmpty()) {
+            throw new IllegalArgumentException("FHIR Patient requires at least one name");
+        }
+        Map<?, ?> name = names.get(0);
+        patient.setLastName(requiredName(asString(name.get("family"), "name.family"), "name.family"));
+        List<String> given = asStringList(name.get("given"), "name.given");
+        if (given.isEmpty()) {
+            throw new IllegalArgumentException("FHIR Patient requires name.given");
+        }
+        patient.setFirstName(requiredName(given.get(0), "name.given[0]"));
+        if (given.size() > 1) {
+            patient.setMiddleName(requiredName(given.get(1), "name.given[1]"));
         }
         
         // Extract gender
-        String gender = (String) fhirPatient.get("gender");
-        if (gender != null) {
-            patient.setGender(mapFhirGender(gender));
-        }
+        String gender = asString(fhirPatient.get("gender"), "gender");
+        patient.setGender(gender != null ? mapFhirGender(gender) : Gender.UNKNOWN);
         
         // Extract birth date
-        String birthDate = (String) fhirPatient.get("birthDate");
-        if (birthDate != null) {
-            patient.setDateOfBirth(LocalDate.parse(birthDate));
+        String birthDate = asString(fhirPatient.get("birthDate"), "birthDate");
+        if (birthDate == null) {
+            throw new IllegalArgumentException("FHIR Patient requires birthDate");
         }
+        patient.setDateOfBirth(parseBirthDate(birthDate));
         
         // Active status
-        Boolean active = (Boolean) fhirPatient.get("active");
-        patient.setActive(active != null ? active : true);
+        Object active = fhirPatient.get("active");
+        if (active != null && !(active instanceof Boolean)) {
+            throw new IllegalArgumentException("FHIR Patient active must be a boolean");
+        }
+        patient.setActive(active == null || (Boolean) active);
         
         log.debug("Mapped FHIR resource to patient {}", patient.getMrn());
         return patient;
+    }
+
+    private String asString(Object value, String field) {
+        if (value == null) {
+            return null;
+        }
+        if (!(value instanceof String)) {
+            throw new IllegalArgumentException("FHIR Patient " + field + " must be a string");
+        }
+        String text = ((String) value).trim();
+        return text.isEmpty() ? null : text;
+    }
+
+    private List<Map<?, ?>> asMapList(Object value, String field) {
+        if (value == null) {
+            return Collections.emptyList();
+        }
+        if (!(value instanceof List)) {
+            throw new IllegalArgumentException("FHIR Patient " + field + " must be an array");
+        }
+        List<Map<?, ?>> elements = new ArrayList<>();
+        for (Object element : (List<?>) value) {
+            if (!(element instanceof Map)) {
+                throw new IllegalArgumentException("FHIR Patient " + field + " entries must be objects");
+            }
+            elements.add((Map<?, ?>) element);
+        }
+        return elements;
+    }
+
+    private List<String> asStringList(Object value, String field) {
+        if (value == null) {
+            return Collections.emptyList();
+        }
+        if (!(value instanceof List)) {
+            throw new IllegalArgumentException("FHIR Patient " + field + " must be an array");
+        }
+        List<String> elements = new ArrayList<>();
+        for (Object element : (List<?>) value) {
+            elements.add(asString(element, field + " entry"));
+        }
+        return elements;
+    }
+
+    private String matching(String value, Pattern pattern, String field) {
+        if (value == null || !pattern.matcher(value).matches()) {
+            throw new IllegalArgumentException("FHIR Patient " + field + " has an invalid format");
+        }
+        return value;
+    }
+
+    private String requiredName(String value, String field) {
+        if (value == null) {
+            throw new IllegalArgumentException("FHIR Patient " + field + " is required");
+        }
+        if (value.length() > MAX_NAME_LENGTH) {
+            throw new IllegalArgumentException("FHIR Patient " + field + " exceeds " + MAX_NAME_LENGTH + " characters");
+        }
+        return value;
+    }
+
+    private LocalDate parseBirthDate(String birthDate) {
+        if (!FHIR_DATE_PATTERN.matcher(birthDate).matches() || birthDate.startsWith("0000")) {
+            throw new IllegalArgumentException("FHIR Patient birthDate must use the " + FHIR_DATE_FORMAT + " format");
+        }
+        LocalDate parsed;
+        try {
+            parsed = LocalDate.parse(birthDate, FHIR_DATE_PARSER);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("FHIR Patient birthDate must use the " + FHIR_DATE_FORMAT + " format");
+        }
+        if (!parsed.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("FHIR Patient birthDate must be in the past");
+        }
+        return parsed;
     }
 
     private List<Map<String, Object>> buildIdentifiers(Patient patient) {
@@ -184,7 +287,8 @@ public class FhirPatientMapper {
             case "male": return Gender.MALE;
             case "female": return Gender.FEMALE;
             case "other": return Gender.OTHER;
-            default: return Gender.OTHER;
+            case "unknown": return Gender.UNKNOWN;
+            default: throw new IllegalArgumentException("FHIR Patient gender must be male, female, other or unknown");
         }
     }
 
