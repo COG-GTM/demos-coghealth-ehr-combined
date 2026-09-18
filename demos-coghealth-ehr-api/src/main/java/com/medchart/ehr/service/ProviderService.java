@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,13 +78,12 @@ public class ProviderService {
     }
 
     @AuditAccess(action = AuditAction.UPDATE, resourceType = "Provider", description = "Deactivate provider record")
-    public boolean deactivate(Long id) {
-        return providerRepository.findById(id).map(provider -> {
-            provider.setActive(false);
-            providerRepository.save(provider);
-            log.info("Deactivated provider: {}", provider.getNpi());
-            return true;
-        }).orElse(false);
+    public void deactivate(Long id) {
+        Provider provider = providerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Provider not found: " + id));
+        provider.setActive(false);
+        providerRepository.save(provider);
+        log.info("Deactivated provider: {}", provider.getNpi());
     }
 
     @Transactional(readOnly = true)

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -104,7 +105,7 @@ public class EncounterService {
             Encounter saved = encounterRepository.save(enc);
             log.info("Patient checked in for encounter {}", enc.getEncounterNumber());
             return saved;
-        }).orElse(null);
+        }).orElseThrow(() -> encounterNotFound(encounterId));
     }
 
     @AuditAccess(action = AuditAction.UPDATE, resourceType = "Encounter", description = "Start encounter")
@@ -114,7 +115,7 @@ public class EncounterService {
             Encounter saved = encounterRepository.save(enc);
             log.info("Encounter {} started", enc.getEncounterNumber());
             return saved;
-        }).orElse(null);
+        }).orElseThrow(() -> encounterNotFound(encounterId));
     }
 
     @AuditAccess(action = AuditAction.UPDATE, resourceType = "Encounter", description = "Complete encounter")
@@ -127,7 +128,7 @@ public class EncounterService {
             Encounter saved = encounterRepository.save(enc);
             log.info("Encounter {} completed", enc.getEncounterNumber());
             return saved;
-        }).orElse(null);
+        }).orElseThrow(() -> encounterNotFound(encounterId));
     }
 
     @AuditAccess(action = AuditAction.UPDATE, resourceType = "Encounter", description = "Cancel encounter")
@@ -137,7 +138,7 @@ public class EncounterService {
             Encounter saved = encounterRepository.save(enc);
             log.info("Encounter {} cancelled", enc.getEncounterNumber());
             return saved;
-        }).orElse(null);
+        }).orElseThrow(() -> encounterNotFound(encounterId));
     }
 
     @AuditAccess(action = AuditAction.UPDATE, resourceType = "Encounter", description = "Mark encounter as no-show")
@@ -147,7 +148,11 @@ public class EncounterService {
             Encounter saved = encounterRepository.save(enc);
             log.info("Encounter {} marked as no-show", enc.getEncounterNumber());
             return saved;
-        }).orElse(null);
+        }).orElseThrow(() -> encounterNotFound(encounterId));
+    }
+
+    private EntityNotFoundException encounterNotFound(Long encounterId) {
+        return new EntityNotFoundException("Encounter not found: " + encounterId);
     }
 
     @Transactional(readOnly = true)

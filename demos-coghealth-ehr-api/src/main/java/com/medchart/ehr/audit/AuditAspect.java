@@ -30,7 +30,7 @@ public class AuditAspect {
         Object[] args = joinPoint.getArgs();
         String[] parameterNames = signature.getParameterNames();
         Long patientId = extractPatientId(auditAccess, parameterNames, args);
-        Long resourceId = extractResourceId(args);
+        Long resourceId = extractResourceId(auditAccess, parameterNames, args);
         String userId = getCurrentUserId();
 
         AuditEvent.AuditEventBuilder eventBuilder = AuditEvent.builder()
@@ -84,18 +84,29 @@ public class AuditAspect {
         return null;
     }
 
-    private Long extractResourceId(Object[] args) {
+    private Long extractResourceId(AuditAccess auditAccess, String[] parameterNames, Object[] args) {
         for (Object arg : args) {
             if (arg instanceof AuditableResource && ((AuditableResource) arg).getAuditResourceId() != null) {
                 return ((AuditableResource) arg).getAuditResourceId();
             }
         }
-        for (Object arg : args) {
-            if (arg instanceof Long) {
-                return (Long) arg;
+        if (parameterNames == null || parameterNames.length != args.length) {
+            return null;
+        }
+        String typedName = uncapitalize(auditAccess.resourceType()) + "Id";
+        for (int i = 0; i < parameterNames.length; i++) {
+            if (("id".equals(parameterNames[i]) || typedName.equals(parameterNames[i])) && args[i] instanceof Long) {
+                return (Long) args[i];
             }
         }
         return null;
+    }
+
+    private String uncapitalize(String value) {
+        if (value == null || value.isEmpty()) {
+            return "";
+        }
+        return Character.toLowerCase(value.charAt(0)) + value.substring(1);
     }
 
     private String getCurrentUserId() {

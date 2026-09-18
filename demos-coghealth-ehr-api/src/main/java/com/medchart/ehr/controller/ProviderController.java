@@ -5,6 +5,7 @@ import com.medchart.ehr.service.ProviderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
@@ -81,8 +82,11 @@ public class ProviderController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deactivate(@PathVariable Long id) {
-        return providerService.deactivate(id)
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.notFound().build();
+        try {
+            providerService.deactivate(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

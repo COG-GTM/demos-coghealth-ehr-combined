@@ -9,7 +9,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
+import java.util.function.Supplier;
 import java.util.List;
 
 @RestController
@@ -87,30 +89,35 @@ public class EncounterController {
 
     @PostMapping("/{id}/check-in")
     public ResponseEntity<Void> checkIn(@PathVariable Long id) {
-        return toResponse(encounterService.checkIn(id));
+        return toResponse(() -> encounterService.checkIn(id));
     }
 
     @PostMapping("/{id}/start")
     public ResponseEntity<Void> start(@PathVariable Long id) {
-        return toResponse(encounterService.startEncounter(id));
+        return toResponse(() -> encounterService.startEncounter(id));
     }
 
     @PostMapping("/{id}/complete")
     public ResponseEntity<Void> complete(@PathVariable Long id, @RequestBody(required = false) String notes) {
-        return toResponse(encounterService.completeEncounter(id, notes));
+        return toResponse(() -> encounterService.completeEncounter(id, notes));
     }
 
     @PostMapping("/{id}/cancel")
     public ResponseEntity<Void> cancel(@PathVariable Long id) {
-        return toResponse(encounterService.cancelEncounter(id));
+        return toResponse(() -> encounterService.cancelEncounter(id));
     }
 
     @PostMapping("/{id}/no-show")
     public ResponseEntity<Void> noShow(@PathVariable Long id) {
-        return toResponse(encounterService.markNoShow(id));
+        return toResponse(() -> encounterService.markNoShow(id));
     }
 
-    private ResponseEntity<Void> toResponse(Encounter encounter) {
-        return encounter != null ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    private ResponseEntity<Void> toResponse(Supplier<Encounter> transition) {
+        try {
+            transition.get();
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
