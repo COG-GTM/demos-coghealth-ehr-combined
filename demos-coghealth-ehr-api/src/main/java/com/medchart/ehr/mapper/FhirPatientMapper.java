@@ -38,6 +38,7 @@ public class FhirPatientMapper {
     private static final Pattern MRN_PATTERN = Pattern.compile("[A-Za-z0-9-]{1,20}");
     private static final Pattern SSN_PATTERN = Pattern.compile("\\d{3}-\\d{2}-\\d{4}");
     private static final int MAX_NAME_LENGTH = 100;
+    private static final Pattern FHIR_DATE_PATTERN = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
     private static final DateTimeFormatter FHIR_DATE_PARSER =
         DateTimeFormatter.ofPattern("uuuu-MM-dd").withResolverStyle(ResolverStyle.STRICT);
 
@@ -227,6 +228,9 @@ public class FhirPatientMapper {
     }
 
     private LocalDate parseBirthDate(String birthDate) {
+        if (!FHIR_DATE_PATTERN.matcher(birthDate).matches() || birthDate.startsWith("0000")) {
+            throw new IllegalArgumentException("FHIR Patient birthDate must use the " + FHIR_DATE_FORMAT + " format");
+        }
         LocalDate parsed;
         try {
             parsed = LocalDate.parse(birthDate, FHIR_DATE_PARSER);
