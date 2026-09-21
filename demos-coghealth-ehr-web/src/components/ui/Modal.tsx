@@ -55,13 +55,13 @@ export function Modal({ isOpen, onClose, title, children, width = 'md', footer }
           </div>
           
           {/* Content */}
-          <div className="flex-1 overflow-auto p-3 bg-[#ece9d8]">
+          <div className="flex-1 overflow-auto p-3 surface-panel">
             {children}
           </div>
           
           {/* Footer */}
           {footer && (
-            <div className="px-3 py-2 bg-[#ece9d8] border-t border-gray-400 flex justify-end space-x-2">
+            <div className="px-3 py-2 surface-panel border-t border-gray-400 flex justify-end space-x-2">
               {footer}
             </div>
           )}
@@ -147,7 +147,7 @@ export function AlertDialog({ isOpen, onClose, title, message, type = 'info' }: 
       }
     >
       <div className="p-2 border border-gray-400" style={{ background: bgColors[type] }}>
-        <p className="text-[11px]">{message}</p>
+        <p className="text-[11px]" style={{ color: '#333' }}>{message}</p>
       </div>
     </Modal>
   );
