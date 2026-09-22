@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Activity, TrendingUp, TrendingDown, Minus, AlertTriangle, Printer, RefreshCw, Plus, Calendar } from 'lucide-react';
 import { Modal } from '../components/ui/Modal';
 import type { VitalReading } from '../types';
+import { calculateNEWS2, type News2Parameter } from '../utils/earlyWarning';
 
 const vitalSigns = [
   { name: 'BP Systolic', key: 'systolic' as const, unit: 'mmHg', normalRange: { min: 90, max: 140 }, criticalLow: 80, criticalHigh: 180 },
@@ -27,12 +28,65 @@ const defaultVitals: VitalReading[] = [
 
 const patientInfo = { name: 'Smith, John', mrn: 'MRN001234', age: 58, gender: 'M', room: '412A' };
 
+const news2ParameterMeta: { key: News2Parameter; label: string; unit: string }[] = [
+  { key: 'respiratoryRate', label: 'RR', unit: '/min' },
+  { key: 'spo2', label: 'SpO2', unit: '%' },
+  { key: 'systolic', label: 'SBP', unit: 'mmHg' },
+  { key: 'heartRate', label: 'Pulse', unit: 'bpm' },
+  { key: 'temperature', label: 'Temp', unit: '°F' },
+];
+
+const Sparkline = ({
+  data,
+  vitalKey,
+  width = 60,
+  height = 20,
+  abnormal,
+}: {
+  data: (number | undefined)[];
+  vitalKey: string;
+  width?: number;
+  height?: number;
+  abnormal?: boolean;
+}) => {
+  const values = data.filter((v): v is number => v !== undefined);
+  if (values.length < 2) return null;
+
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const range = max - min || 1;
+
+  const points = values.map((v, i) => {
+    const x = (i / (values.length - 1)) * width;
+    const y = height - ((v - min) / range) * height;
+    return `${x},${y}`;
+  }).join(' ');
+
+  const vital = vitalSigns.find(v => v.key === vitalKey);
+  const lastValue = values[0];
+  const isAbnormal = abnormal ?? Boolean(vital && (lastValue < vital.normalRange.min || lastValue > vital.normalRange.max));
+
+  return (
+    <svg width={width} height={height} className="inline-block ml-1">
+      <polyline
+        points={points}
+        fill="none"
+        stroke={isAbnormal ? '#dc2626' : '#2563eb'}
+        strokeWidth="1.5"
+      />
+    </svg>
+  );
+};
+
 export default function VitalsPage() {
   const [vitals] = useState<VitalReading[]>(defaultVitals);
   const [selectedReading, setSelectedReading] = useState<VitalReading | null>(null);
   const [showAddVitals, setShowAddVitals] = useState(false);
   const [dateRange, setDateRange] = useState<'24h' | '48h' | '7d' | '30d'>('48h');
   const [selectedPatient] = useState(patientInfo);
+  const news2Scores = vitals.map(calculateNEWS2);
+  const latestNews2 = news2Scores[0];
+  const previousNews2 = news2Scores[1];
 
   const getValueStatus = (key: string, value: number | undefined) => {
     if (value === undefined) return 'normal';
@@ -83,38 +137,6 @@ export default function VitalsPage() {
     return null;
   };
 
-  const Sparkline = ({ data, vitalKey }: { data: (number | undefined)[]; vitalKey: string }) => {
-    const values = data.filter((v): v is number => v !== undefined);
-    if (values.length < 2) return null;
-    
-    const min = Math.min(...values);
-    const max = Math.max(...values);
-    const range = max - min || 1;
-    const height = 20;
-    const width = 60;
-    
-    const points = values.map((v, i) => {
-      const x = (i / (values.length - 1)) * width;
-      const y = height - ((v - min) / range) * height;
-      return `${x},${y}`;
-    }).join(' ');
-
-    const vital = vitalSigns.find(v => v.key === vitalKey);
-    const lastValue = values[0];
-    const isAbnormal = vital && (lastValue < vital.normalRange.min || lastValue > vital.normalRange.max);
-
-    return (
-      <svg width={width} height={height} className="inline-block ml-1">
-        <polyline
-          points={points}
-          fill="none"
-          stroke={isAbnormal ? '#dc2626' : '#2563eb'}
-          strokeWidth="1.5"
-        />
-      </svg>
-    );
-  };
-
   return (
     <div className="h-full flex flex-col overflow-hidden p-2">
       <div className="ehr-panel flex-1 flex flex-col overflow-hidden">
@@ -162,6 +184,81 @@ export default function VitalsPage() {
             <span className="flex items-center"><span className="w-2 h-2 bg-green-500 inline-block mr-1"></span>Normal</span>
             <span className="flex items-center"><span className="w-2 h-2 bg-yellow-400 inline-block mr-1"></span>Abnormal</span>
             <span className="flex items-center"><span className="w-2 h-2 bg-red-500 inline-block mr-1"></span>Critical</span>
+          </div>
+        </div>
+
+        <div className="bg-[#e5e5e5] border-x border-gray-400 p-1">
+          <div className="ehr-panel px-2 py-1">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-[11px]">Deterioration Watch</span>
+                <span className="text-[10px] text-gray-500">Partial NEWS2</span>
+              </div>
+              <div className="flex items-center gap-3 text-[10px]">
+                {previousNews2 && (
+                  <span className="flex items-center gap-0.5 text-gray-600">
+                    {latestNews2.total > previousNews2.total ? (
+                      <TrendingUp className="w-3 h-3 text-red-600" />
+                    ) : latestNews2.total < previousNews2.total ? (
+                      <TrendingDown className="w-3 h-3 text-green-600" />
+                    ) : (
+                      <Minus className="w-3 h-3 text-gray-400" />
+                    )}
+                    {latestNews2.total === previousNews2.total ? 'No change' : `${latestNews2.total - previousNews2.total > 0 ? '+' : ''}${latestNews2.total - previousNews2.total}`} since {vitals[1].timestamp.split(' ')[1]}
+                  </span>
+                )}
+                <span className="text-gray-500">Older</span>
+                <Sparkline
+                  data={news2Scores.map(score => score.total).reverse()}
+                  vitalKey="news2"
+                  width={100}
+                  height={24}
+                  abnormal={latestNews2.riskTier !== 'Low'}
+                />
+                <span className="text-gray-500">Latest</span>
+              </div>
+            </div>
+            <div className="mt-1 flex items-center gap-3">
+              <div className="flex items-center gap-1">
+                <span className="text-[10px] text-gray-600">NEWS2</span>
+                <span
+                  className="px-2 py-0.5 text-base leading-none font-bold border border-gray-500"
+                  style={getStatusStyle(latestNews2.riskTier === 'High' ? 'critical' : latestNews2.riskTier === 'Low' ? 'normal' : 'abnormal')}
+                >
+                  {latestNews2.total}
+                </span>
+                <span
+                  className="px-1.5 py-0.5 font-semibold border border-gray-400"
+                  style={getStatusStyle(latestNews2.riskTier === 'High' ? 'critical' : latestNews2.riskTier === 'Low' ? 'normal' : 'abnormal')}
+                >
+                  {latestNews2.riskTier}
+                </span>
+              </div>
+              <div className="flex flex-1 flex-wrap items-center gap-1">
+                {news2ParameterMeta.map(parameter => {
+                  const subscore = latestNews2.parameters[parameter.key];
+                  const status = subscore.score === 3 ? 'critical' : subscore.score && subscore.score > 0 ? 'abnormal' : 'normal';
+                  const value = subscore.value === undefined
+                    ? 'not scored'
+                    : `${parameter.key === 'temperature' ? subscore.value.toFixed(1) : subscore.value} ${parameter.unit}`;
+                  return (
+                    <span
+                      key={parameter.key}
+                      className="inline-flex items-center gap-1 border border-gray-400 px-1.5 py-0.5 text-[10px]"
+                      style={getStatusStyle(status)}
+                    >
+                      {subscore.score === 3 && <AlertTriangle className="w-3 h-3" />}
+                      <span className="font-semibold">{parameter.label}</span>
+                      <span>{value}</span>
+                      <span className="font-bold">{subscore.score === null ? '—' : `+${subscore.score}`}</span>
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="mt-1 text-[9px] text-gray-500">
+              ACVPU consciousness and supplemental oxygen are not captured; this is a partial NEWS2 score.
+            </div>
           </div>
         </div>
 
@@ -218,6 +315,29 @@ export default function VitalsPage() {
                   })}
                 </tr>
               ))}
+              <tr className="bg-[#eef4fb]">
+                <td className="px-2 py-1 border border-gray-300 font-semibold sticky left-0 bg-[#eef4fb] z-10">
+                  <div>NEWS2 Score</div>
+                  <div className="text-[9px] text-gray-500 font-normal">partial score</div>
+                </td>
+                <td className="px-2 py-1 border border-gray-300 text-center">
+                  <Sparkline
+                    data={news2Scores.map(score => score.total)}
+                    vitalKey="news2"
+                    abnormal={latestNews2.riskTier !== 'Low'}
+                  />
+                </td>
+                {news2Scores.map((score, readingIdx) => (
+                  <td
+                    key={vitals[readingIdx].id}
+                    className="px-2 py-1 border border-gray-300 text-center cursor-pointer hover:bg-[#e0e8f0]"
+                    style={getStatusStyle(score.riskTier === 'High' ? 'critical' : score.riskTier === 'Low' ? 'normal' : 'abnormal')}
+                    onClick={() => setSelectedReading(vitals[readingIdx])}
+                  >
+                    <span className="font-mono font-semibold">{score.total}</span>
+                  </td>
+                ))}
+              </tr>
               <tr className="bg-gray-100">
                 <td className="px-2 py-1 border border-gray-300 font-semibold sticky left-0 bg-gray-100 z-10">Recorded By</td>
                 <td className="px-2 py-1 border border-gray-300"></td>
