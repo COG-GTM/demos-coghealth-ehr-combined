@@ -9,12 +9,15 @@ import com.medchart.ehr.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -24,11 +27,13 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
+    private final PatientAccessService patientAccessService;
 
     @AuditAccess(action = AuditAction.READ, resourceType = "Patient", description = "View patient record")
     public PatientDTO getPatientById(Long id) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Patient not found with id: " + id));
+        patientAccessService.checkAccess(patient);
         return patientMapper.toDto(patient);
     }
 
@@ -36,13 +41,18 @@ public class PatientService {
     public PatientDTO getPatientByMrn(String mrn) {
         Patient patient = patientRepository.findByMrn(mrn)
                 .orElseThrow(() -> new EntityNotFoundException("Patient not found with MRN: " + mrn));
+        patientAccessService.checkAccess(patient);
         return patientMapper.toDto(patient);
     }
 
     @AuditAccess(action = AuditAction.SEARCH, resourceType = "Patient", description = "Search patients")
     public Page<PatientDTO> searchPatients(String searchTerm, Pageable pageable) {
-        return patientRepository.searchPatients(searchTerm, pageable)
-                .map(patientMapper::toDto);
+        Page<Patient> matches = patientRepository.searchPatients(searchTerm, pageable);
+        List<PatientDTO> accessible = matches.getContent().stream()
+                .filter(patientAccessService::canAccess)
+                .map(patientMapper::toDto)
+                .collect(Collectors.toList());
+        return new PageImpl<>(accessible, pageable, matches.getTotalElements());
     }
 
     @Transactional
@@ -56,6 +66,7 @@ public class PatientService {
         }
 
         Patient patient = patientMapper.toEntity(patientDTO);
+        patient.setPrimaryProviderId(patientAccessService.currentProviderId());
         if (patient.getMrn() == null) {
             patient.setMrn(generateMrn());
         }
@@ -70,6 +81,7 @@ public class PatientService {
     public PatientDTO updatePatient(Long id, PatientDTO patientDTO) {
         Patient existing = patientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Patient not found with id: " + id));
+        patientAccessService.checkAccess(existing);
 
         patientMapper.updateEntityFromDto(patientDTO, existing);
         Patient saved = patientRepository.save(existing);
