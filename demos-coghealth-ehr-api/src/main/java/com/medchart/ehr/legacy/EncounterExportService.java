@@ -1,14 +1,13 @@
 package com.medchart.ehr.legacy;
 
-import com.medchart.ehr.domain.encounter.Encounter;
-import com.medchart.ehr.domain.patient.Patient;
+import com.medchart.ehr.service.PhiExportStorage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +19,9 @@ public class EncounterExportService {
 
     @Autowired
     private EntityManager entityManager;
+
+    @Autowired
+    private PhiExportStorage exportStorage;
 
     public byte[] exportEncountersForDateRange(LocalDate startDate, LocalDate endDate) {
         String sql = "SELECT e.id, e.encounter_number, e.encounter_type, e.status, e.encounter_date_time, " +
@@ -84,27 +86,31 @@ public class EncounterExportService {
         return export.toString().getBytes();
     }
 
-    public void exportAllPatientsToFile(String filePath) {
+    /**
+     * Writes the full active-patient dataset to private, owner-only export storage and returns its
+     * handle. The destination is confined to the export root: callers cannot choose an arbitrary
+     * (or world-readable) path.
+     */
+    public String exportAllPatientsToFile(String handle) {
         Query query = entityManager.createNativeQuery(
             "SELECT id, mrn, first_name, last_name, date_of_birth, " +
             "email, phone_home, phone_mobile, street1, city, state, zip_code " +
             "FROM patients WHERE active = true");
         
         List<Object[]> patients = query.getResultList();
-        
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
-            writer.println("ID,MRN,FirstName,LastName,DOB,Email,PhoneHome,PhoneMobile,Street,City,State,Zip");
-            for (Object[] p : patients) {
-                writer.println(String.join(",", 
-                    String.valueOf(p[0]), String.valueOf(p[1]), String.valueOf(p[2]),
-                    String.valueOf(p[3]), String.valueOf(p[4]), String.valueOf(p[5]),
-                    String.valueOf(p[6]), String.valueOf(p[7]), String.valueOf(p[8]),
-                    String.valueOf(p[9]), String.valueOf(p[10]), String.valueOf(p[11])));
-            }
-            log.info("Exported {} patients to file: {}", patients.size(), filePath);
-        } catch (IOException e) {
-            log.error("Failed to export patients to file", e);
-            throw new RuntimeException("Export failed", e);
+
+        StringBuilder csv = new StringBuilder();
+        csv.append("ID,MRN,FirstName,LastName,DOB,Email,PhoneHome,PhoneMobile,Street,City,State,Zip\n");
+        for (Object[] p : patients) {
+            csv.append(String.join(",",
+                String.valueOf(p[0]), String.valueOf(p[1]), String.valueOf(p[2]),
+                String.valueOf(p[3]), String.valueOf(p[4]), String.valueOf(p[5]),
+                String.valueOf(p[6]), String.valueOf(p[7]), String.valueOf(p[8]),
+                String.valueOf(p[9]), String.valueOf(p[10]), String.valueOf(p[11]))).append("\n");
         }
+
+        String stored = exportStorage.store(handle, csv.toString().getBytes(StandardCharsets.UTF_8));
+        log.info("Exported {} patients to private export storage", patients.size());
+        return stored;
     }
 }

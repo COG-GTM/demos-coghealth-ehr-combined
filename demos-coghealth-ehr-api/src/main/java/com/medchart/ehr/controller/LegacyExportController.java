@@ -45,8 +45,8 @@ public class LegacyExportController {
 
     @GetMapping("/reports/patient-roster")
     public ResponseEntity<String> generatePatientRoster() {
-        String filePath = reportGenerator.generatePatientRoster();
-        return ResponseEntity.ok("Report generated at: " + filePath);
+        String handle = reportGenerator.generatePatientRoster();
+        return ResponseEntity.ok("Report stored in secure export storage with id: " + handle);
     }
 
     @GetMapping("/reports/encounter-summary")
@@ -54,8 +54,8 @@ public class LegacyExportController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
         
-        String filePath = reportGenerator.generateEncounterSummary(startDate, endDate);
-        return ResponseEntity.ok("Report generated at: " + filePath);
+        String handle = reportGenerator.generateEncounterSummary(startDate, endDate);
+        return ResponseEntity.ok("Report stored in secure export storage with id: " + handle);
     }
 
     @GetMapping("/reports/daily")
