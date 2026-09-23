@@ -214,6 +214,9 @@ td {
   color: #664d00;
 }
 
+.ehr-grid-row.ehr-alert-critical:nth-child(n) { background: #ffcccc; }
+.ehr-grid-row.ehr-alert-warning:nth-child(n) { background: #fff3cd; }
+
 .ehr-alert-info {
   background: #cce5ff;
   border: 1px solid #0066cc;
@@ -376,6 +379,9 @@ td {
   color: white;
 }
 
+.dark .ehr-grid-row.ehr-alert-critical:nth-child(n) { background: #4a1c1c; }
+.dark .ehr-grid-row.ehr-alert-warning:nth-child(n) { background: #4a3d10; }
+
 .dark .ehr-alert-critical {
   background: #4a1c1c;
   border-color: #b33;
@@ -448,6 +454,28 @@ td {
 .dark .text-gray-500 { color: #9a9a9a; }
 .dark .text-gray-400 { color: #7a7a7a; }
 .dark .text-black { color: #f0f0f0; }
+
+/* Lift saturated status colors so they stay legible on dark surfaces */
+.dark .text-red-500,
+.dark .text-red-600,
+.dark .text-red-700,
+.dark .text-red-800 { color: #ff8a8a; }
+.dark .text-orange-500,
+.dark .text-orange-600,
+.dark .text-orange-800 { color: #ffb066; }
+.dark .text-yellow-700,
+.dark .text-yellow-800,
+.dark .text-amber-700 { color: #ffd766; }
+.dark .text-green-600,
+.dark .text-green-700,
+.dark .text-green-800 { color: #6fdc8c; }
+.dark .text-blue-500,
+.dark .text-blue-600,
+.dark .text-blue-800 { color: #7fb3ff; }
+.dark .bg-green-100 { background-color: #1c3a24; }
+.dark .bg-red-100 { background-color: #4a1c1c; }
+.dark .border-green-300 { border-color: #3fa65b; }
+.dark .border-red-300 { border-color: #b33; }
 
 .dark .border-white { border-color: #3e4147; }
 .dark .border-gray-200 { border-color: #3a3d42; }
