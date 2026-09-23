@@ -370,6 +370,12 @@ td {
   background: #2f3a48;
 }
 
+.dark .ehr-grid-row.selected,
+.dark .ehr-grid-row.selected:hover {
+  background: #316ac5;
+  color: white;
+}
+
 .dark .ehr-alert-critical {
   background: #4a1c1c;
   border-color: #b33;
