@@ -456,3 +456,32 @@ html.dark .ehr-msg-info { background: #1c3448; color: #b8ddff; }
 html.dark .ehr-msg-success { background: #1e3a24; color: #b6e7c0; }
 html.dark .ehr-msg-warning { background: #453a1a; color: #ffdf9e; }
 html.dark .ehr-msg-error { background: #4a1f1f; color: #ffb4b4; }
+
+/* Out-of-range values in the lab and vitals grids. */
+.ehr-result-critical { background: #ffcccc; color: #990000; font-weight: bold; }
+.ehr-result-abnormal { background: #fff3cd; color: #664d00; }
+
+html.dark .ehr-result-critical { background: #4a1f1f; color: #ffb4b4; }
+html.dark .ehr-result-abnormal { background: #453a1a; color: #ffdf9e; }
+
+html.dark .ehr-result-critical td,
+html.dark .ehr-result-abnormal td,
+html.dark .ehr-result-critical span,
+html.dark .ehr-result-abnormal span,
+html.dark .ehr-result-critical svg,
+html.dark .ehr-result-abnormal svg { color: inherit; }
+
+/* Legacy chrome gradients and tints written as arbitrary Tailwind values. */
+html.dark .bg-gradient-to-b.from-\[\#f8f8f8\],
+html.dark .bg-gradient-to-b.from-\[\#f0f0f0\] {
+  background-image: linear-gradient(to bottom, #333 0%, #2a2a2a 100%);
+}
+
+html.dark .bg-gradient-to-b.from-\[\#f8f8f8\]:hover,
+html.dark .bg-gradient-to-b.from-\[\#f0f0f0\]:hover {
+  background-image: linear-gradient(to bottom, #3c3c3c 0%, #333 100%);
+}
+
+html.dark .bg-\[\#f8f8f8\] { background-color: #232323; }
+html.dark .bg-\[\#f0f4f8\] { background-color: #2a2f36; }
+html.dark .hover\:bg-\[\#e0e8f0\]:hover { background-color: #33455a; }
