@@ -17,9 +17,23 @@
   --font-family-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+:root {
+  --ehr-desktop: #d4d0c8;
+  --ehr-chrome: #ece9d8;
+  --ehr-panel: #f5f5f5;
+  --ehr-panel-alt: #e8e8e8;
+}
+
+html.dark {
+  --ehr-desktop: #1e1e1e;
+  --ehr-chrome: #262626;
+  --ehr-panel: #252526;
+  --ehr-panel-alt: #2f2f2f;
+}
+
 body {
   font-size: 11px;
-  background-color: #d4d0c8;
+  background-color: var(--ehr-desktop);
 }
 
 input, select, textarea, button {
@@ -41,7 +55,7 @@ td {
 }
 
 .ehr-panel {
-  background: #f5f5f5;
+  background: var(--ehr-panel);
   border: 1px solid #999;
   box-shadow: inset 1px 1px 0 #fff, 1px 1px 2px rgba(0,0,0,0.1);
 }
@@ -141,7 +155,7 @@ td {
 }
 
 .ehr-status-bar {
-  background: #ece9d8;
+  background: var(--ehr-chrome);
   border-top: 1px solid #fff;
   padding: 2px 8px;
   font-size: 10px;
@@ -228,7 +242,7 @@ td {
 }
 
 .ehr-splitter {
-  background: #d4d0c8;
+  background: var(--ehr-desktop);
   cursor: col-resize;
   width: 4px;
 }
@@ -236,3 +250,295 @@ td {
 .ehr-splitter:hover {
   background: #b0b0b0;
 }
+
+/* ---------- Dark theme ---------- */
+
+html.dark body {
+  color: #d4d4d4;
+}
+
+html.dark th {
+  background: linear-gradient(to bottom, #3a3a3a 0%, #2d2d2d 100%);
+  border-color: #555;
+  color: #e0e0e0;
+}
+
+html.dark td {
+  border-color: #3a3a3a;
+}
+
+html.dark .ehr-panel {
+  border-color: #555;
+  box-shadow: inset 1px 1px 0 #3a3a3a, 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+html.dark .ehr-button {
+  background: linear-gradient(to bottom, #3c3c3c 0%, #2d2d2d 100%);
+  border-color: #666;
+  color: #e0e0e0;
+  box-shadow: 1px 1px 0 #4a4a4a inset, -1px -1px 0 #1e1e1e inset;
+}
+
+html.dark .ehr-button:hover {
+  background: linear-gradient(to bottom, #4a4a4a 0%, #3a3a3a 100%);
+}
+
+html.dark .ehr-button:active {
+  background: linear-gradient(to bottom, #262626 0%, #333 100%);
+}
+
+html.dark .ehr-button-primary {
+  background: linear-gradient(to bottom, #2a5db0 0%, #1a4080 100%);
+  border-color: #12305f;
+  color: #fff;
+}
+
+html.dark .ehr-button-primary:hover {
+  background: linear-gradient(to bottom, #3a6dc0 0%, #2a5db0 100%);
+}
+
+html.dark .ehr-input {
+  background: #1c1c1c;
+  border-color: #5a6b7c;
+  color: #e0e0e0;
+}
+
+html.dark .ehr-input:focus {
+  border-color: #4a90d9;
+  box-shadow: 0 0 2px rgba(74, 144, 217, 0.7);
+}
+
+html.dark .ehr-fieldset {
+  background: #242424;
+  border-color: #555;
+}
+
+html.dark .ehr-fieldset legend,
+html.dark .ehr-label {
+  color: #cfcfcf;
+}
+
+html.dark .ehr-header {
+  background: linear-gradient(to bottom, #2d4a66 0%, #1b3049 100%);
+  border-bottom-color: #12253a;
+}
+
+html.dark .ehr-subheader {
+  background: linear-gradient(to bottom, #333 0%, #2a2a2a 100%);
+  color: #cfcfcf;
+  border-bottom-color: #555;
+}
+
+html.dark .ehr-tree-item:hover {
+  background: #33455a;
+}
+
+html.dark .ehr-tree-item.selected {
+  background: #27528f;
+}
+
+html.dark .ehr-status-bar {
+  border-top-color: #444;
+  color: #cfcfcf;
+}
+
+html.dark .ehr-tab {
+  background: linear-gradient(to bottom, #3c3c3c 0%, #2d2d2d 100%);
+  border-color: #666;
+  color: #d4d4d4;
+}
+
+html.dark .ehr-tab.active {
+  background: #252526;
+  border-bottom-color: #252526;
+}
+
+html.dark .ehr-tab-content {
+  background: #252526;
+  border-color: #666;
+}
+
+html.dark .ehr-grid-row:nth-child(even) {
+  background: #2a2f36;
+}
+
+html.dark .ehr-grid-row:hover {
+  background: #33455a;
+}
+
+html.dark .ehr-grid-row.selected {
+  background: #27528f;
+}
+
+html.dark .ehr-alert-critical {
+  background: #4a1f1f;
+  border-color: #a33;
+  color: #ffb4b4;
+}
+
+html.dark .ehr-alert-warning {
+  background: #453a1a;
+  border-color: #a8862c;
+  color: #ffdf9e;
+}
+
+html.dark .ehr-alert-info {
+  background: #1c3448;
+  border-color: #3a7fbf;
+  color: #b8ddff;
+}
+
+html.dark .ehr-toolbar {
+  background: linear-gradient(to bottom, #2f2f2f 0%, #272727 100%);
+  border-bottom-color: #555;
+}
+
+html.dark .ehr-toolbar-button:hover {
+  background: #33455a;
+  border-color: #666;
+}
+
+html.dark .ehr-toolbar-button-active {
+  background: linear-gradient(to bottom, #3a3a3a 0%, #2d2d2d 100%);
+  border-color: #666;
+}
+
+
+
+html.dark .ehr-splitter:hover {
+  background: #555;
+}
+
+/* Neutral Tailwind utilities used across pages are remapped so the whole
+   app follows the theme without touching every component. */
+html.dark .bg-white { background-color: #252526; }
+html.dark .bg-black { background-color: #000; }
+html.dark .bg-gray-50 { background-color: #232323; }
+html.dark .bg-gray-100 { background-color: #303030; }
+html.dark .bg-gray-200 { background-color: #323232; }
+html.dark .bg-gray-300 { background-color: #3a3a3a; }
+html.dark .bg-gray-400 { background-color: #4a4a4a; }
+html.dark .bg-gray-500 { background-color: #5a5a5a; }
+html.dark .bg-gray-600 { background-color: #6a6a6a; }
+
+html.dark .hover\:bg-gray-50:hover { background-color: #2d2d2d; }
+html.dark .hover\:bg-gray-100:hover { background-color: #333; }
+html.dark .hover\:bg-gray-200:hover { background-color: #3a3a3a; }
+
+html.dark .text-white { color: #f5f5f5; }
+html.dark .text-gray-900 { color: #f0f0f0; }
+html.dark .text-gray-800 { color: #e6e6e6; }
+html.dark .text-gray-700 { color: #dcdcdc; }
+html.dark .text-gray-600 { color: #c8c8c8; }
+html.dark .text-gray-500 { color: #a8a8a8; }
+html.dark .text-gray-400 { color: #949494; }
+html.dark .text-gray-200 { color: #3a3a3a; }
+
+html.dark .border-white { border-color: #3a3a3a; }
+html.dark .border-gray-200 { border-color: #333; }
+html.dark .border-gray-300 { border-color: #3d3d3d; }
+html.dark .border-gray-400 { border-color: #4d4d4d; }
+html.dark .border-gray-500 { border-color: #5a5a5a; }
+html.dark .border-gray-600 { border-color: #8aa4bd; }
+html.dark .border-gray-700 { border-color: #727272; }
+
+.ehr-msg {
+  border-color: #999;
+}
+
+.ehr-msg-info { background: #cce5ff; color: #004085; }
+.ehr-msg-success { background: #d4edda; color: #155724; }
+.ehr-msg-warning { background: #fff3cd; color: #664d00; }
+.ehr-msg-error { background: #f8d7da; color: #990000; }
+
+html.dark .ehr-msg { border-color: #555; }
+html.dark .ehr-msg-info { background: #1c3448; color: #b8ddff; }
+html.dark .ehr-msg-success { background: #1e3a24; color: #b6e7c0; }
+html.dark .ehr-msg-warning { background: #453a1a; color: #ffdf9e; }
+html.dark .ehr-msg-error { background: #4a1f1f; color: #ffb4b4; }
+
+/* Legacy chrome gradients and tints written as arbitrary Tailwind values. */
+html.dark .bg-gradient-to-b.from-\[\#f8f8f8\],
+html.dark .bg-gradient-to-b.from-\[\#f0f0f0\] {
+  background-image: linear-gradient(to bottom, #333 0%, #2a2a2a 100%);
+}
+
+html.dark .bg-gradient-to-b.from-\[\#f8f8f8\]:hover,
+html.dark .bg-gradient-to-b.from-\[\#f0f0f0\]:hover {
+  background-image: linear-gradient(to bottom, #3c3c3c 0%, #333 100%);
+}
+
+html.dark .bg-\[\#f8f8f8\] { background-color: #232323; }
+html.dark .bg-\[\#f0f4f8\] { background-color: #2a2f36; }
+html.dark .hover\:bg-\[\#e0e8f0\]:hover { background-color: #33455a; }
+
+/* Collapsible group headers rendered as classic raised bars. */
+.ehr-group-bar {
+  background: linear-gradient(to bottom, #f8f8f8 0%, #e0e0e0 100%);
+}
+
+.ehr-group-bar:hover {
+  background: linear-gradient(to bottom, #fff 0%, #ebebeb 100%);
+}
+
+html.dark .ehr-group-bar {
+  background: linear-gradient(to bottom, #333 0%, #2a2a2a 100%);
+}
+
+html.dark .ehr-group-bar:hover {
+  background: linear-gradient(to bottom, #3c3c3c 0%, #333 100%);
+}
+
+/* Semantic accent utilities need darker fills and lighter text in dark mode. */
+html.dark .bg-red-50, html.dark .bg-red-100 { background-color: #3d1f1f; }
+html.dark .bg-orange-50, html.dark .bg-orange-100,
+html.dark .bg-amber-50, html.dark .bg-amber-100,
+html.dark .bg-yellow-50, html.dark .bg-yellow-100 { background-color: #3f3418; }
+html.dark .bg-green-50, html.dark .bg-green-100,
+html.dark .bg-emerald-50, html.dark .bg-emerald-100 { background-color: #1e3a24; }
+html.dark .bg-blue-50, html.dark .bg-blue-100,
+html.dark .bg-sky-50, html.dark .bg-sky-100 { background-color: #1c3448; }
+html.dark .bg-purple-50, html.dark .bg-purple-100,
+html.dark .bg-indigo-50, html.dark .bg-indigo-100 { background-color: #2e2745; }
+
+html.dark .hover\:bg-blue-50:hover { background-color: #24405a; }
+
+html.dark .text-red-500, html.dark .text-red-600,
+html.dark .text-red-700, html.dark .text-red-800 { color: #ff9c9c; }
+html.dark .text-orange-500, html.dark .text-orange-600,
+html.dark .text-orange-700, html.dark .text-orange-800 { color: #ffb782; }
+html.dark .text-amber-600, html.dark .text-amber-700, html.dark .text-amber-800,
+html.dark .text-yellow-600, html.dark .text-yellow-700, html.dark .text-yellow-800 { color: #ffd479; }
+html.dark .text-green-500, html.dark .text-green-600,
+html.dark .text-green-700, html.dark .text-green-800,
+html.dark .text-emerald-600, html.dark .text-emerald-700 { color: #7fd694; }
+html.dark .text-blue-500, html.dark .text-blue-600,
+html.dark .text-blue-700, html.dark .text-blue-800 { color: #8ec2ff; }
+html.dark .text-purple-500, html.dark .text-purple-600,
+html.dark .text-purple-700, html.dark .text-purple-800,
+html.dark .text-indigo-600, html.dark .text-indigo-700 { color: #c3b0ff; }
+
+html.dark .border-red-200, html.dark .border-red-300 { border-color: #7a3a3a; }
+html.dark .border-orange-200, html.dark .border-orange-300,
+html.dark .border-amber-200, html.dark .border-amber-300,
+html.dark .border-yellow-200, html.dark .border-yellow-300 { border-color: #7a6529; }
+html.dark .border-green-200, html.dark .border-green-300,
+html.dark .border-emerald-200, html.dark .border-emerald-300 { border-color: #3d6b47; }
+html.dark .border-blue-200, html.dark .border-blue-300 { border-color: #3a6690; }
+html.dark .border-purple-200, html.dark .border-purple-300,
+html.dark .border-indigo-200, html.dark .border-indigo-300 { border-color: #54487a; }
+
+/* Out-of-range values in the lab and vitals grids. Declared last so the
+   status tint wins over the neutral row striping. */
+.ehr-result-critical { background: #ffcccc; color: #990000; font-weight: bold; }
+.ehr-result-abnormal { background: #fff3cd; color: #664d00; }
+
+html.dark .ehr-result-critical { background-color: #4a1f1f; color: #ffb4b4; }
+html.dark .ehr-result-abnormal { background-color: #453a1a; color: #ffdf9e; }
+
+html.dark .ehr-result-critical td,
+html.dark .ehr-result-abnormal td,
+html.dark .ehr-result-critical span,
+html.dark .ehr-result-abnormal span,
+html.dark .ehr-result-critical svg,
+html.dark .ehr-result-abnormal svg { color: inherit; }
