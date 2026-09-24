@@ -457,20 +457,6 @@ html.dark .ehr-msg-success { background: #1e3a24; color: #b6e7c0; }
 html.dark .ehr-msg-warning { background: #453a1a; color: #ffdf9e; }
 html.dark .ehr-msg-error { background: #4a1f1f; color: #ffb4b4; }
 
-/* Out-of-range values in the lab and vitals grids. */
-.ehr-result-critical { background: #ffcccc; color: #990000; font-weight: bold; }
-.ehr-result-abnormal { background: #fff3cd; color: #664d00; }
-
-html.dark .ehr-result-critical { background: #4a1f1f; color: #ffb4b4; }
-html.dark .ehr-result-abnormal { background: #453a1a; color: #ffdf9e; }
-
-html.dark .ehr-result-critical td,
-html.dark .ehr-result-abnormal td,
-html.dark .ehr-result-critical span,
-html.dark .ehr-result-abnormal span,
-html.dark .ehr-result-critical svg,
-html.dark .ehr-result-abnormal svg { color: inherit; }
-
 /* Legacy chrome gradients and tints written as arbitrary Tailwind values. */
 html.dark .bg-gradient-to-b.from-\[\#f8f8f8\],
 html.dark .bg-gradient-to-b.from-\[\#f0f0f0\] {
@@ -485,3 +471,74 @@ html.dark .bg-gradient-to-b.from-\[\#f0f0f0\]:hover {
 html.dark .bg-\[\#f8f8f8\] { background-color: #232323; }
 html.dark .bg-\[\#f0f4f8\] { background-color: #2a2f36; }
 html.dark .hover\:bg-\[\#e0e8f0\]:hover { background-color: #33455a; }
+
+/* Collapsible group headers rendered as classic raised bars. */
+.ehr-group-bar {
+  background: linear-gradient(to bottom, #f8f8f8 0%, #e0e0e0 100%);
+}
+
+.ehr-group-bar:hover {
+  background: linear-gradient(to bottom, #fff 0%, #ebebeb 100%);
+}
+
+html.dark .ehr-group-bar {
+  background: linear-gradient(to bottom, #333 0%, #2a2a2a 100%);
+}
+
+html.dark .ehr-group-bar:hover {
+  background: linear-gradient(to bottom, #3c3c3c 0%, #333 100%);
+}
+
+/* Semantic accent utilities need darker fills and lighter text in dark mode. */
+html.dark .bg-red-50, html.dark .bg-red-100 { background-color: #3d1f1f; }
+html.dark .bg-orange-50, html.dark .bg-orange-100,
+html.dark .bg-amber-50, html.dark .bg-amber-100,
+html.dark .bg-yellow-50, html.dark .bg-yellow-100 { background-color: #3f3418; }
+html.dark .bg-green-50, html.dark .bg-green-100,
+html.dark .bg-emerald-50, html.dark .bg-emerald-100 { background-color: #1e3a24; }
+html.dark .bg-blue-50, html.dark .bg-blue-100,
+html.dark .bg-sky-50, html.dark .bg-sky-100 { background-color: #1c3448; }
+html.dark .bg-purple-50, html.dark .bg-purple-100,
+html.dark .bg-indigo-50, html.dark .bg-indigo-100 { background-color: #2e2745; }
+
+html.dark .hover\:bg-blue-50:hover { background-color: #24405a; }
+
+html.dark .text-red-500, html.dark .text-red-600,
+html.dark .text-red-700, html.dark .text-red-800 { color: #ff9c9c; }
+html.dark .text-orange-500, html.dark .text-orange-600,
+html.dark .text-orange-700, html.dark .text-orange-800 { color: #ffb782; }
+html.dark .text-amber-600, html.dark .text-amber-700, html.dark .text-amber-800,
+html.dark .text-yellow-600, html.dark .text-yellow-700, html.dark .text-yellow-800 { color: #ffd479; }
+html.dark .text-green-500, html.dark .text-green-600,
+html.dark .text-green-700, html.dark .text-green-800,
+html.dark .text-emerald-600, html.dark .text-emerald-700 { color: #7fd694; }
+html.dark .text-blue-500, html.dark .text-blue-600,
+html.dark .text-blue-700, html.dark .text-blue-800 { color: #8ec2ff; }
+html.dark .text-purple-500, html.dark .text-purple-600,
+html.dark .text-purple-700, html.dark .text-purple-800,
+html.dark .text-indigo-600, html.dark .text-indigo-700 { color: #c3b0ff; }
+
+html.dark .border-red-200, html.dark .border-red-300 { border-color: #7a3a3a; }
+html.dark .border-orange-200, html.dark .border-orange-300,
+html.dark .border-amber-200, html.dark .border-amber-300,
+html.dark .border-yellow-200, html.dark .border-yellow-300 { border-color: #7a6529; }
+html.dark .border-green-200, html.dark .border-green-300,
+html.dark .border-emerald-200, html.dark .border-emerald-300 { border-color: #3d6b47; }
+html.dark .border-blue-200, html.dark .border-blue-300 { border-color: #3a6690; }
+html.dark .border-purple-200, html.dark .border-purple-300,
+html.dark .border-indigo-200, html.dark .border-indigo-300 { border-color: #54487a; }
+
+/* Out-of-range values in the lab and vitals grids. Declared last so the
+   status tint wins over the neutral row striping. */
+.ehr-result-critical { background: #ffcccc; color: #990000; font-weight: bold; }
+.ehr-result-abnormal { background: #fff3cd; color: #664d00; }
+
+html.dark .ehr-result-critical { background-color: #4a1f1f; color: #ffb4b4; }
+html.dark .ehr-result-abnormal { background-color: #453a1a; color: #ffdf9e; }
+
+html.dark .ehr-result-critical td,
+html.dark .ehr-result-abnormal td,
+html.dark .ehr-result-critical span,
+html.dark .ehr-result-abnormal span,
+html.dark .ehr-result-critical svg,
+html.dark .ehr-result-abnormal svg { color: inherit; }
