@@ -7,6 +7,8 @@ import {
   Building2,
   Key,
   Monitor,
+  Sun,
+  Moon,
   Mail,
   Smartphone,
   Globe,
@@ -14,6 +16,8 @@ import {
   Check
 } from 'lucide-react';
 import { AlertDialog } from '../components/ui/Modal';
+import { useTheme } from '../context/useTheme';
+import { THEMES, type Theme } from '../context/theme';
 
 type SettingsTab = 'profile' | 'notifications' | 'security' | 'appearance' | 'practice';
 
@@ -54,7 +58,10 @@ const defaultAppearance = {
   fontSize: 'medium',
 };
 
+const themeIcons: Record<Theme, typeof Monitor> = { light: Sun, dark: Moon, system: Monitor };
+
 export default function SettingsPage() {
+  const { theme, setTheme } = useTheme();
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
   const [saved, setSaved] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['channels', 'alerts', 'security', 'hours']));
@@ -105,7 +112,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col" style={{ background: 'var(--ehr-desktop)' }}>
       {/* Header */}
       <div className="ehr-header flex items-center justify-between">
         <span>System Settings</span>
@@ -121,7 +128,7 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Navigation */}
-        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: '#ece9d8' }}>
+        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: 'var(--ehr-chrome)' }}>
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -385,20 +392,26 @@ export default function SettingsPage() {
               <fieldset className="ehr-fieldset">
                 <legend>Theme</legend>
                 <div className="grid grid-cols-3 gap-2">
-                  {['light', 'dark', 'system'].map((theme) => (
-                    <button
-                      key={theme}
-                      onClick={() => setAppearance({ ...appearance, theme })}
-                      className={`p-2 border text-center text-[11px] ${
-                        appearance.theme === theme
-                          ? 'border-gray-600 bg-white'
-                          : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
-                      }`}
-                    >
-                      <Monitor className="w-4 h-4 mx-auto mb-1 text-gray-600" />
-                      <span className="capitalize">{theme}</span>
-                    </button>
-                  ))}
+                  {THEMES.map((option) => {
+                    const Icon = themeIcons[option];
+                    return (
+                      <button
+                        key={option}
+                        onClick={() => {
+                          setTheme(option);
+                          setAppearance({ ...appearance, theme: option });
+                        }}
+                        className={`p-2 border text-center text-[11px] ${
+                          theme === option
+                            ? 'border-gray-600 bg-white'
+                            : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
+                        }`}
+                      >
+                        <Icon className="w-4 h-4 mx-auto mb-1 text-gray-600" />
+                        <span className="capitalize">{option}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </fieldset>
 
