@@ -125,6 +125,7 @@ export default function PatientSearchPage() {
   const [searchResults, setSearchResults] = useState<PatientListItem[]>([]);
   const [allPatients, setAllPatients] = useState<PatientListItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [useSemanticSearch, setUseSemanticSearch] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<PatientListItem | null>(null);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     quickFilters: true,
@@ -174,7 +175,22 @@ export default function PatientSearchPage() {
     setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
   };
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
+    if (useSemanticSearch && searchTerm.length >= 2) {
+      setLoading(true);
+      try {
+        const results = await patientService.vectorSearch(searchTerm);
+        const mapped = results.map(mapPatientToListItem);
+        setSearchResults(mapped);
+      } catch (error) {
+        console.error('Vector search failed:', error);
+        setShowAlert({ title: 'Error', message: 'Semantic search failed.', type: 'info' });
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
     const term = searchTerm.toLowerCase();
     let results = allPatients;
     
@@ -298,6 +314,15 @@ export default function PatientSearchPage() {
           <button onClick={handleSearch} className="ehr-button ehr-button-primary flex items-center">
             <Search className="w-3 h-3 mr-1" /> Find
           </button>
+          <label className="flex items-center cursor-pointer ml-2">
+            <input
+              type="checkbox"
+              className="ehr-checkbox"
+              checked={useSemanticSearch}
+              onChange={(e) => setUseSemanticSearch(e.target.checked)}
+            />
+            <span className="ehr-label ml-1">Semantic</span>
+          </label>
         </div>
       </div>
 

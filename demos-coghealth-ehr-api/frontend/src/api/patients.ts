@@ -12,6 +12,11 @@ export const patientsApi = {
     return data;
   },
 
+  vectorSearch: async (query: string, limit = 20): Promise<Patient[]> => {
+    const { data } = await apiClient.get('/v1/patients/search/vector', { params: { q: query, limit } });
+    return data;
+  },
+
   getById: async (id: number): Promise<Patient> => {
     const { data } = await apiClient.get(`/v1/patients/${id}`);
     return data;

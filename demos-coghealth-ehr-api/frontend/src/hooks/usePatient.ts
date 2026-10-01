@@ -18,6 +18,14 @@ export function usePatientSearch(query: string) {
   });
 }
 
+export function usePatientVectorSearch(query: string) {
+  return useQuery({
+    queryKey: ['patients', 'vectorSearch', query],
+    queryFn: () => patientsApi.vectorSearch(query),
+    enabled: query.length >= 2,
+  });
+}
+
 export function usePatientProblems(patientId: number) {
   return useQuery({
     queryKey: ['patient', patientId, 'problems'],

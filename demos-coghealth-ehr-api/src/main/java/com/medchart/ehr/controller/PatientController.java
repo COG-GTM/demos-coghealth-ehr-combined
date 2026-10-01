@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/patients")
@@ -39,6 +40,21 @@ public class PatientController {
             @RequestParam String q,
             Pageable pageable) {
         return ResponseEntity.ok(patientService.searchPatients(q, pageable));
+    }
+
+    @GetMapping("/search/vector")
+    @Operation(summary = "Semantic vector search patients")
+    public ResponseEntity<List<PatientDTO>> vectorSearchPatients(
+            @RequestParam String q,
+            @RequestParam(defaultValue = "20") int limit) {
+        return ResponseEntity.ok(patientService.vectorSearchPatients(q, limit));
+    }
+
+    @PostMapping("/embeddings/backfill")
+    @Operation(summary = "Backfill embeddings for all patients (admin)")
+    public ResponseEntity<String> backfillEmbeddings() {
+        patientService.backfillAllEmbeddings();
+        return ResponseEntity.ok("Backfill initiated");
     }
 
     @PostMapping
