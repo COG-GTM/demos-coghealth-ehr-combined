@@ -176,6 +176,8 @@
   :where(.dark) .text-green-700, :where(.dark) .text-green-800 { color: #86efac; }
   :where(.dark) .text-blue-500, :where(.dark) .text-blue-600, :where(.dark) .text-primary-600 { color: #60a5fa; }
   :where(.dark) .text-blue-800 { color: #93c5fd; }
+  :where(.dark) .bg-gray-500 { background-color: #525e6e; }
+  :where(.dark) .bg-gray-600 { background-color: #44505f; }
   :where(.dark) .text-amber-600 { color: #fbbf24; }
   :where(.dark) .text-amber-700, :where(.dark) .text-yellow-700, :where(.dark) .text-yellow-800 { color: #fcd34d; }
   :where(.dark) .text-purple-500, :where(.dark) .text-purple-600 { color: #c084fc; }
@@ -405,4 +407,13 @@ td {
 
 .ehr-splitter:hover {
   background: var(--ehr-splitter-hover);
+}
+
+.ehr-logo-mark {
+  background: #fff;
+  border: 1px solid #93c5fd;
+}
+
+.ehr-logo-mark span {
+  color: #1e40af;
 }
