@@ -237,7 +237,7 @@ export default function SettingsPage() {
                   onClick={(e) => { e.stopPropagation(); toggleSection('channels'); }}
                 >
                   <div className="flex items-center">
-                    <span className="w-4 h-4 border border-gray-400 bg-white flex items-center justify-center text-[10px] font-bold mr-1">
+                    <span className="w-4 h-4 border border-gray-400 bg-white text-gray-800 flex items-center justify-center text-[10px] font-bold mr-1">
                       {expandedSections.has('channels') ? '-' : '+'}
                     </span>
                     Notification Channels
@@ -285,7 +285,7 @@ export default function SettingsPage() {
                   onClick={(e) => { e.stopPropagation(); toggleSection('alerts'); }}
                 >
                   <div className="flex items-center">
-                    <span className="w-4 h-4 border border-gray-400 bg-white flex items-center justify-center text-[10px] font-bold mr-1">
+                    <span className="w-4 h-4 border border-gray-400 bg-white text-gray-800 flex items-center justify-center text-[10px] font-bold mr-1">
                       {expandedSections.has('alerts') ? '-' : '+'}
                     </span>
                     Alert Types
@@ -326,7 +326,7 @@ export default function SettingsPage() {
                   onClick={(e) => { e.stopPropagation(); toggleSection('security'); }}
                 >
                   <div className="flex items-center">
-                    <span className="w-4 h-4 border border-gray-400 bg-white flex items-center justify-center text-[10px] font-bold mr-1">
+                    <span className="w-4 h-4 border border-gray-400 bg-white text-gray-800 flex items-center justify-center text-[10px] font-bold mr-1">
                       {expandedSections.has('security') ? '-' : '+'}
                     </span>
                     Security Settings
@@ -482,7 +482,7 @@ export default function SettingsPage() {
                   onClick={(e) => { e.stopPropagation(); toggleSection('hours'); }}
                 >
                   <div className="flex items-center">
-                    <span className="w-4 h-4 border border-gray-400 bg-white flex items-center justify-center text-[10px] font-bold mr-1">
+                    <span className="w-4 h-4 border border-gray-400 bg-white text-gray-800 flex items-center justify-center text-[10px] font-bold mr-1">
                       {expandedSections.has('hours') ? '-' : '+'}
                     </span>
                     Business Hours

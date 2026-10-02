@@ -178,6 +178,7 @@
   :where(.dark) .text-blue-800 { color: #93c5fd; }
   :where(.dark) .bg-gray-500 { background-color: #525e6e; }
   :where(.dark) .bg-gray-600 { background-color: #44505f; }
+  :where(.dark) tr.opacity-50 { opacity: 0.7; }
   :where(.dark) .text-amber-600 { color: #fbbf24; }
   :where(.dark) .text-amber-700, :where(.dark) .text-yellow-700, :where(.dark) .text-yellow-800 { color: #fcd34d; }
   :where(.dark) .text-purple-500, :where(.dark) .text-purple-600 { color: #c084fc; }

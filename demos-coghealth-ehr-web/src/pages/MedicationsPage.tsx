@@ -578,7 +578,7 @@ export default function MedicationsPage() {
                     onClick={() => togglePanel('details')}
                   >
                     <div className="flex items-center">
-                      <span className="w-4 h-4 border border-gray-400 bg-white flex items-center justify-center text-[10px] font-bold mr-1">
+                      <span className="w-4 h-4 border border-gray-400 bg-white text-gray-800 flex items-center justify-center text-[10px] font-bold mr-1">
                         {expandedPanels.details ? '-' : '+'}
                       </span>
                       <FileText className="w-3 h-3 mr-1" /> Rx Details
@@ -618,7 +618,7 @@ export default function MedicationsPage() {
                     onClick={() => togglePanel('pharmacy')}
                   >
                     <div className="flex items-center">
-                      <span className="w-4 h-4 border border-gray-400 bg-white flex items-center justify-center text-[10px] font-bold mr-1">
+                      <span className="w-4 h-4 border border-gray-400 bg-white text-gray-800 flex items-center justify-center text-[10px] font-bold mr-1">
                         {expandedPanels.pharmacy ? '-' : '+'}
                       </span>
                       <Building2 className="w-3 h-3 mr-1" /> Pharmacy
@@ -658,7 +658,7 @@ export default function MedicationsPage() {
                       onClick={() => togglePanel('alerts')}
                     >
                       <div className="flex items-center">
-                        <span className="w-4 h-4 border border-gray-400 bg-white flex items-center justify-center text-[10px] font-bold mr-1">
+                        <span className="w-4 h-4 border border-gray-400 bg-white text-gray-800 flex items-center justify-center text-[10px] font-bold mr-1">
                           {expandedPanels.alerts ? '-' : '+'}
                         </span>
                         <ShieldAlert className="w-3 h-3 mr-1" /> Clinical Alerts
