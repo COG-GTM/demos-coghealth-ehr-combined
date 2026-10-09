@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, useSyncExternalStore, type ReactNode } from 'react';
 
 export type Theme = 'light' | 'dark' | 'system';
 type ResolvedTheme = 'light' | 'dark';
@@ -10,6 +10,7 @@ interface ThemeContextValue {
 }
 
 const STORAGE_KEY = 'coghealth-theme';
+const DARK_QUERY = '(prefers-color-scheme: dark)';
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
@@ -20,40 +21,24 @@ function getInitialTheme(): Theme {
   return 'system';
 }
 
-function resolve(theme: Theme): ResolvedTheme {
-  if (theme !== 'system') return theme;
-  if (typeof window === 'undefined') return 'light';
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+function subscribeToSystemTheme(callback: () => void) {
+  const mq = window.matchMedia(DARK_QUERY);
+  mq.addEventListener('change', callback);
+  return () => mq.removeEventListener('change', callback);
+}
+
+function getSystemPrefersDark() {
+  return window.matchMedia(DARK_QUERY).matches;
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(getInitialTheme);
-  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => resolve(theme));
+  const systemPrefersDark = useSyncExternalStore(subscribeToSystemTheme, getSystemPrefersDark, () => false);
+  const resolvedTheme: ResolvedTheme = theme === 'system' ? (systemPrefersDark ? 'dark' : 'light') : theme;
 
   useEffect(() => {
-    const root = document.documentElement;
-    const next = resolve(theme);
-    setResolvedTheme(next);
-    if (next === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-  }, [theme]);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = (e: MediaQueryListEvent) => {
-      if (theme === 'system') {
-        setResolvedTheme(e.matches ? 'dark' : 'light');
-        const root = document.documentElement;
-        if (e.matches) root.classList.add('dark');
-        else root.classList.remove('dark');
-      }
-    };
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, [theme]);
+    document.documentElement.classList.toggle('dark', resolvedTheme === 'dark');
+  }, [resolvedTheme]);
 
   const setTheme = (next: Theme) => {
     localStorage.setItem(STORAGE_KEY, next);
@@ -67,6 +52,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useTheme() {
   const ctx = useContext(ThemeContext);
   if (!ctx) throw new Error('useTheme must be used within ThemeProvider');
