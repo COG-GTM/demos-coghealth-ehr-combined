@@ -385,6 +385,11 @@ td {
 .dark .border-white {
   border-color: var(--ehr-border-soft);
 }
+.dark .text-gray-100,
+.dark .text-gray-200,
+.dark .text-gray-300 {
+  color: #e6eaee;
+}
 .dark .text-gray-400 {
   color: #7d8590;
 }
