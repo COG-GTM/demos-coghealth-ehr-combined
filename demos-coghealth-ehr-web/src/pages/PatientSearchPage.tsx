@@ -596,7 +596,7 @@ export default function PatientSearchPage() {
                         {patient.balance > 0 ? (
                           <span className={isSelected ? 'text-white' : 'text-gray-800 font-semibold'}>${patient.balance.toFixed(2)}</span>
                         ) : (
-                          <span className={isSelected ? 'text-gray-200' : 'text-gray-600'}>$0.00</span>
+                          <span className={isSelected ? 'text-white/80' : 'text-gray-600'}>$0.00</span>
                         )}
                       </td>
                       <td className="px-1 py-0.5">
@@ -607,13 +607,13 @@ export default function PatientSearchPage() {
                             </span>
                           )}
                           {patient.recentLabs && (
-                            <span title="Recent labs"><Activity className={`w-3 h-3 ${isSelected ? 'text-gray-200' : 'text-gray-600'}`} /></span>
+                            <span title="Recent labs"><Activity className={`w-3 h-3 ${isSelected ? 'text-white/80' : 'text-gray-600'}`} /></span>
                           )}
                           {patient.recentImaging && (
-                            <span title="Recent imaging"><FileText className={`w-3 h-3 ${isSelected ? 'text-gray-200' : 'text-gray-600'}`} /></span>
+                            <span title="Recent imaging"><FileText className={`w-3 h-3 ${isSelected ? 'text-white/80' : 'text-gray-600'}`} /></span>
                           )}
                           {patient.alerts.length > 0 && (
-                            <span title={patient.alerts.join(', ')}><AlertTriangle className={`w-3 h-3 ${isSelected ? 'text-gray-200' : 'text-gray-600'}`} /></span>
+                            <span title={patient.alerts.join(', ')}><AlertTriangle className={`w-3 h-3 ${isSelected ? 'text-white/80' : 'text-gray-600'}`} /></span>
                           )}
                         </div>
                       </td>
