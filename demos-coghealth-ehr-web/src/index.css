@@ -182,7 +182,7 @@ td {
 .ehr-button {
   background: linear-gradient(to bottom, var(--ehr-grad-top) 0%, var(--ehr-grad-bottom) 100%);
   border: 1px solid var(--ehr-border-strong);
-  color: inherit;
+  color: var(--ehr-text);
   padding: 2px 8px;
   font-size: 11px;
   cursor: pointer;
@@ -212,7 +212,7 @@ td {
   border: 1px solid var(--ehr-input-border);
   padding: 2px 4px;
   background: var(--ehr-surface);
-  color: inherit;
+  color: var(--ehr-text);
   font-size: 11px;
 }
 
@@ -349,7 +349,7 @@ td {
   border: 1px solid transparent;
   padding: 2px 6px;
   cursor: pointer;
-  color: inherit;
+  color: var(--ehr-text);
 }
 
 .ehr-toolbar-button:hover {
