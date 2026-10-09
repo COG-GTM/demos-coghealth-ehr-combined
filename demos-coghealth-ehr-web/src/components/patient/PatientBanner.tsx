@@ -30,7 +30,7 @@ export default function PatientBanner({ patient, allergies = [] }: PatientBanner
   const hasSevereAllergy = allergies.some(a => a.severity === 'Severe');
 
   return (
-    <div className="border-b border-gray-500" style={{ background: 'linear-gradient(to bottom, #4a6ea5 0%, #2d4a7c 100%)' }}>
+    <div className="border-b border-gray-500" style={{ background: 'linear-gradient(to bottom, var(--ehr-banner-top) 0%, var(--ehr-banner-bottom) 100%)' }}>
       <div className="px-2 py-1.5 flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-white/20 flex items-center justify-center border border-white/30">
@@ -44,10 +44,10 @@ export default function PatientBanner({ patient, allergies = [] }: PatientBanner
                 {patient.middleName && ` ${patient.middleName.charAt(0)}.`}
               </span>
               {patient.deceased && (
-                <span className="px-1.5 py-0.5 bg-gray-600 text-white text-[10px] font-bold border border-gray-500">DECEASED</span>
+                <span className="px-1.5 py-0.5 bg-gray-600 dark:bg-[#4b5563] dark:border-[#6b7280] text-white text-[10px] font-bold border border-gray-500">DECEASED</span>
               )}
               {!patient.active && !patient.deceased && (
-                <span className="px-1.5 py-0.5 bg-gray-500 text-white text-[10px] font-bold border border-gray-400">INACTIVE</span>
+                <span className="px-1.5 py-0.5 bg-gray-500 dark:bg-[#5b6470] dark:border-[#7a8390] text-white text-[10px] font-bold border border-gray-400">INACTIVE</span>
               )}
             </div>
             
