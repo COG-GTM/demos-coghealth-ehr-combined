@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 import {
   THEME_STORAGE_KEY,
   applyResolvedTheme,
+  getStorage,
   readStoredTheme,
   resolveTheme,
   type ResolvedTheme,
@@ -21,7 +22,7 @@ const DARK_QUERY = '(prefers-color-scheme: dark)';
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(() => readStoredTheme(window.localStorage));
+  const [theme, setThemeState] = useState<Theme>(() => readStoredTheme(getStorage(window)));
   const [systemDark, setSystemDark] = useState(() => window.matchMedia(DARK_QUERY).matches);
   const resolvedTheme = resolveTheme(theme, systemDark);
 
@@ -38,7 +39,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const setTheme = (next: Theme) => {
     try {
-      window.localStorage.setItem(THEME_STORAGE_KEY, next);
+      getStorage(window)?.setItem(THEME_STORAGE_KEY, next);
     } catch {
       // storage unavailable; keep in-memory preference
     }

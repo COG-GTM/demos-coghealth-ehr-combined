@@ -8,6 +8,14 @@ export function isTheme(value: unknown): value is Theme {
   return typeof value === 'string' && (THEMES as readonly string[]).includes(value);
 }
 
+export function getStorage(win: { localStorage: Storage }): Storage | undefined {
+  try {
+    return win.localStorage;
+  } catch {
+    return undefined;
+  }
+}
+
 export function readStoredTheme(storage: Pick<Storage, 'getItem'> | undefined): Theme {
   try {
     const stored = storage?.getItem(THEME_STORAGE_KEY);

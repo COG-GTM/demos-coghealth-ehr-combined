@@ -2,6 +2,7 @@ import {
   THEME_STORAGE_KEY,
   THEMES,
   applyResolvedTheme,
+  getStorage,
   isTheme,
   readStoredTheme,
   resolveTheme,
@@ -93,6 +94,23 @@ describe('theme utilities', () => {
       applyResolvedTheme(root, 'light');
       expect(root.classes.has('dark')).toBe(false);
       expect(root.style.colorScheme).toBe('light');
+    });
+  });
+
+  describe('getStorage', () => {
+    it('returns localStorage when accessible', () => {
+      const storage = {} as Storage;
+      expect(getStorage({ localStorage: storage })).toBe(storage);
+    });
+
+    it('returns undefined when accessing localStorage throws', () => {
+      const win = Object.defineProperty({}, 'localStorage', {
+        get: () => {
+          throw new DOMException('blocked', 'SecurityError');
+        },
+      }) as { localStorage: Storage };
+      expect(getStorage(win)).toBeUndefined();
+      expect(readStoredTheme(getStorage(win))).toBe('system');
     });
   });
 });

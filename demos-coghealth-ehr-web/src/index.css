@@ -101,6 +101,14 @@
   --color-gray-950: #f2f4f6;
 }
 
+/* Solid gray badges with white text keep a dark fill in dark mode */
+.dark .bg-gray-500.text-white,
+.dark .bg-gray-600.text-white {
+  background-color: #5b6370;
+  border-color: #7a8290;
+}
+
+
 body {
   font-size: 11px;
   background-color: var(--ehr-desktop);
