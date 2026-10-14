@@ -387,3 +387,32 @@ td {
 .dark .text-orange-800 {
   color: var(--ehr-info-text);
 }
+
+/* Brighten mid-tone accent text so it stays legible on dark surfaces */
+.dark .text-red-500,
+.dark .text-red-600 {
+  color: #f87171;
+}
+
+.dark .text-orange-500,
+.dark .text-orange-600 {
+  color: #fb923c;
+}
+
+.dark .text-amber-600 {
+  color: #fbbf24;
+}
+
+.dark .text-green-600 {
+  color: #4ade80;
+}
+
+.dark .text-blue-500,
+.dark .text-blue-600 {
+  color: #60a5fa;
+}
+
+.dark .text-purple-500,
+.dark .text-purple-600 {
+  color: #c084fc;
+}

@@ -177,6 +177,7 @@ describe('CogHealth EHR E2E Tests', () => {
     });
 
     test('should display patient list', async () => {
+      await page.waitForSelector('table tbody tr', { timeout: 5000 });
       const rows = await page.$$('table tbody tr');
       expect(rows.length).toBeGreaterThan(0);
     });
