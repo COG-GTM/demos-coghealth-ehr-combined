@@ -281,7 +281,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="h-full flex flex-col relative" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col relative" style={{ background: 'var(--ehr-desktop)' }}>
       <LoadingOverlay isLoading={loading} text="Loading dashboard..." />
       {/* Toolbar */}
       <div className="ehr-toolbar flex items-center justify-between">
@@ -399,7 +399,7 @@ export default function DashboardPage() {
                   <button className="ehr-toolbar-button p-0.5 text-[10px]" onClick={markAllAsRead}>Mark All Read</button>
                   <button className="ehr-toolbar-button p-0.5"><RefreshCw className="w-3 h-3" /></button>
                 </div>
-                <div className="flex-1 overflow-auto bg-white">
+                <div className="flex-1 overflow-auto bg-ehr-surface">
                   <table className="w-full text-[11px]">
                     <thead className="sticky top-0">
                       <tr>
@@ -498,7 +498,7 @@ export default function DashboardPage() {
                     <Printer className="w-3 h-3 mr-1" /> Print List
                   </button>
                 </div>
-                <div className="flex-1 overflow-auto bg-white">
+                <div className="flex-1 overflow-auto bg-ehr-surface">
                   <table className="w-full text-[11px]">
                     <thead className="sticky top-0">
                       <tr>
@@ -602,7 +602,7 @@ export default function DashboardPage() {
               </div>
             </div>
             {expandedPanels.unsigned && (
-              <div className="bg-white">
+              <div className="bg-ehr-surface">
                 {unsignedNotes.map((note, idx) => (
                   <div key={note.id} className={`px-2 py-1.5 border-b border-gray-200 flex items-center justify-between ${idx % 2 === 1 ? 'bg-gray-50' : ''}`}>
                     <div>
@@ -636,7 +636,7 @@ export default function DashboardPage() {
               </div>
             </div>
             {expandedPanels.orders && (
-              <div className="bg-white">
+              <div className="bg-ehr-surface">
                 {pendingOrders.map((order, idx) => (
                   <div key={order.id} className={`px-2 py-1.5 border-b border-gray-200 ${idx % 2 === 1 ? 'bg-gray-50' : ''}`}>
                     <div className="flex items-start justify-between">
@@ -674,7 +674,7 @@ export default function DashboardPage() {
               </div>
             </div>
             {expandedPanels.schedule && (
-              <div className="bg-white p-2">
+              <div className="bg-ehr-surface p-2">
                 <div className="flex items-center justify-between mb-2 text-[11px]">
                   <span className="text-gray-500">January 18, 2024</span>
                   <span className="font-semibold">8 appointments</span>
@@ -708,7 +708,7 @@ export default function DashboardPage() {
               <span className="w-4 h-4 mr-2 flex items-center justify-center border border-white/50 text-[10px] font-bold">!</span>
               <span>System Messages</span>
             </div>
-            <div className="bg-white text-[10px]">
+            <div className="bg-ehr-surface text-[10px]">
               <div className="px-2 py-1 border-b border-gray-200">
                 <span className="text-gray-500">01/18 08:00</span> - System maintenance scheduled for 01/20 2:00 AM
               </div>
@@ -726,7 +726,7 @@ export default function DashboardPage() {
             <div className="ehr-header flex items-center">
               <span>System Status</span>
             </div>
-            <div className="bg-white p-2 text-[10px]">
+            <div className="bg-ehr-surface p-2 text-[10px]">
               <table className="w-full">
                 <tbody>
                   <tr>

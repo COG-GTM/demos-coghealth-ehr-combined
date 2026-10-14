@@ -145,7 +145,7 @@ export function OrderDialog({ isOpen, onClose, type, patientName, patientMrn, on
                   className="ehr-input flex-1"
                 />
               </div>
-              <div className="flex-1 overflow-auto border border-gray-300 bg-white">
+              <div className="flex-1 overflow-auto border border-gray-300 bg-ehr-surface">
                 {filteredItems.map((item) => {
                   const isSelected = selectedOrders.some(o => o.code === item.code);
                   return (
@@ -172,7 +172,7 @@ export function OrderDialog({ isOpen, onClose, type, patientName, patientMrn, on
           <div className="w-64">
             <fieldset className="ehr-fieldset h-64 flex flex-col">
               <legend>Selected Orders ({selectedOrders.length})</legend>
-              <div className="flex-1 overflow-auto border border-gray-300 bg-white">
+              <div className="flex-1 overflow-auto border border-gray-300 bg-ehr-surface">
                 {selectedOrders.length === 0 ? (
                   <div className="p-4 text-center text-gray-500 text-[11px]">
                     Click items on the left to add orders

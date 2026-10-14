@@ -87,7 +87,7 @@ export default function ReportsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col" style={{ background: 'var(--ehr-desktop)' }}>
       {/* Toolbar */}
       <div className="ehr-toolbar flex items-center justify-between">
         <div className="flex items-center space-x-1">
@@ -121,12 +121,12 @@ export default function ReportsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Panel - Report Summary */}
-        <div className="w-56 overflow-auto p-2 space-y-2" style={{ background: '#ece9d8' }}>
+        <div className="w-56 overflow-auto p-2 space-y-2" style={{ background: 'var(--ehr-window)' }}>
           <fieldset className="ehr-fieldset">
             <legend>Today's Summary</legend>
             <table className="w-full text-[10px]">
               <tbody>
-                <tr className="bg-white">
+                <tr className="bg-ehr-surface">
                   <td className="px-1 py-0.5 border border-gray-400">Patients</td>
                   <td className="px-1 py-0.5 border border-gray-400 text-right font-bold">{defaultMetrics.patientsToday}</td>
                 </tr>
@@ -134,7 +134,7 @@ export default function ReportsPage() {
                   <td className="px-1 py-0.5 border border-gray-400">Encounters</td>
                   <td className="px-1 py-0.5 border border-gray-400 text-right font-bold">{defaultMetrics.encounters}</td>
                 </tr>
-                <tr className="bg-white">
+                <tr className="bg-ehr-surface">
                   <td className="px-1 py-0.5 border border-gray-400">Avg Wait Time</td>
                   <td className="px-1 py-0.5 border border-gray-400 text-right font-bold">{defaultMetrics.avgWaitTime} min</td>
                 </tr>
@@ -156,7 +156,7 @@ export default function ReportsPage() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white">
+                <tr className="bg-ehr-surface">
                   <td className="px-1 py-0.5 border border-gray-400">Office Visit</td>
                   <td className="px-1 py-0.5 border border-gray-400 text-right">89</td>
                 </tr>
@@ -164,7 +164,7 @@ export default function ReportsPage() {
                   <td className="px-1 py-0.5 border border-gray-400">Telehealth</td>
                   <td className="px-1 py-0.5 border border-gray-400 text-right">34</td>
                 </tr>
-                <tr className="bg-white">
+                <tr className="bg-ehr-surface">
                   <td className="px-1 py-0.5 border border-gray-400">Lab Only</td>
                   <td className="px-1 py-0.5 border border-gray-400 text-right">18</td>
                 </tr>
@@ -181,7 +181,7 @@ export default function ReportsPage() {
             <table className="w-full text-[10px]">
               <tbody>
                 {['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map((day, idx) => (
-                  <tr key={day} className={idx % 2 === 0 ? 'bg-white' : ''}>
+                  <tr key={day} className={idx % 2 === 0 ? 'bg-ehr-surface' : ''}>
                     <td className="px-1 py-0.5 border border-gray-400">{day}</td>
                     <td className="px-1 py-0.5 border border-gray-400 text-right">{[65, 45, 78, 52, 88][idx]}</td>
                   </tr>
@@ -192,7 +192,7 @@ export default function ReportsPage() {
         </div>
 
         {/* Right Panel - Reports */}
-        <div className="flex-1 overflow-auto bg-white border-l border-gray-500">
+        <div className="flex-1 overflow-auto bg-ehr-surface border-l border-gray-500">
           {Object.entries(reportsByCategory).map(([category, reports]) => {
             const config = categoryConfig[category as keyof typeof categoryConfig];
             return (
@@ -200,10 +200,10 @@ export default function ReportsPage() {
                 <div
                   onClick={() => toggleCategory(category)}
                   className="px-2 py-1 bg-gray-100 hover:bg-gray-200 cursor-pointer flex items-center justify-between text-[11px] border-b border-gray-400"
-                  style={{ background: 'linear-gradient(to bottom, #f8f8f8 0%, #e0e0e0 100%)' }}
+                  style={{ background: 'linear-gradient(to bottom, var(--ehr-btn-from) 0%, var(--ehr-btn-to) 100%)' }}
                 >
                   <div className="flex items-center space-x-2">
-                    <span className="w-4 h-4 border border-gray-500 bg-white flex items-center justify-center text-[10px] font-bold">
+                    <span className="w-4 h-4 border border-gray-500 bg-ehr-surface flex items-center justify-center text-[10px] font-bold">
                       {expandedCategories.has(category) ? '-' : '+'}
                     </span>
                     <span className="font-semibold">{config.label}</span>
