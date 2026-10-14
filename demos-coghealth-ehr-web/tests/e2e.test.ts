@@ -431,4 +431,45 @@ describe('CogHealth EHR E2E Tests', () => {
       await wait(100);
     });
   });
+
+  describe('Dark Mode', () => {
+    const htmlIsDark = () => page.evaluate(() => document.documentElement.classList.contains('dark'));
+    const bodyBg = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+
+    beforeAll(async () => {
+      await page.goto(BASE_URL);
+      await page.evaluate(() => localStorage.setItem('coghealth-theme', 'light'));
+      await page.reload();
+      await page.waitForSelector('[data-testid="theme-toggle"]');
+    });
+
+    afterAll(async () => {
+      await page.evaluate(() => localStorage.removeItem('coghealth-theme'));
+    });
+
+    test('header toggle switches to dark mode', async () => {
+      expect(await htmlIsDark()).toBe(false);
+      const lightBg = await bodyBg();
+      await page.click('[data-testid="theme-toggle"]');
+      await page.waitForFunction(() => document.documentElement.classList.contains('dark'));
+      expect(await bodyBg()).not.toBe(lightBg);
+      expect(await page.evaluate(() => localStorage.getItem('coghealth-theme'))).toBe('dark');
+    });
+
+    test('dark mode persists across reload without flashing light', async () => {
+      await page.reload({ waitUntil: 'domcontentloaded' });
+      expect(await htmlIsDark()).toBe(true);
+    });
+
+    test('Settings > Appearance reflects and changes the theme', async () => {
+      await page.click('a[href="/settings"]');
+      await page.waitForSelector('::-p-xpath(//button[contains(., "Appearance")])');
+      await page.click('::-p-xpath(//button[contains(., "Appearance")])');
+      await page.waitForSelector('[data-testid="theme-option-dark"]');
+      expect(await page.$eval('[data-testid="theme-option-dark"]', el => el.getAttribute('aria-pressed'))).toBe('true');
+      await page.click('[data-testid="theme-option-light"]');
+      await page.waitForFunction(() => !document.documentElement.classList.contains('dark'));
+      expect(await page.evaluate(() => localStorage.getItem('coghealth-theme'))).toBe('light');
+    });
+  });
 });
