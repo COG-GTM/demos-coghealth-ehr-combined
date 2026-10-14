@@ -153,8 +153,8 @@
   --color-gray-100: #2a2e35;
   --color-gray-200: #343941;
   --color-gray-300: #444a53;
-  --color-gray-400: #5d646e;
-  --color-gray-500: #8b929c;
+  --color-gray-400: #858c96;
+  --color-gray-500: #9aa1ab;
   --color-gray-600: #aab0b8;
   --color-gray-700: #c4c9d0;
   --color-gray-800: #dde0e5;
@@ -423,4 +423,8 @@ td {
 
 .ehr-splitter:hover {
   background: var(--ehr-splitter-hover);
+}
+
+.dark tr.opacity-50 {
+  opacity: 0.7;
 }
