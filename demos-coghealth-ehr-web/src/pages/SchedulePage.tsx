@@ -274,7 +274,7 @@ export default function SchedulePage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col" style={{ background: 'var(--ehr-desktop)' }}>
       {/* Toolbar */}
       <div className="ehr-toolbar flex items-center justify-between">
         <div className="flex items-center space-x-1">
@@ -335,7 +335,7 @@ export default function SchedulePage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Appointment List */}
-        <div className="flex-1 overflow-auto bg-white border-r border-gray-500">
+        <div className="flex-1 overflow-auto bg-ehr-surface border-r border-gray-500">
           <table className="w-full text-[11px]">
             <thead className="sticky top-0">
               <tr>
@@ -365,7 +365,7 @@ export default function SchedulePage() {
                       apt.status === 'FINISHED' ? 'opacity-50' : 
                       idx % 2 === 1 ? 'bg-gray-50' : ''
                     }`}
-                    style={isSelected ? { background: '#316ac5', color: 'white' } : undefined}
+                    style={isSelected ? { background: 'var(--ehr-selected)', color: 'white' } : undefined}
                   >
                     <td className="px-1 py-1">
                       <div className="font-semibold">{formatTime(apt.appointmentTime)}</div>
@@ -373,7 +373,7 @@ export default function SchedulePage() {
                     </td>
                     <td className="px-1 py-1">
                       <div className="font-semibold">{apt.patientName}</div>
-                      <div className="text-[10px]" style={isSelected ? { color: '#ccc' } : { color: '#666' }}>
+                      <div className="text-[10px]" style={isSelected ? { color: '#ccc' } : { color: 'var(--ehr-text-muted)' }}>
                         {apt.patientMrn} • {apt.patientAge}{apt.patientGender}
                       </div>
                       <div className="flex space-x-0.5 mt-0.5">
@@ -444,7 +444,7 @@ export default function SchedulePage() {
         </div>
 
         {/* Detail Panel */}
-        <div className="w-80 flex flex-col overflow-hidden" style={{ background: '#ece9d8' }}>
+        <div className="w-80 flex flex-col overflow-hidden" style={{ background: 'var(--ehr-window)' }}>
           {selectedAppointment ? (
             <>
               {/* Patient Header */}
@@ -522,7 +522,7 @@ export default function SchedulePage() {
                     </div>
                     <div className="flex flex-wrap gap-1">
                       {selectedAppointment.pendingOrders.map((order, i) => (
-                        <span key={i} className="px-1 py-0.5 bg-white border border-gray-400 text-[10px]">{order}</span>
+                        <span key={i} className="px-1 py-0.5 bg-ehr-surface border border-gray-400 text-[10px]">{order}</span>
                       ))}
                     </div>
                   </div>
@@ -543,7 +543,7 @@ export default function SchedulePage() {
                       </div>
                     </div>
                     {expandedPanels.vitals && (
-                      <div className="bg-white p-2">
+                      <div className="bg-ehr-surface p-2">
                         <div className="grid grid-cols-5 gap-1 text-center text-[10px]">
                           <div className="p-1 bg-gray-100 border border-gray-300">
                             <div className="text-gray-500">BP</div>
@@ -588,7 +588,7 @@ export default function SchedulePage() {
                       </div>
                     </div>
                     {expandedPanels.prep && (
-                      <div className="bg-white p-2 text-[10px]">
+                      <div className="bg-ehr-surface p-2 text-[10px]">
                         {selectedAppointment.prepNotes.map((note, i) => (
                           <div key={i} className="flex items-start mb-1">
                             <span className="mr-1.5">•</span>
@@ -615,7 +615,7 @@ export default function SchedulePage() {
                       </div>
                     </div>
                     {expandedPanels.labs && (
-                      <div className="bg-white">
+                      <div className="bg-ehr-surface">
                         {selectedAppointment.recentLabs.map((lab, i) => (
                           <div key={i} className={`flex items-center justify-between px-2 py-1 text-[10px] ${i % 2 === 1 ? 'bg-gray-50' : ''}`}>
                             <span>{lab.name}</span>
@@ -645,7 +645,7 @@ export default function SchedulePage() {
                       </div>
                     </div>
                     {expandedPanels.meds && (
-                      <div className="bg-white">
+                      <div className="bg-ehr-surface">
                         {selectedAppointment.medications.map((med, i) => (
                           <div key={i} className={`flex items-center justify-between px-2 py-1 text-[10px] ${i % 2 === 1 ? 'bg-gray-50' : ''}`}>
                             <span className="font-medium">{med.name}</span>

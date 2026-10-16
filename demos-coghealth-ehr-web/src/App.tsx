@@ -14,7 +14,9 @@ import {
   Lock,
   Shield,
   FlaskConical,
-  Activity
+  Activity,
+  Moon,
+  Sun
 } from 'lucide-react';
 import { useState, useEffect, useCallback } from 'react';
 import PatientSearchPage from './pages/PatientSearchPage';
@@ -28,6 +30,7 @@ import LabResultsPage from './pages/LabResultsPage';
 import VitalsPage from './pages/VitalsPage';
 import { AlertDialog, ConfirmDialog } from './components/ui/Modal';
 import { logLogout } from './services/auditService';
+import { useTheme } from './context/themeContext';
 
 const SESSION_TIMEOUT_MS = 15 * 60 * 1000;
 const SESSION_WARNING_MS = 2 * 60 * 1000;
@@ -55,6 +58,8 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
   const [searchResults, setSearchResults] = useState<typeof defaultPatientSearch>([]);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [sessionTime, setSessionTime] = useState(SESSION_TIMEOUT_MS);
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -130,7 +135,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
       {/* Application Header */}
       <div className="ehr-header flex items-center justify-between px-3">
         <div className="flex items-center space-x-3">
-          <div className="w-5 h-5 bg-white flex items-center justify-center border border-blue-300">
+          <div className="w-5 h-5 bg-ehr-surface flex items-center justify-center border border-blue-300">
             <span className="text-blue-800 font-bold text-[11px]">C</span>
           </div>
           <span className="font-semibold">CogHealth EHR</span>
@@ -151,7 +156,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
               />
             </div>
             {showSearchDropdown && searchResults.length > 0 && (
-              <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-400 shadow-lg z-50">
+              <div className="absolute top-full left-0 mt-1 w-64 bg-ehr-surface border border-gray-400 shadow-lg z-50">
                 {searchResults.map((patient) => (
                   <div
                     key={patient.id}
@@ -165,7 +170,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
               </div>
             )}
             {showSearchDropdown && searchResults.length === 0 && globalSearch.length >= 2 && (
-              <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-400 shadow-lg z-50 p-2 text-[11px] text-gray-500">
+              <div className="absolute top-full left-0 mt-1 w-64 bg-ehr-surface border border-gray-400 shadow-lg z-50 p-2 text-[11px] text-gray-500">
                 No patients found
               </div>
             )}
@@ -185,6 +190,16 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
             <User className="w-3 h-3" />
             <span>Dr. Sarah Anderson</span>
           </div>
+          <button
+            onClick={() => setTheme(isDark ? 'light' : 'dark')}
+            className="flex items-center space-x-1 hover:text-white text-blue-200"
+            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {isDark ? <Sun className="w-3 h-3" /> : <Moon className="w-3 h-3" />}
+            <span>{isDark ? 'Light' : 'Dark'}</span>
+          </button>
+          <span className="text-blue-300">|</span>
           <button onClick={onLogout} className="flex items-center space-x-1 hover:text-white text-blue-200">
             <LogOut className="w-3 h-3" />
             <span>Logout</span>
@@ -228,7 +243,7 @@ function Navigation({ onSessionWarning, onSessionExpired, onLogout }: Navigation
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-300 bg-white">
+        <div className="md:hidden border-t border-gray-300 bg-ehr-surface">
           <div className="px-2 py-1 space-y-0.5">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -280,7 +295,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="h-screen flex flex-col" style={{ background: '#d4d0c8', fontFamily: 'Tahoma, sans-serif' }}>
+      <div className="h-screen flex flex-col" style={{ background: 'var(--ehr-desktop)', fontFamily: 'Tahoma, sans-serif' }}>
         <Navigation 
           onSessionWarning={handleSessionWarning}
           onSessionExpired={handleSessionExpired}
@@ -301,7 +316,7 @@ function App() {
         </main>
 
         {/* Status Bar - Windows XP style */}
-        <div className="h-5 bg-gradient-to-b from-[#ece9d8] to-[#d4d0c8] border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
+        <div className="h-5 bg-gradient-to-b from-ehr-window to-ehr-desktop border-t border-gray-400 flex items-center justify-between px-2 text-[10px] text-gray-600">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1">
               <Shield className="w-3 h-3 text-green-600" />

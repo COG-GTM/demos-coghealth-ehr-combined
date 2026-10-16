@@ -174,7 +174,7 @@ export function PrescriptionDialog({ isOpen, onClose, patientName, patientMrn, p
                   className="ehr-input flex-1"
                 />
               </div>
-              <div className="flex-1 overflow-auto border border-gray-300 bg-white">
+              <div className="flex-1 overflow-auto border border-gray-300 bg-ehr-surface">
                 {filteredMeds.map((med) => (
                   <div
                     key={med.name}

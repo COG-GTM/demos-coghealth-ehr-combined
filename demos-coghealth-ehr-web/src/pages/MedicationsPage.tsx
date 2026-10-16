@@ -315,7 +315,7 @@ export default function MedicationsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col" style={{ background: 'var(--ehr-desktop)' }}>
       {/* Toolbar */}
       <div className="ehr-toolbar flex items-center justify-between">
         <div className="flex items-center space-x-1">
@@ -389,7 +389,7 @@ export default function MedicationsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Medication List */}
-        <div className="flex-1 overflow-auto bg-white border-r border-gray-500">
+        <div className="flex-1 overflow-auto bg-ehr-surface border-r border-gray-500">
           {viewMode === 'by-patient' ? (
             <div>
               {Object.entries(ordersByPatient).map(([mrn, { patient, orders }]) => (
@@ -399,7 +399,7 @@ export default function MedicationsPage() {
                     className="px-2 py-1 bg-gray-100 hover:bg-gray-200 cursor-pointer flex items-center justify-between text-[11px]"
                   >
                     <div className="flex items-center space-x-2">
-                      <span className="w-4 h-4 border border-gray-500 bg-white flex items-center justify-center text-[10px] font-bold">
+                      <span className="w-4 h-4 border border-gray-500 bg-ehr-surface flex items-center justify-center text-[10px] font-bold">
                         {expandedPatients.has(mrn) ? '-' : '+'}
                       </span>
                       <span className="font-semibold">{patient.name}</span>
@@ -446,7 +446,7 @@ export default function MedicationsPage() {
                         order.status === 'DISCONTINUED' || order.status === 'COMPLETED' ? 'opacity-50' : 
                         idx % 2 === 1 ? 'bg-gray-50' : ''
                       }`}
-                      style={isSelected ? { background: '#316ac5', color: 'white' } : undefined}
+                      style={isSelected ? { background: 'var(--ehr-selected)', color: 'white' } : undefined}
                     >
                       <td className="px-1 py-1">
                         <div className="flex items-center space-x-1">
@@ -457,7 +457,7 @@ export default function MedicationsPage() {
                           )}
                           <div>
                             <div className="font-semibold">{order.medicationName} {order.strength}</div>
-                            <div className="text-[10px]" style={isSelected ? { color: '#ccc' } : { color: '#666' }}>
+                            <div className="text-[10px]" style={isSelected ? { color: '#ccc' } : { color: 'var(--ehr-text-muted)' }}>
                               {order.form} • {order.orderNumber}
                             </div>
                           </div>
@@ -465,7 +465,7 @@ export default function MedicationsPage() {
                       </td>
                       <td className="px-1 py-1">
                         <div>{order.patientName}</div>
-                        <div className="text-[10px]" style={isSelected ? { color: '#ccc' } : { color: '#666' }}>{order.patientMrn}</div>
+                        <div className="text-[10px]" style={isSelected ? { color: '#ccc' } : { color: 'var(--ehr-text-muted)' }}>{order.patientMrn}</div>
                       </td>
                       <td className="px-1 py-1">
                         <div className="truncate max-w-[180px]">{order.sig}</div>
@@ -523,7 +523,7 @@ export default function MedicationsPage() {
         </div>
 
         {/* Detail Panel */}
-        <div className="w-80 flex flex-col overflow-hidden" style={{ background: '#ece9d8' }}>
+        <div className="w-80 flex flex-col overflow-hidden" style={{ background: 'var(--ehr-window)' }}>
           {selectedOrder ? (
             <>
               {/* Medication Header */}
@@ -578,14 +578,14 @@ export default function MedicationsPage() {
                     onClick={() => togglePanel('details')}
                   >
                     <div className="flex items-center">
-                      <span className="w-4 h-4 border border-gray-400 bg-white flex items-center justify-center text-[10px] font-bold mr-1">
+                      <span className="w-4 h-4 border border-gray-400 bg-ehr-surface flex items-center justify-center text-[10px] font-bold mr-1">
                         {expandedPanels.details ? '-' : '+'}
                       </span>
                       <FileText className="w-3 h-3 mr-1" /> Rx Details
                     </div>
                   </div>
                   {expandedPanels.details && (
-                    <div className="bg-white p-2">
+                    <div className="bg-ehr-surface p-2">
                       <div className="p-1.5 bg-gray-100 border border-gray-300 mb-2">
                         <div className="text-[9px] text-gray-500 uppercase">Sig</div>
                         <div className="text-[11px]">{selectedOrder.sig}</div>
@@ -618,14 +618,14 @@ export default function MedicationsPage() {
                     onClick={() => togglePanel('pharmacy')}
                   >
                     <div className="flex items-center">
-                      <span className="w-4 h-4 border border-gray-400 bg-white flex items-center justify-center text-[10px] font-bold mr-1">
+                      <span className="w-4 h-4 border border-gray-400 bg-ehr-surface flex items-center justify-center text-[10px] font-bold mr-1">
                         {expandedPanels.pharmacy ? '-' : '+'}
                       </span>
                       <Building2 className="w-3 h-3 mr-1" /> Pharmacy
                     </div>
                   </div>
                   {expandedPanels.pharmacy && (
-                    <div className="bg-white p-2 text-[10px]">
+                    <div className="bg-ehr-surface p-2 text-[10px]">
                       <div className="font-semibold">{selectedOrder.pharmacy}</div>
                       <div className="flex items-center text-gray-600"><Phone className="w-3 h-3 mr-1" /> {selectedOrder.pharmacyPhone}</div>
                       <div className="text-gray-400">NPI: {selectedOrder.pharmacyNpi}</div>
@@ -658,7 +658,7 @@ export default function MedicationsPage() {
                       onClick={() => togglePanel('alerts')}
                     >
                       <div className="flex items-center">
-                        <span className="w-4 h-4 border border-gray-400 bg-white flex items-center justify-center text-[10px] font-bold mr-1">
+                        <span className="w-4 h-4 border border-gray-400 bg-ehr-surface flex items-center justify-center text-[10px] font-bold mr-1">
                           {expandedPanels.alerts ? '-' : '+'}
                         </span>
                         <ShieldAlert className="w-3 h-3 mr-1" /> Clinical Alerts
@@ -817,7 +817,7 @@ function OrderRow({ order, selected, onSelect, idx }: { order: MedicationOrderEx
       className={`px-3 py-1 cursor-pointer flex items-center justify-between text-[11px] ${
         selected ? '' : idx % 2 === 1 ? 'bg-gray-50' : ''
       }`}
-      style={selected ? { background: '#316ac5', color: 'white' } : undefined}
+      style={selected ? { background: 'var(--ehr-selected)', color: 'white' } : undefined}
     >
       <div className="flex items-center space-x-2">
         <div className="w-6">
@@ -825,7 +825,7 @@ function OrderRow({ order, selected, onSelect, idx }: { order: MedicationOrderEx
         </div>
         <div>
           <div className="font-semibold">{order.medicationName} {order.strength}</div>
-          <div style={selected ? { color: '#ccc' } : { color: '#666' }}>{order.sig}</div>
+          <div style={selected ? { color: '#ccc' } : { color: 'var(--ehr-text-muted)' }}>{order.sig}</div>
         </div>
       </div>
       <div className="flex items-center space-x-2">
