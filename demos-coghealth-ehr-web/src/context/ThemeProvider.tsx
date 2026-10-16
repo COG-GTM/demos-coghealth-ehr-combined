@@ -6,8 +6,12 @@ const DARK_QUERY = '(prefers-color-scheme: dark)';
 
 function getInitialTheme(): Theme {
   if (typeof window === 'undefined') return 'system';
-  const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-  if (stored && ['light', 'dark', 'system'].includes(stored)) return stored;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
+    if (stored && ['light', 'dark', 'system'].includes(stored)) return stored;
+  } catch {
+    // Storage can be blocked by browser privacy settings; fall back to system.
+  }
   return 'system';
 }
 
@@ -32,8 +36,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [resolvedTheme]);
 
   const setTheme = (next: Theme) => {
-    localStorage.setItem(STORAGE_KEY, next);
     setThemeState(next);
+    try {
+      localStorage.setItem(STORAGE_KEY, next);
+    } catch {
+      // Keep the in-memory choice when storage is unavailable.
+    }
   };
 
   return (

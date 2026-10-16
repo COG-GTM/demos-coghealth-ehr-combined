@@ -365,6 +365,8 @@ td {
 }
 
 .dark .bg-white { background-color: var(--ehr-surface); }
+/* Solid gray badges carry white labels; keep them mid-dark instead of inverting to light gray */
+.dark .bg-gray-500, .dark .bg-gray-600 { background-color: #5d636c; }
 .dark .hover\:bg-white:hover { background-color: var(--ehr-raised-hover-from); }
 .dark .hover\:bg-white\/50:hover { background-color: rgb(255 255 255 / 0.06); }
 .dark .bg-blue-100,
