@@ -35,6 +35,8 @@
   --ehr-warning-bg: #fff3cd;
   --ehr-error-bg: #f8d7da;
   --ehr-critical-bg: #ffcccc;
+  --ehr-stripe: #f0f4f8;
+  --ehr-muted-fg: #666;
   --ehr-info-fg: #004085;
   --ehr-success-fg: #155724;
   --ehr-warning-fg: #664d00;
@@ -60,6 +62,8 @@
   --ehr-warning-bg: #3d3418;
   --ehr-error-bg: #4a2226;
   --ehr-critical-bg: #4a2226;
+  --ehr-stripe: #2f343b;
+  --ehr-muted-fg: #aeb4bc;
   --ehr-info-fg: #a8cbfe;
   --ehr-success-fg: #86efac;
   --ehr-warning-fg: #fde68a;

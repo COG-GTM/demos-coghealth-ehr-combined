@@ -5,7 +5,12 @@ const STORAGE_KEY = 'coghealth-theme';
 const DARK_QUERY = '(prefers-color-scheme: dark)';
 
 function getInitialTheme(): Theme {
-  const stored = localStorage.getItem(STORAGE_KEY);
+  let stored: string | null = null;
+  try {
+    stored = localStorage.getItem(STORAGE_KEY);
+  } catch {
+    // storage unavailable; fall back to system
+  }
   return stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
 }
 
@@ -26,7 +31,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [resolvedTheme]);
 
   const setTheme = (next: Theme) => {
-    localStorage.setItem(STORAGE_KEY, next);
+    try {
+      localStorage.setItem(STORAGE_KEY, next);
+    } catch {
+      // storage unavailable; keep the choice in memory only
+    }
     setThemeState(next);
   };
 
