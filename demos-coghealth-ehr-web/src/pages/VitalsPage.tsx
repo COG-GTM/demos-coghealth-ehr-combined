@@ -47,7 +47,7 @@ export default function VitalsPage() {
 
   const getStatusStyle = (status: string) => {
     switch (status) {
-      case 'critical': return { background: 'var(--ehr-error-bg)', color: 'var(--ehr-error-fg)', fontWeight: 'bold' };
+      case 'critical': return { background: 'var(--ehr-critical-bg)', color: 'var(--ehr-error-fg)', fontWeight: 'bold' };
       case 'abnormal': return { background: 'var(--ehr-warning-bg)', color: 'var(--ehr-warning-fg)' };
       default: return {};
     }

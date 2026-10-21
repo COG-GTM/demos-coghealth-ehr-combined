@@ -34,6 +34,7 @@
   --ehr-success-bg: #d4edda;
   --ehr-warning-bg: #fff3cd;
   --ehr-error-bg: #f8d7da;
+  --ehr-critical-bg: #ffcccc;
   --ehr-info-fg: #004085;
   --ehr-success-fg: #155724;
   --ehr-warning-fg: #664d00;
@@ -58,6 +59,7 @@
   --ehr-success-bg: #1d3a26;
   --ehr-warning-bg: #3d3418;
   --ehr-error-bg: #4a2226;
+  --ehr-critical-bg: #4a2226;
   --ehr-info-fg: #a8cbfe;
   --ehr-success-fg: #86efac;
   --ehr-warning-fg: #fde68a;
