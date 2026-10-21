@@ -13,11 +13,11 @@ export default function Badge({
   className = '' 
 }: BadgeProps) {
   const variants = {
-    default: { background: '#e8e8e8', border: '1px solid #999', color: '#333' },
-    success: { background: '#d4edda', border: '1px solid #28a745', color: '#155724' },
-    warning: { background: '#fff3cd', border: '1px solid #cc9900', color: '#664d00' },
-    danger: { background: '#ffcccc', border: '1px solid #cc0000', color: '#990000' },
-    info: { background: '#cce5ff', border: '1px solid #0066cc', color: '#004085' },
+    default: { background: 'var(--ehr-raised)', border: '1px solid var(--color-gray-500)', color: 'var(--color-gray-800)' },
+    success: { background: 'var(--ehr-success-bg)', border: '1px solid #28a745', color: 'var(--ehr-success-fg)' },
+    warning: { background: 'var(--ehr-warning-bg)', border: '1px solid #cc9900', color: 'var(--ehr-warning-fg)' },
+    danger: { background: 'var(--ehr-error-bg)', border: '1px solid #cc0000', color: 'var(--ehr-error-fg)' },
+    info: { background: 'var(--ehr-info-bg)', border: '1px solid #0066cc', color: 'var(--ehr-info-fg)' },
   };
 
   return (

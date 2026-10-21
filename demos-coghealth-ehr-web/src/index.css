@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=Tahoma&display=swap');
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary-50: #e8f4fc;
   --color-primary-100: #d1e9f9;
@@ -17,9 +19,107 @@
   --font-family-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+:root {
+  --ehr-desktop: #d4d0c8;
+  --ehr-chrome: #ece9d8;
+  --ehr-panel: #f5f5f5;
+  --ehr-surface: #fff;
+  --ehr-raised-top: #f8f8f8;
+  --ehr-raised: #e8e8e8;
+  --ehr-raised-bottom: #e0e0e0;
+  --ehr-header-top: #f0f0f0;
+  --ehr-hover: #e0e8f0;
+  --ehr-titlebar: linear-gradient(to bottom, #6699cc 0%, #336699 100%);
+  --ehr-info-bg: #cce5ff;
+  --ehr-success-bg: #d4edda;
+  --ehr-warning-bg: #fff3cd;
+  --ehr-error-bg: #f8d7da;
+  --ehr-info-fg: #004085;
+  --ehr-success-fg: #155724;
+  --ehr-warning-fg: #664d00;
+  --ehr-error-fg: #990000;
+}
+
+.dark {
+  color-scheme: dark;
+  color: #d6d9de;
+
+  --ehr-desktop: #1b1e23;
+  --ehr-chrome: #23272d;
+  --ehr-panel: #262a30;
+  --ehr-surface: #2b2f36;
+  --ehr-raised-top: #3a3f47;
+  --ehr-raised: #33373e;
+  --ehr-raised-bottom: #2c3036;
+  --ehr-header-top: #363b42;
+  --ehr-hover: #2f3e52;
+  --ehr-titlebar: linear-gradient(to bottom, #345a87 0%, #1f3a5e 100%);
+  --ehr-info-bg: #1d3350;
+  --ehr-success-bg: #1d3a26;
+  --ehr-warning-bg: #3d3418;
+  --ehr-error-bg: #4a2226;
+  --ehr-info-fg: #a8cbfe;
+  --ehr-success-fg: #86efac;
+  --ehr-warning-fg: #fde68a;
+  --ehr-error-fg: #fca5a5;
+
+  /* Inverted neutral scale so existing gray utilities read correctly on dark surfaces */
+  --color-gray-50: #2a2e34;
+  --color-gray-100: #30343b;
+  --color-gray-200: #3a3f46;
+  --color-gray-300: #474d56;
+  --color-gray-400: #5a616b;
+  --color-gray-500: #9aa1ab;
+  --color-gray-600: #aeb4bc;
+  --color-gray-700: #c3c8ce;
+  --color-gray-800: #d6d9de;
+  --color-gray-900: #e8eaed;
+
+  --color-blue-50: #1e2f45;
+  --color-blue-100: #23395a;
+  --color-blue-600: #6ea8fe;
+  --color-blue-700: #8bb9fe;
+  --color-blue-800: #a8cbfe;
+  --color-red-50: #3a1f22;
+  --color-red-100: #4a2226;
+  --color-red-200: #6b2b31;
+  --color-red-300: #8a343b;
+  --color-red-600: #f87171;
+  --color-red-700: #fa8a8a;
+  --color-red-800: #fca5a5;
+  --color-red-900: #fecaca;
+  --color-green-100: #1d3a26;
+  --color-green-300: #2f6b41;
+  --color-green-600: #4ade80;
+  --color-green-700: #6ee7a0;
+  --color-green-800: #86efac;
+  --color-yellow-100: #3d3418;
+  --color-yellow-300: #6b5a1f;
+  --color-yellow-700: #fcd34d;
+  --color-yellow-800: #fde68a;
+  --color-amber-600: #fbbf24;
+  --color-amber-700: #fcd34d;
+  --color-orange-600: #fb923c;
+  --color-orange-800: #fdba74;
+  --color-purple-600: #c084fc;
+  --color-purple-800: #d8b4fe;
+}
+
 body {
   font-size: 11px;
-  background-color: #d4d0c8;
+  background-color: var(--ehr-desktop);
+}
+
+.dark .bg-white {
+  background-color: var(--ehr-surface);
+}
+
+.dark .border-white {
+  border-color: #3a3f46;
+}
+
+.dark .text-blue-100 {
+  color: #dbeafe;
 }
 
 input, select, textarea, button {
@@ -235,4 +335,161 @@ td {
 
 .ehr-splitter:hover {
   background: #b0b0b0;
+}
+
+/* Dark theme for the EHR desktop chrome */
+.dark th {
+  background: linear-gradient(to bottom, var(--ehr-raised-top) 0%, var(--ehr-raised) 100%);
+  border-color: #555c66;
+}
+
+.dark td {
+  border-color: #3f454d;
+}
+
+.dark .ehr-panel {
+  background: var(--ehr-panel);
+  border-color: #4a5059;
+  box-shadow: inset 1px 1px 0 #353a41, 1px 1px 2px rgba(0,0,0,0.4);
+}
+
+.dark .ehr-button {
+  background: linear-gradient(to bottom, #40454d 0%, #30343a 100%);
+  border-color: #5a616b;
+  color: #e3e6ea;
+  box-shadow: 1px 1px 0 #4d535c inset, -1px -1px 0 #23262b inset;
+}
+
+.dark .ehr-button:hover {
+  background: linear-gradient(to bottom, #4a5058 0%, #383c43 100%);
+}
+
+.dark .ehr-button:active {
+  background: linear-gradient(to bottom, #2a2d33 0%, #34383e 100%);
+  box-shadow: -1px -1px 0 #4d535c inset, 1px 1px 0 #1d2024 inset;
+}
+
+.dark .ehr-button-primary {
+  background: linear-gradient(to bottom, #3b78c0 0%, #24518f 100%);
+  border-color: #1a3a66;
+  color: white;
+}
+
+.dark .ehr-button-primary:hover {
+  background: linear-gradient(to bottom, #4787d0 0%, #2d5f9f 100%);
+}
+
+.dark .ehr-input {
+  background: #1f2227;
+  border-color: #56606d;
+  color: #e3e6ea;
+}
+
+.dark .ehr-input:focus {
+  border-color: #6ea8fe;
+  box-shadow: 0 0 2px rgba(110, 168, 254, 0.6);
+}
+
+.dark .ehr-fieldset {
+  background: #24282e;
+  border-color: #4a5059;
+}
+
+.dark .ehr-fieldset legend,
+.dark .ehr-label {
+  color: #c3c8ce;
+}
+
+.dark .ehr-header {
+  background: linear-gradient(to bottom, #345a87 0%, #1f3a5e 100%);
+  border-bottom-color: #0f2240;
+}
+
+.dark .ehr-subheader {
+  background: linear-gradient(to bottom, #3a3f47 0%, #2f3339 100%);
+  color: #d6d9de;
+  border-bottom-color: #4a5059;
+}
+
+.dark .ehr-tree-item:hover,
+.dark .ehr-toolbar-button:hover {
+  background: var(--ehr-hover);
+  border-color: #5a616b;
+}
+
+.dark .ehr-tree-item.selected,
+.dark .ehr-grid-row.selected {
+  background: #2f5fae;
+}
+
+.dark .ehr-status-bar {
+  background: var(--ehr-chrome);
+  border-top-color: #3a3f46;
+  color: #c3c8ce;
+}
+
+.dark .ehr-tab {
+  background: linear-gradient(to bottom, #3a3f47 0%, #2f3339 100%);
+  border-color: #5a616b;
+  color: #d6d9de;
+}
+
+.dark .ehr-tab.active {
+  background: var(--ehr-surface);
+  border-bottom-color: var(--ehr-surface);
+}
+
+.dark .ehr-tab-content {
+  background: var(--ehr-surface);
+  border-color: #5a616b;
+}
+
+.dark .ehr-grid-row:nth-child(even) {
+  background: #2f343b;
+}
+
+.dark .ehr-grid-row:hover {
+  background: #33445a;
+}
+
+.dark .ehr-alert-critical {
+  background: var(--ehr-error-bg);
+  border-color: #b33a3a;
+  color: #fca5a5;
+}
+
+.dark .ehr-alert-warning {
+  background: var(--ehr-warning-bg);
+  border-color: #a8841f;
+  color: #fde68a;
+}
+
+.dark .ehr-alert-info {
+  background: var(--ehr-info-bg);
+  border-color: #3b78c0;
+  color: #a8cbfe;
+}
+
+.dark .ehr-toolbar {
+  background: linear-gradient(to bottom, #2f3339 0%, #272b30 100%);
+  border-bottom-color: #4a5059;
+  color: #d6d9de;
+}
+
+.dark .ehr-toolbar-button {
+  color: #d6d9de;
+}
+
+.dark .ehr-toolbar-button-active {
+  background: linear-gradient(to bottom, #454b54 0%, #383c43 100%);
+  border-color: #5a616b;
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.4);
+}
+
+.dark .ehr-splitter {
+  background: var(--ehr-desktop);
+}
+
+.dark .ehr-splitter:hover {
+  background: #4a5059;
 }
