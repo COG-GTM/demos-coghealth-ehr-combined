@@ -1,74 +1,64 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { ThemeContext, THEME_STORAGE_KEY, type ResolvedTheme, type Theme } from './themeContext';
 
-export type Theme = 'light' | 'dark' | 'system';
-type ResolvedTheme = 'light' | 'dark';
+const THEMES: Theme[] = ['light', 'dark', 'system'];
+const DARK_QUERY = '(prefers-color-scheme: dark)';
 
-interface ThemeContextValue {
-  theme: Theme;
-  resolvedTheme: ResolvedTheme;
-  setTheme: (theme: Theme) => void;
-}
-
-const STORAGE_KEY = 'coghealth-theme';
-
-const ThemeContext = createContext<ThemeContextValue | null>(null);
-
-function getInitialTheme(): Theme {
-  if (typeof window === 'undefined') return 'system';
-  const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-  if (stored && ['light', 'dark', 'system'].includes(stored)) return stored;
+function readStoredTheme(): Theme {
+  try {
+    const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+    if (stored && THEMES.includes(stored as Theme)) return stored as Theme;
+  } catch {
+    // Storage can be unavailable (privacy mode, blocked cookies).
+  }
   return 'system';
 }
 
-function resolve(theme: Theme): ResolvedTheme {
-  if (theme !== 'system') return theme;
-  if (typeof window === 'undefined') return 'light';
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+function writeStoredTheme(theme: Theme) {
+  try {
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+  } catch {
+    // Non-fatal: the theme still applies for this session.
+  }
+}
+
+function systemPrefersDark(): boolean {
+  return typeof window.matchMedia === 'function' && window.matchMedia(DARK_QUERY).matches;
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
-  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => resolve(theme));
+  const [theme, setThemeState] = useState<Theme>(readStoredTheme);
+  const [systemDark, setSystemDark] = useState<boolean>(systemPrefersDark);
+
+  const resolvedTheme: ResolvedTheme = theme === 'system' ? (systemDark ? 'dark' : 'light') : theme;
+
+  useEffect(() => {
+    if (typeof window.matchMedia !== 'function') return;
+    const mq = window.matchMedia(DARK_QUERY);
+    const handler = (e: MediaQueryListEvent) => setSystemDark(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
-    const next = resolve(theme);
-    setResolvedTheme(next);
-    if (next === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-  }, [theme]);
+    root.classList.toggle('dark', resolvedTheme === 'dark');
+    root.style.colorScheme = resolvedTheme;
+  }, [resolvedTheme]);
 
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = (e: MediaQueryListEvent) => {
-      if (theme === 'system') {
-        setResolvedTheme(e.matches ? 'dark' : 'light');
-        const root = document.documentElement;
-        if (e.matches) root.classList.add('dark');
-        else root.classList.remove('dark');
-      }
-    };
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, [theme]);
-
-  const setTheme = (next: Theme) => {
-    localStorage.setItem(STORAGE_KEY, next);
+  const setTheme = useCallback((next: Theme) => {
+    writeStoredTheme(next);
     setThemeState(next);
-  };
+  }, []);
 
-  return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
-      {children}
-    </ThemeContext.Provider>
+  const toggleTheme = useCallback(() => {
+    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+  }, [resolvedTheme, setTheme]);
+
+  const value = useMemo(
+    () => ({ theme, resolvedTheme, setTheme, toggleTheme }),
+    [theme, resolvedTheme, setTheme, toggleTheme],
   );
-}
 
-export function useTheme() {
-  const ctx = useContext(ThemeContext);
-  if (!ctx) throw new Error('useTheme must be used within ThemeProvider');
-  return ctx;
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
