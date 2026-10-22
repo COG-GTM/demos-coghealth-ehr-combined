@@ -399,4 +399,4 @@ td {
 .dark .text-purple-800 { color: #d8b4fe; }
 
 /* Completed/discontinued rows are dimmed; keep them legible on dark surfaces. */
-.dark .opacity-50 { opacity: 0.7; }
+.dark .opacity-50 { opacity: 0.85; }

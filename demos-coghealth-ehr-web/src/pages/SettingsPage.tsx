@@ -118,6 +118,12 @@ export default function SettingsPage() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ profile, notifications, appearance }));
     } catch (e) {
       console.error('Failed to save settings:', e);
+      setShowAlert({
+        title: 'Settings Not Saved',
+        message: 'Your settings could not be saved because browser storage is unavailable. Changes will be lost on reload.',
+        type: 'info',
+      });
+      return;
     }
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
