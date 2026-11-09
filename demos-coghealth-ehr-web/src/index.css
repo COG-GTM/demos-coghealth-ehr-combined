@@ -51,6 +51,7 @@
   --ehr-banner-to: #2d4a7c;
   --ehr-hover: #e0e8f0;
   --ehr-row-alt: #f0f4f8;
+  --ehr-row-stripe: #f8f8f8;
   --ehr-row-hover: #d0e0f0;
   --ehr-selected: #316ac5;
   --ehr-input-border: #7f9db9;
@@ -105,6 +106,7 @@
   --ehr-banner-to: #1c2d4a;
   --ehr-hover: #2f3a48;
   --ehr-row-alt: #25282d;
+  --ehr-row-stripe: #25282d;
   --ehr-row-hover: #34445a;
   --ehr-selected: #2f5fa8;
   --ehr-input-border: #5a6f88;
@@ -212,7 +214,6 @@ td {
 .ehr-button {
   background: linear-gradient(to bottom, var(--ehr-btn-from) 0%, var(--ehr-btn-to) 100%);
   border: 1px solid var(--ehr-border-strong);
-  color: var(--ehr-fg);
   padding: 2px 8px;
   font-size: 11px;
   cursor: pointer;
@@ -242,7 +243,6 @@ td {
   border: 1px solid var(--ehr-input-border);
   padding: 2px 4px;
   background: var(--ehr-surface);
-  color: var(--ehr-fg);
   font-size: 11px;
 }
 
