@@ -163,6 +163,13 @@ export function logOrder(patientId: string, orderType: string, orderDetails: str
   });
 }
 
+export function logExport(format: string, recordCount: number): void {
+  logAuditEvent('PHI_EXPORT', {
+    action: `Audit log exported (${format})`,
+    details: `${recordCount} record(s)`,
+  });
+}
+
 export function logLogout(reason: 'manual' | 'timeout' = 'manual'): void {
   logAuditEvent(reason === 'timeout' ? 'SESSION_TIMEOUT' : 'LOGOUT', {
     action: reason === 'timeout' ? 'Session timed out' : 'User logged out',
