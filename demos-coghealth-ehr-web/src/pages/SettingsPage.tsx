@@ -7,6 +7,8 @@ import {
   Building2,
   Key,
   Monitor,
+  Sun,
+  Moon,
   Mail,
   Smartphone,
   Globe,
@@ -14,6 +16,7 @@ import {
   Check
 } from 'lucide-react';
 import { AlertDialog } from '../components/ui/Modal';
+import { THEMES, useTheme } from '../context/themeContext';
 
 type SettingsTab = 'profile' | 'notifications' | 'security' | 'appearance' | 'practice';
 
@@ -48,8 +51,9 @@ const defaultNotifications = {
   systemUpdates: false,
 };
 
+const themeIcons = { light: Sun, dark: Moon, system: Monitor };
+
 const defaultAppearance = {
-  theme: 'light',
   compactMode: false,
   fontSize: 'medium',
 };
@@ -58,7 +62,8 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
   const [saved, setSaved] = useState(false);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['channels', 'alerts', 'security', 'hours']));
-  const [showAlert, setShowAlert] = useState<{ title: string; message: string; type: 'success' | 'info' } | null>(null);
+  const [showAlert, setShowAlert] = useState<{ title: string; message: string; type: 'success' | 'info' | 'error' } | null>(null);
+  const { theme: currentTheme, setTheme } = useTheme();
 
   const toggleSection = (section: string) => {
     const newExpanded = new Set(expandedSections);
@@ -76,16 +81,19 @@ export default function SettingsPage() {
 
   const [initialized, setInitialized] = useState(false);
   if (!initialized) {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
         const data = JSON.parse(stored);
         if (data.profile) Object.assign(profile, data.profile);
         if (data.notifications) Object.assign(notifications, data.notifications);
-        if (data.appearance) Object.assign(appearance, data.appearance);
-      } catch (e) {
-        console.error('Failed to load settings:', e);
+        if (data.appearance) {
+          const { compactMode, fontSize } = data.appearance;
+          Object.assign(appearance, { compactMode, fontSize });
+        }
       }
+    } catch (e) {
+      console.error('Failed to load settings:', e);
     }
     setInitialized(true);
   }
@@ -99,13 +107,19 @@ export default function SettingsPage() {
   ];
 
   const handleSave = () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ profile, notifications, appearance }));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ profile, notifications, appearance }));
+    } catch (e) {
+      console.error('Failed to save settings:', e);
+      setShowAlert({ title: 'Save Failed', message: 'Settings could not be saved because browser storage is unavailable.', type: 'error' });
+      return;
+    }
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
 
   return (
-    <div className="h-full flex flex-col" style={{ background: '#d4d0c8' }}>
+    <div className="h-full flex flex-col" style={{ background: 'var(--ehr-bg)' }}>
       {/* Header */}
       <div className="ehr-header flex items-center justify-between">
         <span>System Settings</span>
@@ -121,7 +135,7 @@ export default function SettingsPage() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Navigation */}
-        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: '#ece9d8' }}>
+        <div className="w-48 overflow-auto p-2 space-y-1" style={{ background: 'var(--ehr-sidebar)' }}>
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -385,21 +399,27 @@ export default function SettingsPage() {
               <fieldset className="ehr-fieldset">
                 <legend>Theme</legend>
                 <div className="grid grid-cols-3 gap-2">
-                  {['light', 'dark', 'system'].map((theme) => (
-                    <button
-                      key={theme}
-                      onClick={() => setAppearance({ ...appearance, theme })}
-                      className={`p-2 border text-center text-[11px] ${
-                        appearance.theme === theme
-                          ? 'border-gray-600 bg-white'
-                          : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
-                      }`}
-                    >
-                      <Monitor className="w-4 h-4 mx-auto mb-1 text-gray-600" />
-                      <span className="capitalize">{theme}</span>
-                    </button>
-                  ))}
+                  {THEMES.map((theme) => {
+                    const Icon = themeIcons[theme];
+                    const active = currentTheme === theme;
+                    return (
+                      <button
+                        key={theme}
+                        onClick={() => setTheme(theme)}
+                        aria-pressed={active}
+                        className={`p-2 border text-center text-[11px] ${
+                          active
+                            ? 'border-gray-600 bg-white'
+                            : 'border-gray-400 bg-gray-100 hover:bg-gray-50'
+                        }`}
+                      >
+                        <Icon className="w-4 h-4 mx-auto mb-1 text-gray-600" />
+                        <span className="capitalize">{theme}</span>
+                      </button>
+                    );
+                  })}
                 </div>
+                <p className="text-[10px] text-gray-500 mt-2">Theme applies immediately. System follows your OS light/dark preference.</p>
               </fieldset>
 
               <fieldset className="ehr-fieldset">
