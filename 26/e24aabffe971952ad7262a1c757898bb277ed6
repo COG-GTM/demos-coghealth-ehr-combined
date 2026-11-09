@@ -1,0 +1,14 @@
+.devin/hook-firings.log
+  h_1c87e44b8ebc13 1-2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "26e24aabffe971952ad7262a1c757898bb277ed6",
+  "prompts": {},
+  "humans": {
+    "h_1c87e44b8ebc13": {
+      "author": "WesternConcrete <248786709+beta-devin-ai-integration[bot]@users.noreply.github.com>"
+    }
+  }
+}
