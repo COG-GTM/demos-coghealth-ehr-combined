@@ -1,0 +1,19 @@
+demos-coghealth-ehr-web/src/services/auditService.ts
+  s_3f6d579baf8fed::t_dcb3a78c39d16a 166-172
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "392af3518fba4876c3863fe0fbcf3b9baff02ac2",
+  "prompts": {},
+  "sessions": {
+    "s_3f6d579baf8fed": {
+      "agent_id": {
+        "tool": "windsurf",
+        "id": "quirky-stamp",
+        "model": "unknown"
+      },
+      "human_author": "WesternConcrete <248786709+beta-devin-ai-integration[bot]@users.noreply.github.com>"
+    }
+  }
+}
