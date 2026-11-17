@@ -362,7 +362,7 @@ export default function SchedulePage() {
                     className={`cursor-pointer ${
                       isSelected ? 'ehr-grid-row selected' : 
                       isUrgent ? 'ehr-alert-critical' : 
-                      apt.status === 'FINISHED' ? 'opacity-50' : 
+                      apt.status === 'FINISHED' ? 'opacity-50 dark:opacity-75' : 
                       idx % 2 === 1 ? 'bg-gray-50' : ''
                     }`}
                     style={isSelected ? { background: 'var(--ehr-selected)', color: 'white' } : undefined}
