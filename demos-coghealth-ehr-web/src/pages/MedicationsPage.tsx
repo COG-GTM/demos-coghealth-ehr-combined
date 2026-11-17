@@ -443,7 +443,7 @@ export default function MedicationsPage() {
                       onClick={() => setSelectedOrder(order)}
                       className={`cursor-pointer ${
                         isSelected ? 'ehr-grid-row selected' : 
-                        order.status === 'DISCONTINUED' || order.status === 'COMPLETED' ? 'opacity-50 dark:opacity-75' : 
+                        order.status === 'DISCONTINUED' || order.status === 'COMPLETED' ? 'opacity-50 dark:opacity-85' : 
                         idx % 2 === 1 ? 'bg-gray-50' : ''
                       }`}
                       style={isSelected ? { background: 'var(--ehr-selected)', color: 'white' } : undefined}
