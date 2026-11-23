@@ -47,11 +47,12 @@ services:
   # IDENTITY PROVIDER - Keycloak (SSO, RBAC, MFA)
   # =============================================================================
   keycloak:
-    image: quay.io/keycloak/keycloak:23.0
+    # Pinned to a build bundling OpenJDK 21.0.13.1 (fixes CVE-2026-114938 / Java4Shell); checked by scripts/check-runtime-jdk.sh
+    image: quay.io/keycloak/keycloak:26.8.2-3@sha256:7e66a96e4739239070aeaf72e4c5decf0f7f682cfc725b9f7ea2b336eaba38b3
     container_name: coghealth-keycloak
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres:5432/coghealth
       KC_DB_USERNAME: coghealth
