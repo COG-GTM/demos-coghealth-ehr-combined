@@ -1,0 +1,16 @@
+name: Runtime JDK check
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  runtime-jdk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fail if a compose image bundles a JDK affected by CVE-2026-114938
+        run: scripts/check-runtime-jdk.sh
